@@ -7,6 +7,8 @@ import { getI18n } from '@/lib/i18n/server';
 import { t, tArr } from '@/lib/i18n';
 import { roleKeyForHouse, RECORD_GROUPS } from '@/lib/roles';
 import { OFFICE_META, CPGRAMS_URL } from '@/lib/offices';
+import { ESCALATION_CHAINS, OFFICE_CHAIN_POSITION } from '@/lib/escalation';
+import EscalationChain from '@/components/EscalationChain';
 import { profileLastUpdated, formatDate } from '@/lib/format';
 import { PERF_METRIC_META, type PerfMetric, type Fact, type House } from '@/lib/types';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -347,6 +349,30 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
           <span className="text-ink-soft">{tr(`offices.${ot}.escalate`)}</span>
         </div>
       </section>
+
+      {/* Reporting chain — where this office sits and who to escalate to */}
+      {OFFICE_CHAIN_POSITION[ot] && (
+        <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
+          <h2 className="flex items-center gap-2 text-xl font-bold text-ink">
+            <Icon name="layers" size={20} className="text-brand" /> {tr('officials.chainTitle')}
+          </h2>
+          <p className="mt-1 text-sm text-ink-soft">{tr('officials.chainIntro')}</p>
+          <div className="mt-4">
+            <EscalationChain
+              chain={ESCALATION_CHAINS[OFFICE_CHAIN_POSITION[ot]!.chain]}
+              highlightRungId={OFFICE_CHAIN_POSITION[ot]!.rungId}
+              labels={{
+                startHere: tr('escalation.startHere'),
+                escalate: tr('escalation.escalate'),
+                covers: tr('escalation.covers'),
+                thisOffice: tr('escalation.thisOffice'),
+                varies: tr('escalation.varies'),
+                sources: tr('escalation.sources'),
+              }}
+            />
+          </div>
+        </section>
+      )}
 
       {/* Office contact */}
       {(p.office_email || p.office_phone) && (

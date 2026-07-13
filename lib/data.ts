@@ -58,28 +58,24 @@ export function rankingDocId(level: RankingLevel, geo: string): string {
   return `${level}__${geo || 'ALL'}`.replace(/[/#?[\]]/g, '_');
 }
 
-async function loadFromFirestore(): Promise<Dataset | null> {
-  const db = getDb();
-  if (!db) return null;
+/**
+ * Live vote aggregates — the ONLY collection read from Firestore at runtime.
+ * Politician/constituency data is static between deploys and is served from the
+ * committed seed, so a page render costs at most one small collection read
+ * (only politicians who have received a vote), keeping us well under the free
+ * Spark 50k-reads/day quota. Returns empty during `next build` (getDb() is null)
+ * or on any read error, degrading gracefully to "no ratings".
+ */
+async function loadVoteAggregates(db: ReturnType<typeof getDb>): Promise<Map<string, VoteAggregate>> {
+  const m = new Map<string, VoteAggregate>();
+  if (!db) return m;
   try {
-    const [polSnap, consSnap, aggSnap] = await Promise.all([
-      db.collection('politicians').get(),
-      db.collection('constituencies').get(),
-      db.collection('vote_aggregates').get(),
-    ]);
-    if (polSnap.empty) return null; // not published yet → fall back to seed
-    const voteAggregates = new Map<string, VoteAggregate>();
-    aggSnap.forEach((d) => voteAggregates.set(d.id, d.data() as VoteAggregate));
-    return {
-      politicians: polSnap.docs.map((d) => d.data() as Politician),
-      constituencies: consSnap.docs.map((d) => d.data() as Constituency),
-      voteAggregates,
-      source: 'firestore',
-    };
+    const snap = await db.collection('vote_aggregates').get();
+    snap.forEach((d) => m.set(d.id, d.data() as VoteAggregate));
   } catch (err) {
-    console.error('[data] Firestore read failed, using seed:', err);
-    return null;
+    console.error('[data] vote_aggregates read failed, showing no ratings:', err);
   }
+  return m;
 }
 
 function loadFromSeed(): Dataset {
@@ -92,10 +88,11 @@ function loadFromSeed(): Dataset {
 }
 
 async function loadDataset(): Promise<Dataset> {
-  // getDb() returns null during `next build` (free-tier quota guard), so this
-  // transparently uses the committed seed snapshot at build time and Firestore
-  // at runtime.
-  return (await loadFromFirestore()) ?? loadFromSeed();
+  // Politician/constituency data always comes from the committed seed (the same
+  // snapshot we publish, updated via `dm refresh-mps` + redeploy). Only the
+  // dynamic vote aggregates are read live from Firestore at runtime.
+  const db = getDb();
+  return { ...loadFromSeed(), voteAggregates: await loadVoteAggregates(db), source: db ? 'firestore' : 'seed' };
 }
 
 function buildIndex(ds: Dataset): Index {

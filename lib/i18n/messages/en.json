@@ -57,7 +57,8 @@
     "parallelPanchayat": "You can also raise it with your Gram Panchayat or MLA.",
     "chooseAbove": "Choose a problem above to see who's responsible and how to escalate.",
     "learnTiers": "New to this? Learn who does what",
-    "disclaimer": "General guidance based on how Indian administration usually works. Exact office names vary by state."
+    "disclaimer": "General guidance based on how Indian administration usually works. Exact office names vary by state.",
+    "escalationTitle": "The full escalation ladder — who is above them"
   },
   "problems": {
     "roads": "Roads & potholes",
@@ -174,7 +175,9 @@
     "reportIncorrect": "Report an incorrect posting",
     "officeContact": "Office contact",
     "verifiedAsOf": "verified as of",
-    "findCta": "Have a specific problem? Find who's responsible"
+    "findCta": "Have a specific problem? Find who's responsible",
+    "chainTitle": "Reporting chain — who this office answers to",
+    "chainIntro": "Where this office sits, and who to approach if it does not act. This is the chain of appointed officials; your elected MLA and MP are a separate, parallel lever."
   },
   "common": {
     "lastUpdated": "Updated",
@@ -266,25 +269,55 @@
         "title": "Member of Parliament (MP) — Rajya Sabha",
         "summary": "A leader in Parliament's upper house, chosen by state legislatures.",
         "oneLine": "Reviews national laws in Parliament's upper house.",
-        "handles": ["Reviewing national laws", "Representing states in Parliament", "Questioning the central government"],
-        "accountableFor": ["Taking part in Parliament", "Helping review national laws"],
-        "notResponsible": ["Local civic issues — your local body", "State matters — your MLA"]
+        "handles": [
+          "Reviewing national laws",
+          "Representing states in Parliament",
+          "Questioning the central government"
+        ],
+        "accountableFor": [
+          "Taking part in Parliament",
+          "Helping review national laws"
+        ],
+        "notResponsible": [
+          "Local civic issues — your local body",
+          "State matters — your MLA"
+        ]
       },
       "vidhanSabha": {
         "title": "Member of Legislative Assembly (MLA)",
         "summary": "Your elected leader in the state assembly.",
         "oneLine": "Handles state matters — police, state roads, water, schools.",
-        "handles": ["Making state laws", "Police, state roads, water, farming, state schools & hospitals", "Representing your area in the state assembly"],
-        "accountableFor": ["Taking part in the assembly", "Local development under state funds", "Raising your area's problems with the state"],
-        "notResponsible": ["National matters — your MP", "Day-to-day local works — often the local body"]
+        "handles": [
+          "Making state laws",
+          "Police, state roads, water, farming, state schools & hospitals",
+          "Representing your area in the state assembly"
+        ],
+        "accountableFor": [
+          "Taking part in the assembly",
+          "Local development under state funds",
+          "Raising your area's problems with the state"
+        ],
+        "notResponsible": [
+          "National matters — your MP",
+          "Day-to-day local works — often the local body"
+        ]
       },
       "localBody": {
         "title": "Municipality / Panchayat",
         "summary": "Your local council for everyday civic needs.",
         "oneLine": "Handles day-to-day local work — garbage, local roads, water, drains.",
-        "handles": ["Garbage, drainage, local roads, street lights", "Local water supply", "Birth/death certificates, local licences"],
-        "accountableFor": ["Everyday civic upkeep in your neighbourhood"],
-        "notResponsible": ["State matters — your MLA", "National matters — your MP"]
+        "handles": [
+          "Garbage, drainage, local roads, street lights",
+          "Local water supply",
+          "Birth/death certificates, local licences"
+        ],
+        "accountableFor": [
+          "Everyday civic upkeep in your neighbourhood"
+        ],
+        "notResponsible": [
+          "State matters — your MLA",
+          "National matters — your MP"
+        ]
       }
     }
   },
@@ -390,5 +423,13 @@
     "yesterday": "yesterday",
     "daysAgo": "{n} days ago",
     "monthsAgo": "{n} months ago"
+  },
+  "escalation": {
+    "startHere": "Start here",
+    "escalate": "If unresolved, escalate to",
+    "covers": "Covers",
+    "thisOffice": "This office",
+    "varies": "How this varies by state",
+    "sources": "Sources"
   }
 }

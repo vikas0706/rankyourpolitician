@@ -3,8 +3,10 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useI18n } from '@/lib/i18n/provider';
 import { PROBLEMS, PROBLEM_META, PROBLEM_ROUTES, OFFICE_META, CPGRAMS_URL } from '@/lib/offices';
+import { PROBLEM_CHAIN, ESCALATION_CHAINS } from '@/lib/escalation';
 import type { ProblemType } from '@/lib/types';
 import Icon from './Icon';
+import EscalationChain from './EscalationChain';
 
 export default function Finder() {
   const { t } = useI18n();
@@ -92,6 +94,24 @@ export default function Finder() {
                 </li>
               ))}
             </ol>
+
+            {/* Full escalation ladder (verified reporting chain of officials) */}
+            <div className="mt-5 border-t border-line pt-4">
+              <p className="mb-3 flex items-center gap-1.5 text-sm font-bold uppercase tracking-wide text-ink-faint">
+                <Icon name="layers" size={15} className="text-brand" /> {t('finder.escalationTitle')}
+              </p>
+              <EscalationChain
+                chain={ESCALATION_CHAINS[PROBLEM_CHAIN[problem][area]]}
+                labels={{
+                  startHere: t('escalation.startHere'),
+                  escalate: t('escalation.escalate'),
+                  covers: t('escalation.covers'),
+                  thisOffice: t('escalation.thisOffice'),
+                  varies: t('escalation.varies'),
+                  sources: t('escalation.sources'),
+                }}
+              />
+            </div>
 
             <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
               <a href={CPGRAMS_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-ink">
