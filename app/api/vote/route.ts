@@ -1,0 +1,51 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getPerson } from '@/lib/data';
+import { recordVote } from '@/lib/votes';
+import { getClientIp, verifyTurnstile, checkRateLimit, voterKey } from '@/lib/vote-integrity';
+
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+export async function POST(req: NextRequest) {
+  let body: { politicianId?: string; rating?: number; fingerprint?: string; turnstileToken?: string };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: 'bad-request' }, { status: 400 });
+  }
+
+  const { politicianId, rating, fingerprint = '', turnstileToken = '' } = body;
+  if (!politicianId || typeof rating !== 'number' || rating < 1 || rating > 5 || !Number.isInteger(rating)) {
+    return NextResponse.json({ error: 'invalid' }, { status: 400 });
+  }
+
+  const res = await getPerson(politicianId);
+  if (!res || (!res.person && !res.redirectTo)) return NextResponse.json({ error: 'not-found' }, { status: 404 });
+  // Appointed officials are information-only and must never be rated.
+  if (res.person && res.person.kind === 'official') {
+    return NextResponse.json({ error: 'not-ratable' }, { status: 403 });
+  }
+
+  const ip = getClientIp(req.headers);
+
+  const bot = await verifyTurnstile(turnstileToken, ip);
+  if (!bot.ok) return NextResponse.json({ error: 'captcha', reason: bot.reason }, { status: 403 });
+
+  const allowed = await checkRateLimit(ip);
+  if (!allowed) return NextResponse.json({ error: 'rate-limited' }, { status: 429 });
+
+  const key = voterKey(ip, fingerprint);
+  const { sentiment, updated } = await recordVote(politicianId, key, rating);
+
+  return NextResponse.json({
+    ok: true,
+    updated,
+    dev: bot.dev ?? false,
+    sentiment: {
+      mean: sentiment.bayesian_mean,
+      votes: sentiment.n_votes,
+      distribution: sentiment.distribution,
+      confidence: sentiment.confidence,
+    },
+  });
+}

@@ -1,0 +1,699 @@
+[
+  {
+    "id": "north-goa-shripad-yesso-naik",
+    "name": "Shripad Yesso Naik",
+    "party": "Bharatiya Janata Party (BJP)",
+    "house": "Lok Sabha",
+    "state": "Goa",
+    "stateCode": "GA",
+    "constituencyId": "pc-ga-north-goa",
+    "constituencyName": "North Goa",
+    "constituencyType": "PC",
+    "districts": [
+      "North Goa",
+      "South Goa"
+    ],
+    "current_position": "Union Minister of State for Power and New & Renewable Energy",
+    "is_minister": true,
+    "wikidata_qid": "Q7504173",
+    "neutral_summary": "Shripad Yesso Naik is a Bharatiya Janata Party Member of the Lok Sabha representing North Goa, Goa, in the 18th Lok Sabha, serving his sixth term. He is Union Minister of State for Power and New & Renewable Energy, having assumed the post on 10 June 2024. His 2024 ECI affidavit (via MyNeta/ADR) declares total assets of Rs 10,86,83,533, liabilities of Rs 5,08,675, and zero criminal cases.",
+    "metrics": {},
+    "facts": [
+      {
+        "field_type": "education",
+        "value": "Graduate, BA from Dempo College of Arts and Science, Bombay University, 1978",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3668",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "profession",
+        "value": "Business",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3668",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "age",
+        "value": "71 years (as per 2024 affidavit; born 4 October 1952)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3668",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "assets_total",
+        "value": "Rs 10,86,83,533 (Movable Rs 2,05,67,671 + Immovable Rs 8,81,15,862)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3668",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "liabilities_total",
+        "value": "Rs 5,08,675",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3668",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "criminal_cases_declared",
+        "value": "0 cases declared",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3668",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "terms_served",
+        "value": "6th term (elected 1999, 2004, 2009, 2014, 2019, 2024)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/shripad-yesso-naik",
+        "source_name": "PRS Legislative Research (MPTrack, 18th Lok Sabha)",
+        "retrieved_date": "2026-07-14"
+      },
+      {
+        "field_type": "previous_positions",
+        "value": "Minister of State (Independent Charge) for Culture and Tourism (2014); Minister of State (Independent Charge) for AYUSH (2014-2021); Minister of State for Defence (2019-2021); Minister of State for Tourism and for Ports, Shipping & Waterways (2021-2024)",
+        "source_url": "https://en.wikipedia.org/wiki/Shripad_Naik",
+        "source_name": "Wikipedia (Shripad Naik)",
+        "retrieved_date": "2026-07-14"
+      }
+    ],
+    "terms_served": 6,
+    "active": true
+  },
+  {
+    "id": "south-goa-captain-viriato-fernandes",
+    "name": "Captain Viriato Fernandes",
+    "party": "Indian National Congress (INC)",
+    "house": "Lok Sabha",
+    "state": "Goa",
+    "stateCode": "GA",
+    "constituencyId": "pc-ga-south-goa",
+    "constituencyName": "South Goa",
+    "constituencyType": "PC",
+    "districts": [
+      "South Goa",
+      "North Goa"
+    ],
+    "current_position": "Member of Parliament, Lok Sabha",
+    "is_minister": false,
+    "wikidata_qid": "Q126285578",
+    "neutral_summary": "Captain Viriato Fernandes is a Member of Parliament in the 18th Lok Sabha representing the South Goa constituency in Goa, elected in June 2024 as an Indian National Congress candidate, and is not a minister. His 2024 ECI affidavit declared total assets of Rs 5,27,28,999, liabilities of Rs 3,79,840, and one pending criminal case. PRS MPTrack records 85% attendance, 76 questions asked, 28 debates, and one private member bill for the period 24 June 2024 to 18 April 2026.",
+    "metrics": {
+      "attendance_pct": 85,
+      "questions_asked": 76,
+      "debates_participated": 28,
+      "private_member_bills": 1
+    },
+    "facts": [
+      {
+        "field_type": "education",
+        "value": "Bachelor of Engineering, Goa University (1992); Post Graduate Diploma in Business Administration in Supply Chain Management (2017)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3876",
+        "source_name": "MyNeta/ADR (ECI 2024 affidavit)",
+        "retrieved_date": "2026-07-14"
+      },
+      {
+        "field_type": "profession",
+        "value": "Retired Defence Officer",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3876",
+        "source_name": "MyNeta/ADR (ECI 2024 affidavit)",
+        "retrieved_date": "2026-07-14"
+      },
+      {
+        "field_type": "age",
+        "value": "54",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3876",
+        "source_name": "MyNeta/ADR (ECI 2024 affidavit)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 nomination"
+      },
+      {
+        "field_type": "assets_total",
+        "value": "Rs 5,27,28,999 (movable Rs 3,64,94,169; immovable Rs 1,72,84,830)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3876",
+        "source_name": "MyNeta/ADR (ECI 2024 affidavit)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 nomination"
+      },
+      {
+        "field_type": "liabilities_total",
+        "value": "Rs 3,79,840",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3876",
+        "source_name": "MyNeta/ADR (ECI 2024 affidavit)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 nomination"
+      },
+      {
+        "field_type": "criminal_cases_declared",
+        "value": "1 case declared/pending trial (IPC sections 143, 145, 341, 149; charges framed 11 August 2023; no convictions declared)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=3876",
+        "source_name": "MyNeta/ADR (ECI 2024 affidavit)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 nomination"
+      },
+      {
+        "field_type": "attendance_pct",
+        "value": "85% (national avg 85%, state avg 85%)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/captain-viriato-fernandes",
+        "source_name": "PRS Legislative Research (MPTrack)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "questions_asked",
+        "value": "76 (national avg 103)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/captain-viriato-fernandes",
+        "source_name": "PRS Legislative Research (MPTrack)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "debates_participated",
+        "value": "28 (national avg 20.4)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/captain-viriato-fernandes",
+        "source_name": "PRS Legislative Research (MPTrack)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "private_member_bills",
+        "value": "1 (national avg 0.4)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/captain-viriato-fernandes",
+        "source_name": "PRS Legislative Research (MPTrack)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "terms_served",
+        "value": "First Term (elected 09-06-2024)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/captain-viriato-fernandes",
+        "source_name": "PRS Legislative Research (MPTrack)",
+        "retrieved_date": "2026-07-14"
+      },
+      {
+        "field_type": "previous_positions",
+        "value": "Member, Standing Committee on Defence (from 26 September 2024); Captain, Indian Navy (1991-2017); founding member/state convener, Goencho Avaaz NGO (2018-2021); contested 2022 Goa Legislative Assembly election from Dabolim",
+        "source_url": "https://en.wikipedia.org/wiki/Viriato_Fernandes",
+        "source_name": "Wikipedia - Viriato Fernandes",
+        "retrieved_date": "2026-07-14"
+      }
+    ],
+    "terms_served": 1,
+    "active": true
+  },
+  {
+    "id": "kangra-dr-rajeev-bhardwaj",
+    "name": "Dr. Rajeev Bhardwaj",
+    "party": "Bharatiya Janata Party (BJP)",
+    "house": "Lok Sabha",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "constituencyId": "pc-hp-kangra",
+    "constituencyName": "Kangra",
+    "constituencyType": "PC",
+    "districts": [
+      "Kangra",
+      "Chamba"
+    ],
+    "current_position": "Member of Parliament, Lok Sabha",
+    "is_minister": false,
+    "wikidata_qid": "Q126414914",
+    "neutral_summary": "Dr. Rajeev Bhardwaj is a Bharatiya Janata Party Member of Parliament in the 18th Lok Sabha, representing the Kangra constituency in Himachal Pradesh, which covers assembly segments in Kangra and Chamba districts. He assumed office in June 2024, serving his first term, and holds no ministerial post. His 2024 ECI affidavit (via MyNeta/ADR) records total assets of Rs 5,87,23,886, liabilities of Rs 4,24,821, a BAMS qualification, profession as Medical Practitioner and Agriculturist, and no criminal cases declared.",
+    "metrics": {
+      "attendance_pct": 96,
+      "questions_asked": 104,
+      "debates_participated": 13,
+      "private_member_bills": 0
+    },
+    "facts": [
+      {
+        "field_type": "education",
+        "value": "Graduate Professional — Bachelor of Ayurvedic Medicine & Surgery (BAMS), Rajiv Gandhi Govt Post Graduate Ayurvedic College (1990)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8762",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "Lok Sabha 2024 affidavit"
+      },
+      {
+        "field_type": "profession",
+        "value": "Medical Practitioner & Agriculturist",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8762",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "Lok Sabha 2024 affidavit"
+      },
+      {
+        "field_type": "age",
+        "value": "62",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8762",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "Lok Sabha 2024 affidavit"
+      },
+      {
+        "field_type": "assets_total",
+        "value": "Rs 5,87,23,886 (Movable Rs 38,23,886 + Immovable Rs 5,49,00,000)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8762",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "Lok Sabha 2024 affidavit"
+      },
+      {
+        "field_type": "liabilities_total",
+        "value": "Rs 4,24,821",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8762",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "Lok Sabha 2024 affidavit"
+      },
+      {
+        "field_type": "criminal_cases_declared",
+        "value": "0 cases declared (no criminal cases declared in affidavit)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8762",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "Lok Sabha 2024 affidavit"
+      },
+      {
+        "field_type": "attendance_pct",
+        "value": "96% (national avg 85%, state avg 90%)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/rajeev-bhardwaj",
+        "source_name": "PRS India MPTrack",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "questions_asked",
+        "value": "104 (national avg 103, state avg 144)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/rajeev-bhardwaj",
+        "source_name": "PRS India MPTrack",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "debates_participated",
+        "value": "13 (national avg 20.4, state avg 23.5)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/rajeev-bhardwaj",
+        "source_name": "PRS India MPTrack",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "private_member_bills",
+        "value": "0 (national avg 0.4)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/rajeev-bhardwaj",
+        "source_name": "PRS India MPTrack",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "terms_served",
+        "value": "1 (first term; assumed office 2024)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/rajeev-bhardwaj",
+        "source_name": "PRS India MPTrack",
+        "retrieved_date": "2026-07-14",
+        "as_of": "18th Lok Sabha"
+      }
+    ],
+    "terms_served": 1,
+    "active": true
+  },
+  {
+    "id": "mandi-kangana-ranaut",
+    "name": "Kangana Ranaut",
+    "name_hi": "कंगना रनौत",
+    "party": "Bharatiya Janata Party",
+    "house": "Lok Sabha",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "constituencyId": "pc-hp-mandi",
+    "constituencyName": "Mandi",
+    "constituencyType": "PC",
+    "districts": [
+      "Mandi",
+      "Kullu",
+      "Chamba",
+      "Lahaul and Spiti",
+      "Kinnaur",
+      "Shimla"
+    ],
+    "current_position": "Member of Parliament, Lok Sabha",
+    "is_minister": false,
+    "wikidata_qid": "Q2737207",
+    "neutral_summary": "Kangana Ranaut is a Bharatiya Janata Party Member of Parliament in the 18th Lok Sabha, representing the Mandi constituency in Himachal Pradesh, serving her first term since June 2024. Her 2024 ECI/ADR affidavit records total assets of about Rs 91.66 crore, liabilities of about Rs 17.39 crore, 12th-standard education, a profession of actor/producer/director, and 8 declared criminal cases. PRS MPTrack data (24-06-2024 to 18-04-2026) records 85% attendance, 168 questions asked, participation in 19 debates, and 0 private member bills.",
+    "metrics": {
+      "attendance_pct": 85,
+      "questions_asked": 168,
+      "debates_participated": 19,
+      "private_member_bills": 0
+    },
+    "facts": [
+      {
+        "field_type": "education",
+        "value": "12th Pass (Senior School Certificate Examination) from DAV Model School Sec-15A, Chandigarh, 2003",
+        "source_url": "https://myneta.info/LokSabha2024/candidate.php?candidate_id=8764",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "profession",
+        "value": "Actor, Producer & Director",
+        "source_url": "https://myneta.info/LokSabha2024/candidate.php?candidate_id=8764",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "age",
+        "value": "37",
+        "source_url": "https://myneta.info/LokSabha2024/candidate.php?candidate_id=8764",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "assets_total",
+        "value": "Rs 91,66,31,239 (approx. Rs 91.66 crore)",
+        "source_url": "https://myneta.info/LokSabha2024/candidate.php?candidate_id=8764",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "liabilities_total",
+        "value": "Rs 17,38,86,641 (approx. Rs 17.39 crore)",
+        "source_url": "https://myneta.info/LokSabha2024/candidate.php?candidate_id=8764",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "criminal_cases_declared",
+        "value": "8 cases declared/pending trial",
+        "source_url": "https://myneta.info/LokSabha2024/candidate.php?candidate_id=8764",
+        "source_name": "MyNeta/ADR (2024 ECI affidavit archive)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024"
+      },
+      {
+        "field_type": "attendance_pct",
+        "value": "85% (national avg 85%; state avg 90%)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/kangna-ranaut",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026 (7 sessions)"
+      },
+      {
+        "field_type": "questions_asked",
+        "value": "168 (national avg 103; state avg 144)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/kangna-ranaut",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "debates_participated",
+        "value": "19 (national avg 20.4; state avg 23.5)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/kangna-ranaut",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "private_member_bills",
+        "value": "0 (national avg 0.4)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/kangna-ranaut",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "terms_served",
+        "value": "First Term (in office since 09-06-2024)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/kangna-ranaut",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2026-04-18"
+      }
+    ],
+    "terms_served": 1,
+    "active": true
+  },
+  {
+    "id": "hamirpur-anurag-singh-thakur",
+    "name": "Anurag Singh Thakur",
+    "name_hi": "अनुराग सिंह ठाकुर",
+    "party": "Bharatiya Janata Party (BJP)",
+    "house": "Lok Sabha",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "constituencyId": "pc-hp-hamirpur",
+    "constituencyName": "Hamirpur",
+    "constituencyType": "PC",
+    "districts": [
+      "Hamirpur",
+      "Una",
+      "Bilaspur",
+      "Kangra",
+      "Mandi"
+    ],
+    "current_position": "Member of Parliament, Lok Sabha",
+    "is_minister": false,
+    "wikidata_qid": "Q4777895",
+    "neutral_summary": "Anurag Singh Thakur is a Bharatiya Janata Party Member of Parliament in the 18th Lok Sabha, representing the Hamirpur (General) constituency in Himachal Pradesh, which spans assembly segments across Hamirpur, Una, Bilaspur, Kangra and Mandi districts. He is serving his fifth Lok Sabha term and previously held the portfolios of Union Minister of Information & Broadcasting and Youth Affairs & Sports (2021-2024); he was not included in the Union Council of Ministers formed in June 2024. His 2024 ECI affidavit declared total assets of about Rs 12.27 crore, liabilities of about Rs 1.44 crore, and one pending criminal case.",
+    "metrics": {
+      "attendance_pct": 91,
+      "questions_asked": 153,
+      "debates_participated": 35,
+      "private_member_bills": 0
+    },
+    "facts": [
+      {
+        "field_type": "education",
+        "value": "Graduate - BA from Doaba College, Jalandhar (affiliated to Guru Nanak Dev University, Amritsar), 1994",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8760",
+        "source_name": "MyNeta/ADR (ECI affidavit, Lok Sabha 2024)",
+        "retrieved_date": "2026-07-14"
+      },
+      {
+        "field_type": "profession",
+        "value": "Businessman, Social Activist and Member of Lok Sabha (at time of filing, Union Cabinet Minister of I&B and Youth Affairs & Sports)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8760",
+        "source_name": "MyNeta/ADR (ECI affidavit, Lok Sabha 2024)",
+        "retrieved_date": "2026-07-14"
+      },
+      {
+        "field_type": "age",
+        "value": "50 (as of 2024 nomination)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8760",
+        "source_name": "MyNeta/ADR (ECI affidavit, Lok Sabha 2024)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 (Lok Sabha election)"
+      },
+      {
+        "field_type": "assets_total",
+        "value": "Rs 12,26,63,406 (approx Rs 12.27 crore; movable Rs 6,55,44,328.87 + immovable Rs 5,71,19,077)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8760",
+        "source_name": "MyNeta/ADR (ECI affidavit, Lok Sabha 2024)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 (Lok Sabha election)"
+      },
+      {
+        "field_type": "liabilities_total",
+        "value": "Rs 1,43,74,994 (approx Rs 1.44 crore)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8760",
+        "source_name": "MyNeta/ADR (ECI affidavit, Lok Sabha 2024)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 (Lok Sabha election)"
+      },
+      {
+        "field_type": "criminal_cases_declared",
+        "value": "1 case declared/pending (Cr. Revision Petition No. 659/2015, Delhi High Court)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8760",
+        "source_name": "MyNeta/ADR (ECI affidavit, Lok Sabha 2024)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 (Lok Sabha election)"
+      },
+      {
+        "field_type": "attendance_pct",
+        "value": "91% (national avg 85%, state avg 90%)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/anurag-singh-thakur",
+        "source_name": "PRS Legislative Research (MPTrack, 18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "questions_asked",
+        "value": "153 (national avg 103, state avg 144)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/anurag-singh-thakur",
+        "source_name": "PRS Legislative Research (MPTrack, 18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "debates_participated",
+        "value": "35 (national avg 20.4, state avg 23.5)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/anurag-singh-thakur",
+        "source_name": "PRS Legislative Research (MPTrack, 18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "private_member_bills",
+        "value": "0 (national avg 0.4)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/anurag-singh-thakur",
+        "source_name": "PRS Legislative Research (MPTrack, 18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "terms_served",
+        "value": "Fifth term (14th, 15th, 16th, 17th, 18th Lok Sabha)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/anurag-singh-thakur",
+        "source_name": "PRS Legislative Research (MPTrack, 18th Lok Sabha)",
+        "retrieved_date": "2026-07-14"
+      },
+      {
+        "field_type": "previous_positions",
+        "value": "Union Minister of Information & Broadcasting and Minister of Youth Affairs & Sports (7 Jul 2021 - 9 Jun 2024); Minister of State for Finance & Corporate Affairs (30 May 2019 - 7 Jul 2021); President, BCCI (2016-2017); President, BJP Yuva Morcha (2011-2016)",
+        "source_url": "https://en.wikipedia.org/wiki/Anurag_Thakur",
+        "source_name": "Wikipedia - Anurag Thakur",
+        "retrieved_date": "2026-07-14"
+      }
+    ],
+    "terms_served": 5,
+    "active": true
+  },
+  {
+    "id": "shimla-suresh-kumar-kashyap",
+    "name": "Suresh Kumar Kashyap",
+    "name_hi": "सुरेश कुमार कश्यप",
+    "party": "Bharatiya Janata Party",
+    "house": "Lok Sabha",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "constituencyId": "pc-hp-shimla",
+    "constituencyName": "Shimla",
+    "constituencyType": "PC",
+    "districts": [
+      "Shimla",
+      "Solan",
+      "Sirmaur"
+    ],
+    "current_position": "Member of Parliament, Lok Sabha",
+    "is_minister": false,
+    "wikidata_qid": "Q63993625",
+    "neutral_summary": "Suresh Kumar Kashyap is a Bharatiya Janata Party Member of the Lok Sabha representing the Shimla (SC-reserved) constituency in Himachal Pradesh, serving his second term in the 18th Lok Sabha since June 2024. His 2024 election affidavit declared total assets of about Rs 4.44 crore, liabilities of about Rs 51.05 lakh, and zero criminal cases. Per PRS India (period 24-06-2024 to 18-04-2026) his attendance was 87%, with 152 questions asked and 27 debates participated.",
+    "metrics": {
+      "attendance_pct": 87,
+      "questions_asked": 152,
+      "debates_participated": 27,
+      "private_member_bills": 0
+    },
+    "facts": [
+      {
+        "field_type": "education",
+        "value": "Master of Philosophy in Public Administration from H.P. University Shimla (2008); M.A. Tourism Management through IGNOU New Delhi (2004)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8766",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 affidavit"
+      },
+      {
+        "field_type": "profession",
+        "value": "Public Representative (Member of Parliament); Agriculturist",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8766",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 affidavit"
+      },
+      {
+        "field_type": "age",
+        "value": "53 years",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8766",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 affidavit"
+      },
+      {
+        "field_type": "assets_total",
+        "value": "Rs 4,44,42,736 (approx Rs 4.44 crore); movable Rs 1,27,98,026, immovable Rs 3,21,26,968",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8766",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 affidavit"
+      },
+      {
+        "field_type": "liabilities_total",
+        "value": "Rs 51,05,342 (approx Rs 51.05 lakh)",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8766",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 affidavit"
+      },
+      {
+        "field_type": "criminal_cases_declared",
+        "value": "0 cases declared",
+        "source_url": "https://www.myneta.info/LokSabha2024/candidate.php?candidate_id=8766",
+        "source_name": "MyNeta/ADR",
+        "retrieved_date": "2026-07-14",
+        "as_of": "2024 affidavit"
+      },
+      {
+        "field_type": "attendance_pct",
+        "value": "87% (National average 85%, State average 90%)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/suresh-kumar-kashyap",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "questions_asked",
+        "value": "152 (National average 103, State average 144)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/suresh-kumar-kashyap",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "debates_participated",
+        "value": "27 (National average 20.4, State average 23.5)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/suresh-kumar-kashyap",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "private_member_bills",
+        "value": "0 (National average 0.4)",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/suresh-kumar-kashyap",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "24-06-2024 to 18-04-2026"
+      },
+      {
+        "field_type": "terms_served",
+        "value": "Second Term in Lok Sabha; commenced 09-06-2024",
+        "source_url": "https://prsindia.org/mptrack/18-lok-sabha/suresh-kumar-kashyap",
+        "source_name": "PRS India MPTrack (18th Lok Sabha)",
+        "retrieved_date": "2026-07-14",
+        "as_of": "18th Lok Sabha"
+      },
+      {
+        "field_type": "previous_positions",
+        "value": "Member of Parliament, 17th Lok Sabha (Shimla, elected 2019)",
+        "source_url": "https://www.wikidata.org/wiki/Q63993625",
+        "source_name": "Wikidata (Q63993625)",
+        "retrieved_date": "2026-07-14"
+      }
+    ],
+    "terms_served": 2,
+    "active": true
+  }
+]

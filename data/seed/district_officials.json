@@ -1,0 +1,176 @@
+[
+  {
+    "id": "GA__North Goa__collector_dm",
+    "officeType": "collector_dm",
+    "level": "district",
+    "stateCode": "GA",
+    "district": "North Goa",
+    "incumbent": {
+      "name": "Ankit Yadav",
+      "service": "IAS",
+      "office_email": "coln.goa@nic.in",
+      "office_phone": "0832-2427690",
+      "source_url": "https://northgoa.gov.in/whos-who/",
+      "source_name": "North Goa District (Government of Goa) - Who's Who",
+      "as_of": "2026-07-06"
+    }
+  },
+  {
+    "id": "GA__North Goa__sp_district",
+    "officeType": "sp_district",
+    "level": "district",
+    "stateCode": "GA",
+    "district": "North Goa"
+  },
+  {
+    "id": "GA__South Goa__collector_dm",
+    "officeType": "collector_dm",
+    "level": "district",
+    "stateCode": "GA",
+    "district": "South Goa",
+    "incumbent": {
+      "name": "Egna Cleetus",
+      "service": "IAS",
+      "office_email": "cols.goa@nic.in",
+      "office_phone": "0832-2794414",
+      "source_url": "https://southgoa.nic.in/about-district/whos-who/",
+      "source_name": "South Goa District Official Website (Who's Who)",
+      "as_of": "2026-07-03"
+    }
+  },
+  {
+    "id": "GA__South Goa__sp_district",
+    "officeType": "sp_district",
+    "level": "district",
+    "stateCode": "GA",
+    "district": "South Goa"
+  },
+  {
+    "id": "HP__Shimla__collector_dm",
+    "officeType": "collector_dm",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Shimla",
+    "incumbent": {
+      "name": "Anupam Kashyap",
+      "service": "IAS",
+      "office_email": "dc-shi-hp@nic.in",
+      "office_phone": "0177-2655988",
+      "source_url": "https://hpshimla.nic.in/about-district/whos-who/",
+      "source_name": "Shimla District Official Website (NIC) - Who's Who",
+      "as_of": "2026-06-30"
+    }
+  },
+  {
+    "id": "HP__Shimla__sp_district",
+    "officeType": "sp_district",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Shimla",
+    "incumbent": {
+      "name": "Gaurav Singh",
+      "service": "IPS",
+      "office_email": "sp-shi-hp@nic.in",
+      "office_phone": "0177-2655988",
+      "source_url": "https://hpshimla.nic.in/about-district/whos-who/",
+      "source_name": "Shimla District Official Website (NIC) - Who's Who",
+      "as_of": "2026-06-30"
+    }
+  },
+  {
+    "id": "HP__Kangra__collector_dm",
+    "officeType": "collector_dm",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Kangra",
+    "incumbent": {
+      "name": "Hemraj Bairwa",
+      "service": "IAS",
+      "office_email": "dc-kan-hp@nic.in",
+      "office_phone": "01892-222103",
+      "source_url": "https://hpkangra.nic.in/about-district/whos-who/",
+      "source_name": "District Kangra Official Website (Who's Who) - Government of Himachal Pradesh",
+      "as_of": "2026-07-09"
+    }
+  },
+  {
+    "id": "HP__Kangra__sp_district",
+    "officeType": "sp_district",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Kangra",
+    "incumbent": {
+      "name": "Kulbhushan Verma",
+      "service": "IPS",
+      "office_email": "sp-kan-hp@nic.in",
+      "office_phone": "01892-222244",
+      "source_url": "https://hpkangra.nic.in/about-district/whos-who/",
+      "source_name": "District Kangra Official Website (Who's Who) - Government of Himachal Pradesh",
+      "as_of": "2026-07-09"
+    }
+  },
+  {
+    "id": "HP__Mandi__collector_dm",
+    "officeType": "collector_dm",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Mandi",
+    "incumbent": {
+      "name": "Apoorv Devgan",
+      "service": "IAS",
+      "office_email": "dc-man-hp@nic.in",
+      "office_phone": "+91-1905-225201",
+      "source_url": "https://hpmandi.nic.in/about-district/whos-who/",
+      "source_name": "District Mandi Official Website (hpmandi.nic.in) — Who's Who",
+      "as_of": "2026-07-03"
+    }
+  },
+  {
+    "id": "HP__Mandi__sp_district",
+    "officeType": "sp_district",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Mandi",
+    "incumbent": {
+      "name": "Vinod Kumar",
+      "service": "IPS",
+      "office_email": "sp-man-hp@nic.in",
+      "office_phone": "+91-1905-222470",
+      "source_url": "https://hpmandi.nic.in/about-district/whos-who/",
+      "source_name": "District Mandi Official Website (hpmandi.nic.in) — Who's Who",
+      "as_of": "2026-07-03"
+    }
+  },
+  {
+    "id": "HP__Hamirpur__collector_dm",
+    "officeType": "collector_dm",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Hamirpur",
+    "incumbent": {
+      "name": "Gandharva Rathore",
+      "service": "IAS",
+      "office_email": "dc-ham-hp@nic.in",
+      "office_phone": "+91-1972-224300",
+      "source_url": "https://hphamirpur.nic.in/about-district/whos-who/",
+      "source_name": "District Hamirpur Official Website (Who's Who)",
+      "as_of": "2026-07-13"
+    }
+  },
+  {
+    "id": "HP__Hamirpur__sp_district",
+    "officeType": "sp_district",
+    "level": "district",
+    "stateCode": "HP",
+    "district": "Hamirpur",
+    "incumbent": {
+      "name": "Balbir Singh",
+      "service": "HPS",
+      "office_email": "sp-ham-hp@nic.in",
+      "office_phone": "+91-1972-292175",
+      "source_url": "https://hphamirpur.nic.in/about-district/whos-who/",
+      "source_name": "District Hamirpur Official Website (Who's Who)",
+      "as_of": "2026-07-13"
+    }
+  }
+]

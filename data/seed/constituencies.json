@@ -1,0 +1,76 @@
+[
+  {
+    "id": "pc-ga-north-goa",
+    "type": "PC",
+    "name": "North Goa",
+    "state": "Goa",
+    "stateCode": "GA",
+    "districts": [
+      "North Goa",
+      "South Goa"
+    ]
+  },
+  {
+    "id": "pc-ga-south-goa",
+    "type": "PC",
+    "name": "South Goa",
+    "state": "Goa",
+    "stateCode": "GA",
+    "districts": [
+      "South Goa",
+      "North Goa"
+    ]
+  },
+  {
+    "id": "pc-hp-kangra",
+    "type": "PC",
+    "name": "Kangra",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "districts": [
+      "Kangra",
+      "Chamba"
+    ]
+  },
+  {
+    "id": "pc-hp-mandi",
+    "type": "PC",
+    "name": "Mandi",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "districts": [
+      "Mandi",
+      "Kullu",
+      "Chamba",
+      "Lahaul and Spiti",
+      "Kinnaur",
+      "Shimla"
+    ]
+  },
+  {
+    "id": "pc-hp-hamirpur",
+    "type": "PC",
+    "name": "Hamirpur",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "districts": [
+      "Hamirpur",
+      "Una",
+      "Bilaspur",
+      "Kangra",
+      "Mandi"
+    ]
+  },
+  {
+    "id": "pc-hp-shimla",
+    "type": "PC",
+    "name": "Shimla",
+    "state": "Himachal Pradesh",
+    "stateCode": "HP",
+    "districts": [
+      "Shimla",
+      "Solan",
+      "Sirmaur"
+    ]
+  }
+]

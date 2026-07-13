@@ -1,0 +1,34 @@
+'use client';
+import Link from 'next/link';
+import { useI18n } from '@/lib/i18n/provider';
+
+export default function Footer() {
+  const { t } = useI18n();
+  return (
+    <footer className="mt-12 border-t border-line bg-white">
+      <div className="mx-auto max-w-content px-4 py-8">
+        <div className="flex flex-col gap-6 md:flex-row md:justify-between">
+          <div className="max-w-md">
+            <div className="flex items-center gap-2">
+              <span className="grid h-7 w-7 place-items-center rounded-md bg-brand text-white text-sm font-bold">R</span>
+              <span className="font-semibold text-ink">{t('brand.name')}</span>
+            </div>
+            <p className="mt-3 text-sm text-ink-faint">{t('footer.nonpartisan')}</p>
+            <p className="mt-2 text-xs text-ink-faint">{t('footer.disclaimer')}</p>
+          </div>
+          <nav className="grid grid-cols-2 gap-x-10 gap-y-2 text-sm" aria-label="Footer">
+            <Link href="/accountability" className="text-ink-soft hover:text-brand">{t('nav.accountability')}</Link>
+            <Link href="/methodology" className="text-ink-soft hover:text-brand">{t('nav.methodology')}</Link>
+            <Link href="/about" className="text-ink-soft hover:text-brand">{t('nav.about')}</Link>
+            <Link href="/privacy" className="text-ink-soft hover:text-brand">{t('footer.privacy')}</Link>
+            <Link href="/terms" className="text-ink-soft hover:text-brand">{t('footer.terms')}</Link>
+            <Link href="/grievance" className="text-ink-soft hover:text-brand">{t('footer.grievance')}</Link>
+          </nav>
+        </div>
+        <p className="mt-6 border-t border-line pt-4 text-xs text-ink-faint">
+          © {new Date().getFullYear()} {t('brand.name')} · {t('footer.openSource')}
+        </p>
+      </div>
+    </footer>
+  );
+}

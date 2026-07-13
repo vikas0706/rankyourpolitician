@@ -1,0 +1,75 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import Prose from '@/components/Prose';
+
+export const metadata: Metadata = {
+  title: 'Methodology',
+  description: 'How RankYourPolitician sources data and computes its two independent ranking axes.',
+};
+
+export default function MethodologyPage() {
+  return (
+    <Prose title="Methodology" updated="14 July 2026">
+      <p>
+        This site is an information tool, not a verdict. We publish sourced facts and two separate,
+        clearly-labelled measures. We never combine them into a single score, and we never editorialise.
+      </p>
+
+      <h2>Two independent axes</h2>
+      <p>
+        Every representative is shown on two axes that are stored and computed separately, so that public
+        opinion can never move the factual measure:
+      </p>
+      <ul>
+        <li>
+          <strong>Verified Performance</strong> — built <em>only</em> from official, government-sourced data.
+        </li>
+        <li>
+          <strong>Public Sentiment</strong> — open public ratings. This is opinion, explicitly labelled
+          “not verified”.
+        </li>
+      </ul>
+
+      <h2>Verified Performance</h2>
+      <p>
+        For Members of Parliament we use official parliamentary metrics: attendance, questions asked, debates
+        participated in, private member bills, and constituency-fund (MPLADS) utilisation. Each metric is
+        converted to a <strong>percentile within a comparable cohort</strong> — the same house and tenure
+        bracket — and the percentiles are averaged with <strong>equal weight</strong>. The formula is public
+        and unweighted by us on purpose: we do not assign subjective importance to any metric.
+      </p>
+      <ul>
+        <li>Ministers and presiding officers are exempt from questions/debates by parliamentary convention, so those metrics are excluded for them rather than counted as zero.</li>
+        <li>Declared assets and criminal cases are shown as neutral factual context and are <strong>not</strong> scored.</li>
+        <li>Where data is missing, we show “unavailable” — never a zero.</li>
+      </ul>
+
+      <h2>Public Sentiment</h2>
+      <p>
+        Ratings (1–5) are collected without login. To keep thin or coordinated samples from distorting the
+        picture we apply <strong>Bayesian shrinkage</strong>: a rating with few votes stays near the neutral
+        mean until enough independent votes accumulate. We display the full distribution, the vote count, and a
+        confidence indicator so you can judge for yourself.
+      </p>
+      <p>
+        Vote integrity is layered: a Cloudflare Turnstile human-check, a soft device signal, and rate limiting
+        on a hashed, coarsened IP, with one updatable vote per person. No login-less system is perfect; a
+        determined attacker can still get through, which is exactly why sentiment is kept separate from the
+        verified measure and labelled as opinion.
+      </p>
+
+      <h2>Sources</h2>
+      <p>
+        “No citation, no claim.” Identity and cross-references come from Wikidata; declared assets, education
+        and criminal cases from Election Commission affidavits; parliamentary activity from official Sansad /
+        PRS records. Every fact links to its source and shows the date it was retrieved.
+      </p>
+
+      <h2>Corrections</h2>
+      <p>
+        We offer a <Link href="/grievance">right to reply and a correction process</Link>. If a fact is wrong or
+        out of date, tell us and we will review it. Our code and data are intended to be open source.
+      </p>
+    </Prose>
+  );
+}

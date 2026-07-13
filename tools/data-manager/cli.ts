@@ -1,0 +1,69 @@
+// Local-only data-manager CLI. Run with: npm run dm -- <command>
+//   validate   check every fact is cited and the dataset is consistent
+//   stats      dataset summary
+//   publish    push politicians + constituencies to Firestore (needs creds)
+//   import     rebuild the seed from a sourcing-workflow output JSON
+//                 npm run dm -- import <path-to-output.json>
+import dotenv from 'dotenv';
+dotenv.config({ path: '.env.local' });
+dotenv.config();
+
+import { validateDataset, datasetStats, publishDataset } from './publish';
+
+async function main() {
+  const cmd = process.argv[2] || 'help';
+
+  switch (cmd) {
+    case 'validate': {
+      const { issues, ok } = validateDataset();
+      if (issues.length === 0) console.log('✓ No issues. Dataset is clean.');
+      for (const i of issues) {
+        console.log(`${i.severity === 'error' ? '✗ ERROR' : '⚠ warn '}  ${i.name}: ${i.message}`);
+      }
+      console.log(ok ? '\n✓ No blocking errors — safe to publish.' : '\n✗ Fix errors before publishing.');
+      process.exit(ok ? 0 : 1);
+      break;
+    }
+    case 'stats': {
+      console.log(datasetStats());
+      break;
+    }
+    case 'publish': {
+      const { ok } = validateDataset();
+      if (!ok) {
+        console.error('✗ Validation failed. Run "npm run dm -- validate" and fix errors first.');
+        process.exit(1);
+      }
+      console.log('Publishing to Firestore…');
+      const res = await publishDataset();
+      console.log(`✓ Published ${res.politicians} politicians and ${res.constituencies} constituencies.`);
+      break;
+    }
+    case 'import': {
+      const path = process.argv[3];
+      if (!path) {
+        console.error('Usage: npm run dm -- import <path-to-workflow-output.json>');
+        process.exit(1);
+      }
+      // Delegate to the importer (writes data/seed/*.json).
+      process.argv[2] = path; // importer reads argv[2] as the input path
+      await import('./import-workflow-output');
+      break;
+    }
+    default:
+      console.log(`rankyourpolitician data manager
+
+Commands:
+  npm run dm -- validate            Check citations + consistency
+  npm run dm -- stats               Dataset summary
+  npm run dm -- publish             Publish to Firestore (needs .env.local creds)
+  npm run dm -- import <file.json>  Rebuild seed from a sourcing-workflow output
+  npm run dm:dashboard              Open the local review dashboard (http://localhost:4321)
+`);
+  }
+}
+
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

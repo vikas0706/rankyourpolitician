@@ -1,0 +1,83 @@
+// Vote persistence. In Firestore, a deterministic vote-doc id
+// (`${politicianId}__${voterKey}`) makes one-vote-per-user atomic; the same
+// transaction maintains the aggregate so the displayed score is consistent.
+// Without Firestore, an in-process store keeps local dev/voting working.
+import { getDb } from './firebase-admin';
+import type { VoteAggregate, SentimentScore } from './types';
+import { computeSentimentScore } from './ranking';
+
+const memVotes = new Map<string, Map<string, number>>(); // politicianId -> voterKey -> rating
+
+function aggFromMem(politicianId: string): VoteAggregate {
+  const m = memVotes.get(politicianId);
+  const counts: Record<string, number> = {};
+  let total = 0;
+  let sum = 0;
+  if (m) {
+    for (const rating of m.values()) {
+      counts[rating] = (counts[rating] || 0) + 1;
+      total++;
+      sum += rating;
+    }
+  }
+  return { politician_id: politicianId, counts, total, sum, updated_at: new Date().toISOString() };
+}
+
+export async function recordVote(
+  politicianId: string,
+  key: string,
+  rating: number,
+): Promise<{ aggregate: VoteAggregate; sentiment: SentimentScore; updated: boolean }> {
+  const db = getDb();
+  if (!db) {
+    const m = memVotes.get(politicianId) ?? new Map<string, number>();
+    const updated = m.has(key);
+    m.set(key, rating);
+    memVotes.set(politicianId, m);
+    const aggregate = aggFromMem(politicianId);
+    return { aggregate, sentiment: computeSentimentScore(politicianId, aggregate), updated };
+  }
+
+  const voteRef = db.collection('votes').doc(`${politicianId}__${key}`);
+  const aggRef = db.collection('vote_aggregates').doc(politicianId);
+  const now = new Date().toISOString();
+
+  const { aggregate, updated } = await db.runTransaction(async (tx) => {
+    const [voteSnap, aggSnap] = await Promise.all([tx.get(voteRef), tx.get(aggRef)]);
+    const prev = voteSnap.exists ? (voteSnap.data()!.rating as number) : null;
+    const data = (aggSnap.exists ? aggSnap.data() : null) as VoteAggregate | null;
+    const counts: Record<string, number> = { ...(data?.counts || {}) };
+    let total = data?.total || 0;
+    let sum = data?.sum || 0;
+
+    if (prev != null) {
+      counts[prev] = Math.max(0, (counts[prev] || 0) - 1);
+      sum -= prev;
+    } else {
+      total += 1;
+    }
+    counts[rating] = (counts[rating] || 0) + 1;
+    sum += rating;
+
+    const newAgg: VoteAggregate = { politician_id: politicianId, counts, total, sum, updated_at: now };
+    tx.set(voteRef, { politician_id: politicianId, rating, updated_at: now }, { merge: true });
+    tx.set(aggRef, newAgg);
+    return { aggregate: newAgg, updated: prev != null };
+  });
+
+  return { aggregate, sentiment: computeSentimentScore(politicianId, aggregate), updated };
+}
+
+export async function getAggregate(politicianId: string): Promise<VoteAggregate | undefined> {
+  const db = getDb();
+  if (!db) {
+    const agg = aggFromMem(politicianId);
+    return agg.total > 0 ? agg : undefined;
+  }
+  const snap = await db.collection('vote_aggregates').doc(politicianId).get();
+  return snap.exists ? (snap.data() as VoteAggregate) : undefined;
+}
+
+export async function getSentiment(politicianId: string): Promise<SentimentScore> {
+  return computeSentimentScore(politicianId, await getAggregate(politicianId));
+}

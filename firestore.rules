@@ -1,0 +1,15 @@
+rules_version = '2';
+
+// Reads of PUBLISHED data are public (the site can serve it without auth).
+// All client WRITES are denied — the only writer is the server (/api/vote and
+// the local data manager) via the Firebase Admin SDK, which bypasses these
+// rules. Raw per-voter records are never client-readable.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /politicians/{id}        { allow read: if true;  allow write: if false; }
+    match /constituencies/{id}     { allow read: if true;  allow write: if false; }
+    match /vote_aggregates/{id}    { allow read: if true;  allow write: if false; }
+    match /votes/{id}              { allow read, write: if false; }
+    match /{document=**}           { allow read, write: if false; }
+  }
+}

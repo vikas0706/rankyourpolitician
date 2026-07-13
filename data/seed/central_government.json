@@ -1,0 +1,1104 @@
+[
+  {
+    "id": "narendra-modi",
+    "rank": "PM",
+    "name": "Narendra Modi",
+    "party": "BJP",
+    "portfolios": [
+      "Prime Minister",
+      "Personnel, Public Grievances and Pensions",
+      "Department of Atomic Energy",
+      "Department of Space",
+      "All important policy issues and all portfolios not allocated to any Minister"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Varanasi",
+    "state": "Uttar Pradesh",
+    "wikidata_qid": "Q1058",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "rajnath-singh",
+    "rank": "Cabinet",
+    "name": "Rajnath Singh",
+    "party": "BJP",
+    "portfolios": [
+      "Defence"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Lucknow",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "amit-shah",
+    "rank": "Cabinet",
+    "name": "Amit Shah",
+    "party": "BJP",
+    "portfolios": [
+      "Home Affairs",
+      "Co-operation"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Gandhinagar",
+    "state": "Gujarat",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "nitin-gadkari",
+    "rank": "Cabinet",
+    "name": "Nitin Gadkari",
+    "party": "BJP",
+    "portfolios": [
+      "Road Transport and Highways"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Nagpur",
+    "state": "Maharashtra",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "jagat-prakash-nadda",
+    "rank": "Cabinet",
+    "name": "Jagat Prakash Nadda",
+    "party": "BJP",
+    "portfolios": [
+      "Health and Family Welfare",
+      "Chemicals and Fertilizers"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Gujarat",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "shivraj-singh-chouhan",
+    "rank": "Cabinet",
+    "name": "Shivraj Singh Chouhan",
+    "party": "BJP",
+    "portfolios": [
+      "Agriculture and Farmers' Welfare",
+      "Rural Development"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Vidisha",
+    "state": "Madhya Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "nirmala-sitharaman",
+    "rank": "Cabinet",
+    "name": "Nirmala Sitharaman",
+    "party": "BJP",
+    "portfolios": [
+      "Finance",
+      "Corporate Affairs"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Karnataka",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "subrahmanyam-jaishankar",
+    "rank": "Cabinet",
+    "name": "Subrahmanyam Jaishankar",
+    "party": "BJP",
+    "portfolios": [
+      "External Affairs"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Gujarat",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "manohar-lal-khattar",
+    "rank": "Cabinet",
+    "name": "Manohar Lal Khattar",
+    "party": "BJP",
+    "portfolios": [
+      "Power",
+      "Housing and Urban Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Karnal",
+    "state": "Haryana",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "h-d-kumaraswamy",
+    "rank": "Cabinet",
+    "name": "H. D. Kumaraswamy",
+    "party": "JD(S)",
+    "portfolios": [
+      "Heavy Industries",
+      "Steel"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Mandya",
+    "state": "Karnataka",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "piyush-goyal",
+    "rank": "Cabinet",
+    "name": "Piyush Goyal",
+    "party": "BJP",
+    "portfolios": [
+      "Commerce and Industry"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Mumbai North",
+    "state": "Maharashtra",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "dharmendra-pradhan",
+    "rank": "Cabinet",
+    "name": "Dharmendra Pradhan",
+    "party": "BJP",
+    "portfolios": [
+      "Education"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Sambalpur",
+    "state": "Odisha",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "jitan-ram-manjhi",
+    "rank": "Cabinet",
+    "name": "Jitan Ram Manjhi",
+    "party": "HAM(S)",
+    "portfolios": [
+      "Micro, Small and Medium Enterprises"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Gaya",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "rajiv-ranjan-singh-lalan-singh",
+    "rank": "Cabinet",
+    "name": "Rajiv Ranjan Singh (Lalan Singh)",
+    "party": "JD(U)",
+    "portfolios": [
+      "Panchayati Raj",
+      "Fisheries, Animal Husbandry and Dairying"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Munger",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "sarbananda-sonowal",
+    "rank": "Cabinet",
+    "name": "Sarbananda Sonowal",
+    "party": "BJP",
+    "portfolios": [
+      "Ports, Shipping and Waterways"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Dibrugarh",
+    "state": "Assam",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "virendra-kumar",
+    "rank": "Cabinet",
+    "name": "Virendra Kumar",
+    "party": "BJP",
+    "portfolios": [
+      "Social Justice and Empowerment"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Tikamgarh",
+    "state": "Madhya Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "kinjarapu-ram-mohan-naidu",
+    "rank": "Cabinet",
+    "name": "Kinjarapu Ram Mohan Naidu",
+    "party": "TDP",
+    "portfolios": [
+      "Civil Aviation"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Srikakulam",
+    "state": "Andhra Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "pralhad-joshi",
+    "rank": "Cabinet",
+    "name": "Pralhad Joshi",
+    "party": "BJP",
+    "portfolios": [
+      "Consumer Affairs, Food and Public Distribution",
+      "New and Renewable Energy"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Dharwad",
+    "state": "Karnataka",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "jual-oram",
+    "rank": "Cabinet",
+    "name": "Jual Oram",
+    "party": "BJP",
+    "portfolios": [
+      "Tribal Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Sundargarh",
+    "state": "Odisha",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "giriraj-singh",
+    "rank": "Cabinet",
+    "name": "Giriraj Singh",
+    "party": "BJP",
+    "portfolios": [
+      "Textiles"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Begusarai",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "ashwini-vaishnaw",
+    "rank": "Cabinet",
+    "name": "Ashwini Vaishnaw",
+    "party": "BJP",
+    "portfolios": [
+      "Railways",
+      "Information and Broadcasting",
+      "Electronics and Information Technology"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Odisha",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "jyotiraditya-scindia",
+    "rank": "Cabinet",
+    "name": "Jyotiraditya Scindia",
+    "party": "BJP",
+    "portfolios": [
+      "Communications",
+      "Development of North Eastern Region"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Guna",
+    "state": "Madhya Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "bhupender-yadav",
+    "rank": "Cabinet",
+    "name": "Bhupender Yadav",
+    "party": "BJP",
+    "portfolios": [
+      "Environment, Forest and Climate Change"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Alwar",
+    "state": "Rajasthan",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "gajendra-singh-shekhawat",
+    "rank": "Cabinet",
+    "name": "Gajendra Singh Shekhawat",
+    "party": "BJP",
+    "portfolios": [
+      "Culture",
+      "Tourism"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Jodhpur",
+    "state": "Rajasthan",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "annpurna-devi",
+    "rank": "Cabinet",
+    "name": "Annpurna Devi",
+    "party": "BJP",
+    "portfolios": [
+      "Women and Child Development"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Koderma",
+    "state": "Jharkhand",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "kiren-rijiju",
+    "rank": "Cabinet",
+    "name": "Kiren Rijiju",
+    "party": "BJP",
+    "portfolios": [
+      "Parliamentary Affairs",
+      "Minority Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Arunachal West",
+    "state": "Arunachal Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "hardeep-singh-puri",
+    "rank": "Cabinet",
+    "name": "Hardeep Singh Puri",
+    "party": "BJP",
+    "portfolios": [
+      "Petroleum and Natural Gas"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "mansukh-l-mandaviya",
+    "rank": "Cabinet",
+    "name": "Mansukh L. Mandaviya",
+    "party": "BJP",
+    "portfolios": [
+      "Labour and Employment",
+      "Youth Affairs and Sports"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Porbandar",
+    "state": "Gujarat",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "g-kishan-reddy",
+    "rank": "Cabinet",
+    "name": "G. Kishan Reddy",
+    "party": "BJP",
+    "portfolios": [
+      "Coal",
+      "Mines"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Secunderabad",
+    "state": "Telangana",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "chirag-paswan",
+    "rank": "Cabinet",
+    "name": "Chirag Paswan",
+    "party": "LJP(RV)",
+    "portfolios": [
+      "Food Processing Industries"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Hajipur",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "c-r-patil",
+    "rank": "Cabinet",
+    "name": "C. R. Patil",
+    "party": "BJP",
+    "portfolios": [
+      "Jal Shakti"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Navsari",
+    "state": "Gujarat",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "rao-inderjit-singh",
+    "rank": "MoS-IC",
+    "name": "Rao Inderjit Singh",
+    "party": "BJP",
+    "portfolios": [
+      "Statistics and Programme Implementation (Independent Charge)",
+      "Planning (Independent Charge)",
+      "Culture"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Gurgaon",
+    "state": "Haryana",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "jitendra-singh",
+    "rank": "MoS-IC",
+    "name": "Jitendra Singh",
+    "party": "BJP",
+    "portfolios": [
+      "Science and Technology (Independent Charge)",
+      "Earth Sciences (Independent Charge)",
+      "Prime Minister's Office",
+      "Personnel, Public Grievances and Pensions",
+      "Department of Atomic Energy",
+      "Department of Space"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Udhampur",
+    "state": "Jammu and Kashmir",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "arjun-ram-meghwal",
+    "rank": "MoS-IC",
+    "name": "Arjun Ram Meghwal",
+    "party": "BJP",
+    "portfolios": [
+      "Law and Justice (Independent Charge)",
+      "Parliamentary Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Bikaner",
+    "state": "Rajasthan",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "prataprao-ganpatrao-jadhav",
+    "rank": "MoS-IC",
+    "name": "Prataprao Ganpatrao Jadhav",
+    "party": "SHS",
+    "portfolios": [
+      "AYUSH (Independent Charge)",
+      "Health and Family Welfare"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Buldhana",
+    "state": "Maharashtra",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "jayant-chaudhary",
+    "rank": "MoS-IC",
+    "name": "Jayant Chaudhary",
+    "party": "RLD",
+    "portfolios": [
+      "Skill Development and Entrepreneurship (Independent Charge)",
+      "Education"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "l-murugan",
+    "rank": "MoS",
+    "name": "L. Murugan",
+    "party": "BJP",
+    "portfolios": [
+      "Parliamentary Affairs",
+      "Information and Broadcasting"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Madhya Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "anupriya-patel",
+    "rank": "MoS",
+    "name": "Anupriya Patel",
+    "party": "AD(S)",
+    "portfolios": [
+      "Health and Family Welfare",
+      "Chemicals and Fertilizers"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Mirzapur",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "sukanta-majumdar",
+    "rank": "MoS",
+    "name": "Sukanta Majumdar",
+    "party": "BJP",
+    "portfolios": [
+      "Education",
+      "Development of North Eastern Region"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Balurghat",
+    "state": "West Bengal",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "jitin-prasada",
+    "rank": "MoS",
+    "name": "Jitin Prasada",
+    "party": "BJP",
+    "portfolios": [
+      "Commerce and Industry",
+      "Electronics and Information Technology"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Pilibhit",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "shripad-yesso-naik",
+    "rank": "MoS",
+    "name": "Shripad Yesso Naik",
+    "party": "BJP",
+    "portfolios": [
+      "Power",
+      "New and Renewable Energy"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "North Goa",
+    "state": "Goa",
+    "politicianId": "north-goa-shripad-yesso-naik",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "pankaj-chaudhary",
+    "rank": "MoS",
+    "name": "Pankaj Chaudhary",
+    "party": "BJP",
+    "portfolios": [
+      "Finance"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Maharajganj",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "krishan-pal-gurjar",
+    "rank": "MoS",
+    "name": "Krishan Pal Gurjar",
+    "party": "BJP",
+    "portfolios": [
+      "Co-operation"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Faridabad",
+    "state": "Haryana",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "murlidhar-mohol",
+    "rank": "MoS",
+    "name": "Murlidhar Mohol",
+    "party": "BJP",
+    "portfolios": [
+      "Co-operation",
+      "Civil Aviation"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Pune",
+    "state": "Maharashtra",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "ramdas-athawale",
+    "rank": "MoS",
+    "name": "Ramdas Athawale",
+    "party": "RPI(A)",
+    "portfolios": [
+      "Social Justice and Empowerment"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Maharashtra",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "b-l-verma",
+    "rank": "MoS",
+    "name": "B. L. Verma",
+    "party": "BJP",
+    "portfolios": [
+      "Social Justice and Empowerment",
+      "Consumer Affairs, Food and Public Distribution"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "ram-nath-thakur",
+    "rank": "MoS",
+    "name": "Ram Nath Thakur",
+    "party": "JD(U)",
+    "portfolios": [
+      "Agriculture and Farmers' Welfare"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "bhagirath-choudhary",
+    "rank": "MoS",
+    "name": "Bhagirath Choudhary",
+    "party": "BJP",
+    "portfolios": [
+      "Agriculture and Farmers' Welfare"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Ajmer",
+    "state": "Rajasthan",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "nityanand-rai",
+    "rank": "MoS",
+    "name": "Nityanand Rai",
+    "party": "BJP",
+    "portfolios": [
+      "Home Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Ujiarpur",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "bandi-sanjay-kumar",
+    "rank": "MoS",
+    "name": "Bandi Sanjay Kumar",
+    "party": "BJP",
+    "portfolios": [
+      "Home Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Karimnagar",
+    "state": "Telangana",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "v-somanna",
+    "rank": "MoS",
+    "name": "V. Somanna",
+    "party": "BJP",
+    "portfolios": [
+      "Jal Shakti",
+      "Railways"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Tumkur",
+    "state": "Karnataka",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "raj-bhushan-choudhary",
+    "rank": "MoS",
+    "name": "Raj Bhushan Choudhary",
+    "party": "BJP",
+    "portfolios": [
+      "Jal Shakti"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Muzaffarpur",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "ravneet-singh-bittu",
+    "rank": "MoS",
+    "name": "Ravneet Singh Bittu",
+    "party": "BJP",
+    "portfolios": [
+      "Railways",
+      "Food Processing Industries"
+    ],
+    "house": "Rajya Sabha",
+    "constituency": "Rajya Sabha (term ended 21 June 2026; retained as minister, re-election pending)",
+    "state": "Rajasthan",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "pemmasani-chandra-sekhar",
+    "rank": "MoS",
+    "name": "Pemmasani Chandra Sekhar",
+    "party": "TDP",
+    "portfolios": [
+      "Rural Development",
+      "Communications"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Guntur",
+    "state": "Andhra Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "kamlesh-paswan",
+    "rank": "MoS",
+    "name": "Kamlesh Paswan",
+    "party": "BJP",
+    "portfolios": [
+      "Rural Development"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Bansgaon",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "s-p-singh-baghel",
+    "rank": "MoS",
+    "name": "S. P. Singh Baghel",
+    "party": "BJP",
+    "portfolios": [
+      "Fisheries, Animal Husbandry and Dairying",
+      "Panchayati Raj"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Agra",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "shobha-karandlaje",
+    "rank": "MoS",
+    "name": "Shobha Karandlaje",
+    "party": "BJP",
+    "portfolios": [
+      "Micro, Small and Medium Enterprises",
+      "Labour and Employment"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Bangalore North",
+    "state": "Karnataka",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "kirti-vardhan-singh",
+    "rank": "MoS",
+    "name": "Kirti Vardhan Singh",
+    "party": "BJP",
+    "portfolios": [
+      "Environment, Forest and Climate Change",
+      "External Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Gonda",
+    "state": "Uttar Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "pabitra-margherita",
+    "rank": "MoS",
+    "name": "Pabitra Margherita",
+    "party": "BJP",
+    "portfolios": [
+      "External Affairs",
+      "Textiles"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Assam",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "nimuben-jayantibhai-bambhaniya",
+    "rank": "MoS",
+    "name": "Nimuben Jayantibhai Bambhaniya",
+    "party": "BJP",
+    "portfolios": [
+      "Consumer Affairs, Food and Public Distribution"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Bhavnagar",
+    "state": "Gujarat",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "shantanu-thakur",
+    "rank": "MoS",
+    "name": "Shantanu Thakur",
+    "party": "BJP",
+    "portfolios": [
+      "Ports, Shipping and Waterways"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Bangaon",
+    "state": "West Bengal",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "suresh-gopi",
+    "rank": "MoS",
+    "name": "Suresh Gopi",
+    "party": "BJP",
+    "portfolios": [
+      "Petroleum and Natural Gas",
+      "Tourism"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Thrissur",
+    "state": "Kerala",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "ajay-tamta",
+    "rank": "MoS",
+    "name": "Ajay Tamta",
+    "party": "BJP",
+    "portfolios": [
+      "Road Transport and Highways"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Almora",
+    "state": "Uttarakhand",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "harsh-malhotra",
+    "rank": "MoS",
+    "name": "Harsh Malhotra",
+    "party": "BJP",
+    "portfolios": [
+      "Road Transport and Highways",
+      "Corporate Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "East Delhi",
+    "state": "Delhi",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "satish-chandra-dubey",
+    "rank": "MoS",
+    "name": "Satish Chandra Dubey",
+    "party": "BJP",
+    "portfolios": [
+      "Coal",
+      "Mines"
+    ],
+    "house": "Rajya Sabha",
+    "state": "Bihar",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "sanjay-seth",
+    "rank": "MoS",
+    "name": "Sanjay Seth",
+    "party": "BJP",
+    "portfolios": [
+      "Defence"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Ranchi",
+    "state": "Jharkhand",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "durga-das-uikey",
+    "rank": "MoS",
+    "name": "Durga Das Uikey",
+    "party": "BJP",
+    "portfolios": [
+      "Tribal Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Betul",
+    "state": "Madhya Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "raksha-nikhil-khadse",
+    "rank": "MoS",
+    "name": "Raksha Nikhil Khadse",
+    "party": "BJP",
+    "portfolios": [
+      "Youth Affairs and Sports"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Raver",
+    "state": "Maharashtra",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "savitri-thakur",
+    "rank": "MoS",
+    "name": "Savitri Thakur",
+    "party": "BJP",
+    "portfolios": [
+      "Women and Child Development"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Dhar",
+    "state": "Madhya Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "tokhan-sahu",
+    "rank": "MoS",
+    "name": "Tokhan Sahu",
+    "party": "BJP",
+    "portfolios": [
+      "Housing and Urban Affairs"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Bilaspur",
+    "state": "Chhattisgarh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  },
+  {
+    "id": "bhupathi-raju-srinivasa-varma",
+    "rank": "MoS",
+    "name": "Bhupathi Raju Srinivasa Varma",
+    "party": "BJP",
+    "portfolios": [
+      "Heavy Industries",
+      "Steel"
+    ],
+    "house": "Lok Sabha",
+    "constituency": "Narsapuram",
+    "state": "Andhra Pradesh",
+    "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
+    "source_name": "Wikipedia – Third Modi ministry",
+    "retrieved_date": "2026-07-14"
+  }
+]
