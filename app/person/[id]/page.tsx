@@ -239,7 +239,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
           <h2 className="flex items-center gap-2 text-xl font-bold text-ink"><Icon name="parliament" size={20} className="text-brand" /> {person.govScope === 'state' ? tr('profile.govRoleTitleState', { state: person.state || '' }) : tr('profile.govRoleTitle')}</h2>
           <p className="mt-1 text-sm text-ink-soft">{tr('profile.govRoleDesc', { rank: person.ministerRankLabel || tr('profile.minister') })}</p>
           {person.is_pm && (
-            <p className="mt-2 flex items-start gap-2 rounded-xl bg-white/70 p-3 text-sm text-ink-soft">
+            <p className="mt-2 flex items-start gap-2 rounded-xl bg-white/90 p-3 text-sm text-ink-soft">
               <Icon name="sparkle" size={16} className="mt-0.5 shrink-0 text-brand" />
               {tr('profile.pmRoleNote', { name: person.name })}
             </p>

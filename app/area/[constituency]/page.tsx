@@ -115,7 +115,7 @@ export default async function AreaPage({ params }: { params: Promise<{ constitue
                       <li key={s.id}>
                         <Link
                           href={`/area/${s.id}`}
-                          className="pressable inline-flex items-center gap-1 rounded-full border border-line bg-white/60 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
+                          className="pressable inline-flex items-center gap-1 rounded-full border border-line bg-white/85 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
                         >
                           {s.name}
                           <span className="text-xs text-ink-faint">{s.type === 'PC' ? tr('search.pcShort') : tr('search.acShort')}</span>
@@ -154,7 +154,7 @@ export default async function AreaPage({ params }: { params: Promise<{ constitue
                       <Link
                         key={d}
                         href={`/district/${c.stateCode}/${encodeURIComponent(d)}`}
-                        className="pressable rounded-full border border-line bg-white/60 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
+                        className="pressable rounded-full border border-line bg-white/85 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
                       >
                         {d}
                       </Link>

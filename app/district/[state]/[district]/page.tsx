@@ -1,13 +1,15 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getRanking, getDistrictOfficials, officialPersonId, getDistrictView } from '@/lib/data';
+import { getRanking, getDistrictOfficials, officialPersonId, getDistrictView, getStateGovernment } from '@/lib/data';
 import { buildDistrictMap, matchDistrictName } from '@/lib/geo-districts';
 import { getI18n } from '@/lib/i18n/server';
 import { t } from '@/lib/i18n';
 import { formatDate } from '@/lib/format';
 import { OFFICE_META } from '@/lib/offices';
-import type { OfficeSeat, Politician } from '@/lib/types';
+import { STATE_RANK_LABEL, type OfficeSeat, type Politician } from '@/lib/types';
+import type { WhoPerson, WhoDistrict } from '@/lib/responsibility';
+import DistrictWhoFixes from '@/components/DistrictWhoFixes';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import RankingList from '@/components/RankingList';
 import AdSlot from '@/components/AdSlot';
@@ -31,7 +33,7 @@ function RepCard({ p, roleChip }: { p: Politician; roleChip: string }) {
   return (
     <Link
       href={`/person/${p.id}`}
-      className="pressable flex items-center gap-3 rounded-2xl border border-line/70 bg-white/60 p-3.5 hover:border-brand/40 hover:shadow-soft"
+      className="pressable flex items-center gap-3 rounded-2xl border border-line/70 bg-white/85 p-3.5 hover:border-brand/40 hover:shadow-soft"
     >
       <Avatar name={p.name} src={p.photo_url} size={52} />
       <div className="min-w-0 flex-1">
@@ -59,12 +61,49 @@ export default async function DistrictPage({
   const view = await getDistrictView(state, districtParam);
   if (!view) notFound();
 
-  const [ranking, officials] = await Promise.all([
+  const [ranking, officials, stateGov] = await Promise.all([
     getRanking('district', `${state}/${view.district}`),
     getDistrictOfficials(state, view.district),
+    getStateGovernment(state),
   ]);
   const { dict, locale } = await getI18n();
   const tr = (k: string, v?: Record<string, string | number>) => t(dict, k, v);
+
+  // Props for the "who fixes what here" real-people ladder (client component).
+  const partyShort = (party?: string) => (party ? party.match(/\(([^)]+)\)\s*$/)?.[1] ?? party : undefined);
+  const toWho = (p: Politician): WhoPerson => ({
+    id: p.id,
+    name: p.name,
+    party: partyShort(p.party),
+    photo: p.photo_url,
+    sub: p.constituencyName,
+  });
+  const cmM = stateGov?.ministers.find((m) => m.rank === 'CM');
+  const ministerWho = (m: NonNullable<typeof cmM>): WhoPerson => ({
+    id: m.politicianId || m.id,
+    name: m.name,
+    party: partyShort(m.party),
+    photo: m.photo_url,
+    sub: STATE_RANK_LABEL[m.rank],
+    portfolios: m.portfolios,
+  });
+  const whoPeople: WhoDistrict = {
+    officials: officials
+      .filter((s) => s.incumbent && (s.officeType === 'collector_dm' || s.officeType === 'sp_district'))
+      .map((s) => ({
+        officeType: s.officeType as 'collector_dm' | 'sp_district',
+        name: s.incumbent!.name,
+        service: s.incumbent!.service,
+        email: s.incumbent!.office_email,
+        phone: s.incumbent!.office_phone,
+        asOf: s.incumbent!.as_of,
+        sourceName: s.incumbent!.source_name,
+        sourceUrl: s.incumbent!.source_url,
+      })),
+    mlas: view.mlas.map(toWho),
+    mps: view.mps.map(toWho),
+  };
+  const govAsOf = stateGov?.asOf ? stateGov.asOf.replace(/^\s*as of\s*/i, '').split(/[;(]/)[0].trim() : undefined;
 
   // "You are here" map: all districts of the state, this one highlighted.
   const districtMap = buildDistrictMap(state, 520);
@@ -106,6 +145,21 @@ export default async function DistrictPage({
       <div className="mx-auto max-w-content px-4 py-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.4fr_1fr]">
           <div className="space-y-6">
+            {/* Who fixes what HERE — problem → the actual responsible people */}
+            <Reveal>
+              <SectionCard title={tr('district.whoTitle', { district: view.district })} subtitle={tr('district.whoHelp')} icon="megaphone">
+                <DistrictWhoFixes
+                  stateCode={state}
+                  state={view.state}
+                  asOf={govAsOf}
+                  cm={cmM ? ministerWho(cmM) : undefined}
+                  ministers={(stateGov?.ministers ?? []).map(ministerWho)}
+                  district={view.district}
+                  people={whoPeople}
+                />
+              </SectionCard>
+            </Reveal>
+
             {/* Elected representatives — the accountability layer citizens vote for */}
             <Reveal>
               <SectionCard title={tr('district.repsTitle')} subtitle={tr('district.repsHelp')} icon="people">
@@ -181,7 +235,7 @@ export default async function DistrictPage({
                       <li key={c.id}>
                         <Link
                           href={`/area/${c.id}`}
-                          className="pressable inline-flex items-center gap-1 rounded-full border border-line bg-white/60 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
+                          className="pressable inline-flex items-center gap-1 rounded-full border border-line bg-white/85 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
                         >
                           {c.name}
                           <span className="text-xs text-ink-faint">{c.type === 'PC' ? tr('search.pcShort') : tr('search.acShort')}</span>
@@ -220,7 +274,7 @@ function OfficeSeatCard({
 }) {
   const inc = seat.incumbent;
   return (
-    <div className="rounded-2xl border border-line/70 bg-white/60 p-4">
+    <div className="rounded-2xl border border-line/70 bg-white/85 p-4">
       <p className="flex items-center gap-1.5 font-bold text-ink">
         <span className="inline-grid h-7 w-7 place-items-center rounded-lg bg-brand-soft text-brand">
           <Icon name={OFFICE_META[seat.officeType].icon} size={15} />

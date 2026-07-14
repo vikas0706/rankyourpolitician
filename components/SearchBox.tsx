@@ -165,8 +165,8 @@ export default function SearchBox({ variant = 'header' }: { variant?: 'header' |
 
   const box =
     variant === 'hero'
-      ? 'w-full rounded-2xl border-2 border-brand/25 bg-white/85 px-5 py-4 text-lg shadow-glass backdrop-blur-xl focus:border-brand focus:bg-white'
-      : 'w-full rounded-full border border-line bg-white/70 px-4 py-2.5 text-sm backdrop-blur focus:border-brand focus:bg-white';
+      ? 'w-full rounded-2xl border-2 border-brand/25 bg-white/95 px-5 py-4 text-lg shadow-glass backdrop-blur-xl focus:border-brand focus:bg-white'
+      : 'w-full rounded-full border border-line bg-white/95 px-4 py-2.5 text-sm backdrop-blur focus:border-brand focus:bg-white';
 
   const showRecents = open && !q.trim() && recents.length > 0;
   const showPanel = open && (q.trim() || showRecents);
@@ -214,7 +214,7 @@ export default function SearchBox({ variant = 'header' }: { variant?: 'header' |
         <div
           id={listId}
           role="listbox"
-          className="glass-strong absolute left-0 right-0 z-40 mt-2 max-h-[26rem] overflow-auto rounded-2xl p-1.5 shadow-lift animate-scale-in origin-top"
+          className="glass-overlay absolute left-0 right-0 z-40 mt-2 max-h-[26rem] overflow-auto rounded-2xl p-1.5 animate-scale-in origin-top"
         >
           {showRecents && (
             <div className="py-1">

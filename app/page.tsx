@@ -54,7 +54,7 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* HERO — search + the living map of India */}
+      {/* HERO â€” search + the living map of India */}
       <section className="relative overflow-hidden border-b border-line/60">
         <div className="mx-auto max-w-content px-4 pb-10 pt-10 sm:pt-14">
           <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_1fr]">
@@ -77,7 +77,7 @@ export default async function HomePage() {
                     <Link
                       key={ex}
                       href={`/search?q=${encodeURIComponent(ex)}`}
-                      className="pressable rounded-full border border-brand/20 bg-white/70 px-3 py-1 font-medium text-brand backdrop-blur hover:bg-brand-soft"
+                      className="pressable rounded-full border border-brand/20 bg-white/90 px-3 py-1 font-medium text-brand backdrop-blur hover:bg-brand-soft"
                     >
                       {ex}
                     </Link>
@@ -106,7 +106,7 @@ export default async function HomePage() {
       </section>
 
       <div className="mx-auto max-w-content px-4 py-8">
-        {/* Org chart of India — how power flows */}
+        {/* Org chart of India â€” how power flows */}
         <Reveal as="section" className="mb-8">
           <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
             <div className="flex items-center gap-3">
@@ -125,7 +125,7 @@ export default async function HomePage() {
           <HierarchyLadder />
         </Reveal>
 
-        {/* Government of India — the top of the ladder */}
+        {/* Government of India â€” the top of the ladder */}
         <Reveal as="section" className="mb-8">
           <SectionCard
             title={tr('central.title')}
@@ -133,7 +133,7 @@ export default async function HomePage() {
             icon="parliament"
             aside={
               <Link href="/india" className="shrink-0 whitespace-nowrap text-sm font-semibold text-brand hover:underline">
-                {tr('central.seeAll')} →
+                {tr('central.seeAll')} â†’
               </Link>
             }
           >
@@ -149,7 +149,7 @@ export default async function HomePage() {
                 </Link>
                 <div>
                   <Eyebrow>{tr('central.cabinet')}</Eyebrow>
-                  <ul className="mt-2 divide-y divide-line/70 overflow-hidden rounded-xl border border-line/70 bg-white/50">
+                  <ul className="mt-2 divide-y divide-line/70 overflow-hidden rounded-xl border border-line/70 bg-white/80">
                     {topCabinet.map((m) => (
                       <li key={m.id}>
                         <Link href={`/person/${m.politicianId || m.id}`} className="flex items-center justify-between gap-3 px-3 py-2 text-sm hover:bg-brand-soft/50">
@@ -164,13 +164,13 @@ export default async function HomePage() {
             ) : (
               <Link href="/india" className="flex items-center justify-between gap-3 rounded-2xl border border-dashed border-line bg-paper-soft px-4 py-5 text-sm text-ink-soft hover:border-brand">
                 <span className="flex items-center gap-2"><Icon name="parliament" size={18} className="text-brand" /> {tr('central.comingSoon')}</span>
-                <span className="font-semibold text-brand">{tr('central.seeAll')} →</span>
+                <span className="font-semibold text-brand">{tr('central.seeAll')} â†’</span>
               </Link>
             )}
           </SectionCard>
         </Reveal>
 
-        {/* Finder CTA — guided "who's responsible for what" */}
+        {/* Finder CTA â€” guided "who's responsible for what" */}
         <Reveal className="mb-8">
           <Link
             href="/who"
@@ -200,7 +200,7 @@ export default async function HomePage() {
                       className="pressable inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3.5 py-1.5 text-sm font-semibold text-brand-ink hover:bg-brand hover:text-white"
                     >
                       {s.state}
-                      <span className="rounded-full bg-white/70 px-1.5 text-xs tabular-nums text-brand-ink">{s.count}</span>
+                      <span className="rounded-full bg-white/90 px-1.5 text-xs tabular-nums text-brand-ink">{s.count}</span>
                     </Link>
                   </li>
                 ))}

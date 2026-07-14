@@ -1,5 +1,5 @@
 'use client';
-// Full search page — same local index as the SearchBox dropdown, richer layout.
+// Full search page â€” same local index as the SearchBox dropdown, richer layout.
 // URL-synced (?q=) so results are shareable and the back button works.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -47,7 +47,7 @@ export default function SearchResults() {
           onChange={(e) => onChange(e.target.value)}
           placeholder={t('search.placeholder')}
           aria-label={t('search.placeholder')}
-          className="w-full rounded-2xl border-2 border-brand/25 bg-white/85 px-5 py-4 text-lg shadow-glass outline-none backdrop-blur-xl transition-shadow focus:border-brand focus:shadow-glow"
+          className="w-full rounded-2xl border-2 border-brand/25 bg-white/95 px-5 py-4 text-lg shadow-glass outline-none backdrop-blur-xl transition-shadow focus:border-brand focus:shadow-glow"
         />
         <span className="absolute right-4 top-1/2 -translate-y-1/2">
           {q.trim() && status !== 'ready' && status !== 'error' ? (
@@ -95,14 +95,14 @@ export default function SearchResults() {
                   <li key={p.id}>
                     <Link
                       href={`/person/${p.id}`}
-                      className="pressable flex items-center gap-3 rounded-2xl border border-line/70 bg-white/60 p-3 hover:border-brand/40 hover:shadow-soft"
+                      className="pressable flex items-center gap-3 rounded-2xl border border-line/70 bg-white/85 p-3 hover:border-brand/40 hover:shadow-soft"
                     >
                       <Avatar name={p.name} size={44} />
                       <span className="min-w-0">
                         <span className="block truncate font-semibold text-ink">{p.name}</span>
                         <span className="block truncate text-xs text-ink-faint">
-                          {[p.role, p.place, p.state].filter(Boolean).join(' · ')}
-                          {p.party ? ` · ${p.party}` : ''}
+                          {[p.role, p.place, p.state].filter(Boolean).join(' Â· ')}
+                          {p.party ? ` Â· ${p.party}` : ''}
                         </span>
                       </span>
                       <Icon name="chevron" size={16} className="ml-auto shrink-0 -rotate-90 text-ink-faint" />
@@ -120,7 +120,7 @@ export default function SearchResults() {
                     <Link href={`/area/${a.id}`} className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-brand-soft/60">
                       <span className="font-medium text-ink">{a.name}</span>
                       <span className="text-xs text-ink-faint">
-                        {a.type === 'PC' ? t('search.pcShort') : t('search.acShort')} · {a.state}
+                        {a.type === 'PC' ? t('search.pcShort') : t('search.acShort')} Â· {a.state}
                       </span>
                     </Link>
                   </li>

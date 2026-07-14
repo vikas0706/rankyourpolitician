@@ -130,7 +130,7 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
                     <li key={d.district}>
                       <Link
                         href={`/district/${state}/${encodeURIComponent(d.district)}`}
-                        className="pressable inline-flex items-center gap-1.5 rounded-full border border-line bg-white/60 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
+                        className="pressable inline-flex items-center gap-1.5 rounded-full border border-line bg-white/85 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
                       >
                         {d.district}
                         <span className="rounded-full bg-paper-sink px-1.5 text-xs tabular-nums">{d.mps + d.mlas}</span>

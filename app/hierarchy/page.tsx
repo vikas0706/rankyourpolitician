@@ -12,7 +12,7 @@ import Icon, { type IconName } from '@/components/Icon';
 
 export const revalidate = 300;
 export const metadata: Metadata = {
-  title: 'Org chart of India — who answers to whom',
+  title: 'Org chart of India â€” who answers to whom',
   description:
     'How India is governed, drawn as one simple chart: from you the voter, to Parliament and the PM, your state government, your district officials and your local body.',
 };
@@ -119,7 +119,7 @@ export default async function HierarchyPage() {
       />
 
       <div className="mx-auto max-w-3xl px-4 py-8">
-        {/* 1 — The citizen, at the top of the chart */}
+        {/* 1 â€” The citizen, at the top of the chart */}
         <Reveal>
           <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand to-brand-deep p-6 text-white shadow-glow">
             <div className="flex items-start gap-3">
@@ -137,7 +137,7 @@ export default async function HierarchyPage() {
 
         <Drop label={tr('hierarchyPage.youElect')} />
 
-        {/* 2 — Union level */}
+        {/* 2 â€” Union level */}
         <Reveal>
           <Node
             icon="parliament"
@@ -170,7 +170,7 @@ export default async function HierarchyPage() {
             chips={<Chip tone="warn">{central.length} {tr('hierarchyPage.chipMinisters')}</Chip>}
           >
             {pm && (
-              <div className="mt-4 flex items-center gap-3 rounded-2xl bg-white/70 p-3">
+              <div className="mt-4 flex items-center gap-3 rounded-2xl bg-white/90 p-3">
                 <Avatar name={pm.name} src={pm.photo_url} size={48} />
                 <div className="min-w-0">
                   <p className="text-[11px] font-bold uppercase tracking-wide text-ink-faint">{tr('central.pm')}</p>
@@ -183,7 +183,7 @@ export default async function HierarchyPage() {
 
         <Drop label={tr('hierarchyPage.statesMirror')} />
 
-        {/* 3 — State level */}
+        {/* 3 â€” State level */}
         <Reveal>
           <Node
             icon="flag"
@@ -211,7 +211,7 @@ export default async function HierarchyPage() {
 
         <Drop label={tr('hierarchyPage.stateRuns')} />
 
-        {/* 4 — District level */}
+        {/* 4 â€” District level */}
         <Reveal>
           <Node
             icon="shield"
@@ -233,7 +233,7 @@ export default async function HierarchyPage() {
 
         <Drop label={tr('hierarchyPage.districtDelegates')} />
 
-        {/* 5 — Local level */}
+        {/* 5 â€” Local level */}
         <Reveal>
           <Node
             icon="home"
@@ -246,9 +246,9 @@ export default async function HierarchyPage() {
           />
         </Reveal>
 
-        {/* Side note — the independent judiciary */}
+        {/* Side note â€” the independent judiciary */}
         <Reveal className="mt-6">
-          <div className="rounded-3xl border border-dashed border-line bg-white/50 p-5">
+          <div className="rounded-3xl border border-dashed border-line bg-white/80 p-5">
             <div className="flex items-start gap-3">
               <span className="inline-grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-paper-sink text-ink-soft">
                 <Icon name="scales" size={22} />

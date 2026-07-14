@@ -40,7 +40,7 @@ export default function LanguageSwitcher() {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label={t('nav.language')}
-        className="pressable flex items-center gap-1.5 rounded-full border border-line bg-white/70 px-3 py-1.5 text-sm text-ink-soft backdrop-blur hover:bg-paper-sink"
+        className="pressable flex items-center gap-1.5 rounded-full border border-line bg-white/90 px-3 py-1.5 text-sm text-ink-soft backdrop-blur hover:bg-paper-sink"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
@@ -56,7 +56,7 @@ export default function LanguageSwitcher() {
       {open && (
         <ul
           role="listbox"
-          className="glass-strong absolute right-0 z-40 mt-1.5 max-h-80 w-56 origin-top-right animate-scale-in overflow-auto rounded-2xl p-1 shadow-lift"
+          className="glass-overlay absolute right-0 z-40 mt-1.5 max-h-80 w-56 origin-top-right animate-scale-in overflow-auto rounded-2xl p-1"
         >
           {LOCALES.map((l) => (
             <li key={l.code}>

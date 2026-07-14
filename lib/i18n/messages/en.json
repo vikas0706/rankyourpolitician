@@ -335,7 +335,10 @@
     "mapHelp": "This district inside {state}. Tap a neighbouring district to jump to it.",
     "mapAria": "Map showing {district} district highlighted within {state}",
     "areasTitle": "Constituencies in this district",
-    "areasHelp": "The Lok Sabha and assembly seats that cover this district."
+    "areasHelp": "The Lok Sabha and assembly seats that cover this district.",
+    "whoTitle": "Who fixes what in {district}",
+    "whoHelp": "Pick a problem to see the actual people responsible — from the local office up to the Chief Minister.",
+    "whoCta": "Open the full finder with escalation steps"
   },
   "area": {
     "typePc": "Lok Sabha constituency",
@@ -359,6 +362,27 @@
   "india": {
     "compositionTitle": "Lok Sabha by party",
     "compositionHelp": "Seats held by each party among the MPs we track. Factual count — not a rating."
+  },
+  "who": {
+    "locate": "Where are you?",
+    "locateHelp": "Pick your district to see the actual people responsible near you — not just the office names.",
+    "pickState": "State / UT",
+    "pickDistrict": "District",
+    "pickStateFirst": "Choose your state or UT…",
+    "pickDistrictFirst": "Choose your district…",
+    "pickForPeople": "Pick your district above to see the real people responsible — with names, photos and contacts.",
+    "stepOffice": "Start at the local office",
+    "stepDistrict": "District administration",
+    "stepMinister": "The state minister who runs this department",
+    "stepCm": "Head of the state government",
+    "noMinisterMatch": "No single department minister matched — the Chief Minister's office in {state} owns everything not allocated.",
+    "cmHoldsDept": "The Chief Minister holds this department directly.",
+    "parallelTitle": "Your elected representatives here",
+    "parallelHelp": "The MLAs and MPs for {district}. Press them in parallel at any step — they answer to voters, and their office can push officials.",
+    "mlasLabel": "MLAs — state subjects (police, schools, water, state roads)",
+    "mpsLabel": "MPs — national subjects (railways, highways, telecom)",
+    "govAsOf": "State government as of {date}.",
+    "openDistrict": "Open the {district} page"
   },
   "accountability": {
     "title": "Who is responsible for what?",

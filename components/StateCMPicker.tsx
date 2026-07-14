@@ -1,5 +1,5 @@
 'use client';
-// "Find your state's government" — a personalised slice of the org chart.
+// "Find your state's government" â€” a personalised slice of the org chart.
 import { useState } from 'react';
 import Link from 'next/link';
 import { useI18n } from '@/lib/i18n/provider';
@@ -43,7 +43,7 @@ export default function StateCMPicker({ states }: { states: CmSummary[] }) {
       </select>
 
       {sel && (
-        <div className="mt-3 animate-scale-in rounded-2xl border border-brand/20 bg-white/70 p-4">
+        <div className="mt-3 animate-scale-in rounded-2xl border border-brand/20 bg-white/90 p-4">
           {sel.presidentsRule ? (
             <p className="text-sm text-ink-soft">{t('stateGov.presidentsRule')}</p>
           ) : sel.cmName ? (
