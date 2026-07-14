@@ -231,6 +231,44 @@ export interface Minister {
   as_of?: string;
 }
 
+/** State executive: a member of a State/UT Council of Ministers. */
+export type StateMinisterRank = 'CM' | 'DyCM' | 'Cabinet' | 'MoS';
+
+export const STATE_RANK_LABEL: Record<StateMinisterRank, string> = {
+  CM: 'Chief Minister',
+  DyCM: 'Deputy Chief Minister',
+  Cabinet: 'Cabinet Minister',
+  MoS: 'Minister of State',
+};
+
+export interface StateMinister {
+  id: string;
+  stateCode: string;
+  state: string;
+  rank: StateMinisterRank;
+  name: string;
+  party: string;
+  portfolios: string[];
+  photo_url?: string;
+  politicianId?: string; // link to a full profile if one exists in our dataset
+  source_url?: string;
+  source_name?: string;
+  retrieved_date?: string;
+  as_of?: string;
+}
+
+/** A State/UT government: leadership, cabinet and (appointed) Governor. */
+export interface StateGovernment {
+  stateCode: string;
+  state: string;
+  governmentStatus: 'elected' | 'presidents_rule' | 'uncertain';
+  asOf?: string;
+  confidence: 'high' | 'medium' | 'low';
+  governor?: { name: string; title?: string; sourceUrl?: string };
+  ministers: StateMinister[]; // ordered: CM, Deputy CM(s), Cabinet, MoS
+  sources: string[];
+}
+
 /** Aggregated votes for one politician (never stores raw IPs/fingerprints). */
 export interface VoteAggregate {
   politician_id: string;

@@ -1,12 +1,13 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getStateByCode, getRanking, getConstituenciesInState, getDistrictsInState, getStates } from '@/lib/data';
+import { getStateByCode, getRanking, getConstituenciesInState, getDistrictsInState, getStates, getStateGovernment } from '@/lib/data';
 import { getI18n } from '@/lib/i18n/server';
 import { t } from '@/lib/i18n';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import RankingList from '@/components/RankingList';
 import PagedConstituencies from '@/components/PagedConstituencies';
+import StateGovernmentSection from '@/components/StateGovernment';
 import AdSlot from '@/components/AdSlot';
 import { SectionCard } from '@/components/ui';
 
@@ -27,13 +28,28 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
   const info = await getStateByCode(state);
   if (!info) notFound();
 
-  const [ranking, districts, constituencies] = await Promise.all([
+  const [ranking, districts, constituencies, stateGov] = await Promise.all([
     getRanking('state', state),
     getDistrictsInState(state),
     getConstituenciesInState(state),
+    getStateGovernment(state),
   ]);
   const { dict } = await getI18n();
   const tr = (k: string, v?: Record<string, string | number>) => t(dict, k, v);
+  const govLabels = {
+    title: tr('stateGov.title', { state: info.state }),
+    cm: tr('stateGov.cm'),
+    deputyCm: tr('stateGov.deputyCm'),
+    cabinet: tr('stateGov.cabinet'),
+    mos: tr('stateGov.mos'),
+    governor: tr('stateGov.governor'),
+    holds: tr('central.holds'),
+    presidentsRule: tr('stateGov.presidentsRule'),
+    beingVerified: tr('stateGov.beingVerified'),
+    verifyNote: tr('stateGov.verifyNote'),
+    asOf: tr('common.asOf'),
+    sources: tr('common.sources'),
+  };
 
   return (
     <div className="mx-auto max-w-content px-4 py-6">
@@ -42,6 +58,12 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
       <p className="mt-1 text-sm text-ink-faint">
         {info.count} {tr('search.groups.politicians').toLowerCase()}
       </p>
+
+      {stateGov && (stateGov.ministers.length > 0 || stateGov.governmentStatus === 'presidents_rule') && (
+        <div className="mt-6">
+          <StateGovernmentSection gov={stateGov} labels={govLabels} />
+        </div>
+      )}
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
         <SectionCard title={tr('home.topTitle')} subtitle={tr('home.topHelp')} icon="star">

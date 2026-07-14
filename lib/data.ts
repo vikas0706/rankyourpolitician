@@ -23,7 +23,8 @@ import seedPoliticians from '@/data/seed/politicians.json';
 import seedConstituencies from '@/data/seed/constituencies.json';
 import seedCentral from '@/data/seed/central_government.json';
 import seedDistrictOfficials from '@/data/seed/district_officials.json';
-import type { Minister, OfficeSeat, OfficeType, OfficeLevel } from './types';
+import seedStateGov from '@/data/seed/state_government.json';
+import { STATE_RANK_LABEL, type Minister, type OfficeSeat, type OfficeType, type OfficeLevel, type StateGovernment, type StateMinister, type StateMinisterRank } from './types';
 
 function slugify(s: string): string {
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -206,9 +207,11 @@ export interface PersonView {
   is_minister: boolean;
   is_pm: boolean;
   current_position?: string;
-  portfolios: string[]; // all national departments this person runs
+  portfolios: string[]; // all departments this person runs (union or state)
   ministerRank?: MinisterRank;
   ministerRankLabel?: string;
+  stateRank?: StateMinisterRank; // set for a State/UT Council-of-Ministers member
+  govScope?: 'union' | 'state';
   neutral_summary?: string;
   terms_served?: number;
   facts: Fact[];
@@ -303,6 +306,45 @@ export async function getPerson(
     };
   }
 
+  // State / UT Council-of-Ministers member (CM, Deputy CM, state minister).
+  const stateMins = await allStateMinisters();
+  const sm = stateMins.find((x) => x.id === id);
+  if (sm) {
+    if (sm.politicianId && idx.politicianById.get(sm.politicianId)) return { redirectTo: sm.politicianId };
+    const roles = stateMins.filter((x) => x.id === id);
+    const portfolios = [...new Set(roles.flatMap((r) => r.portfolios))];
+    const position =
+      sm.rank === 'CM' ? `Chief Minister of ${sm.state}`
+      : sm.rank === 'DyCM' ? `Deputy Chief Minister of ${sm.state}`
+      : `${STATE_RANK_LABEL[sm.rank]}, ${sm.state}`;
+    return {
+      person: {
+        kind: 'elected' as const,
+        id: sm.id,
+        name: sm.name,
+        party: sm.party,
+        house: 'Vidhan Sabha',
+        state: sm.state,
+        stateCode: sm.stateCode,
+        districts: [],
+        photo_url: sm.photo_url,
+        is_minister: true,
+        is_pm: false,
+        current_position: position,
+        portfolios,
+        stateRank: sm.rank,
+        govScope: 'state',
+        ministerRankLabel: STATE_RANK_LABEL[sm.rank],
+        neutral_summary: `${sm.name} is the ${position} (${sm.party}).`,
+        facts: [],
+        metrics: {},
+        performance: null,
+        hasRecord: false,
+        sources: sm.source_url ? [[sm.source_url, sm.source_name || 'Source']] : [],
+      },
+    };
+  }
+
   // Appointed official (incumbent of an office seat) — INFO-ONLY person.
   const seats = await allOfficeSeats();
   const seat = seats.find((s) => s.incumbent && slugify(s.incumbent.name) === id);
@@ -382,6 +424,7 @@ export async function getAllPersonIds(): Promise<string[]> {
   const central = await getCentralGovernment();
   const ids = new Set(idx.politicians.map((p) => p.id));
   for (const m of central) if (!m.politicianId) ids.add(m.id);
+  for (const sm of await allStateMinisters()) if (!sm.politicianId) ids.add(sm.id);
   for (const seat of await allOfficeSeats()) if (seat.incumbent) ids.add(slugify(seat.incumbent.name));
   return [...ids];
 }
@@ -411,6 +454,27 @@ export async function getCentralGovernment(): Promise<Minister[]> {
 
 export async function getMinister(id: string): Promise<Minister | null> {
   return (await getCentralGovernment()).find((m) => m.id === id) ?? null;
+}
+
+export async function getStateGovernments(): Promise<StateGovernment[]> {
+  const db = getDb();
+  if (db) {
+    try {
+      const snap = await db.collection('state_government').get();
+      if (!snap.empty) return snap.docs.map((d) => d.data() as StateGovernment);
+    } catch (err) {
+      console.error('[data] state_government read failed, using seed:', err);
+    }
+  }
+  return seedStateGov as unknown as StateGovernment[];
+}
+
+export async function getStateGovernment(stateCode: string): Promise<StateGovernment | null> {
+  return (await getStateGovernments()).find((g) => g.stateCode === stateCode) ?? null;
+}
+
+async function allStateMinisters(): Promise<StateMinister[]> {
+  return (await getStateGovernments()).flatMap((g) => g.ministers);
 }
 
 /** The key appointed offices for a district (durable roles), with the current

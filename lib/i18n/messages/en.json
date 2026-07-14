@@ -342,7 +342,8 @@
     "officialRole": "Role & responsibility",
     "officialContact": "Office contact",
     "govRoleTitle": "Role in the Government of India",
-    "govRoleDesc": "As {rank}, this leader runs these national departments:",
+    "govRoleTitleState": "Role in the {state} Government",
+    "govRoleDesc": "As {rank}, this leader runs these departments:",
     "pmRoleNote": "As Prime Minister, {name} leads the entire Union government and Cabinet and oversees every ministry — not only the departments held directly, listed below.",
     "accountabilityTitle": "What they are accountable for",
     "accountabilityIntro": "As your representative, here is the full list of what a citizen can hold them to account for.",
@@ -441,5 +442,16 @@
     "prev": "Previous",
     "next": "Next",
     "showing": "Showing {from}–{to} of {total}"
+  },
+  "stateGov": {
+    "title": "{state} Government",
+    "cm": "Chief Minister",
+    "deputyCm": "Deputy Chief Minister",
+    "cabinet": "Cabinet Ministers",
+    "mos": "Ministers of State",
+    "governor": "Governor",
+    "presidentsRule": "This state is currently under President's Rule — there is no elected Council of Ministers.",
+    "beingVerified": "This list is being verified against official sources — please confirm with the official state government portal.",
+    "verifyNote": "Compiled from official portals and recent reporting; governments change with elections and reshuffles — please confirm current office-holders on the official state portal. Spotted an error? Use the report link on any profile."
   }
 }

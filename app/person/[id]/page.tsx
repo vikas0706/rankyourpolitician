@@ -76,7 +76,9 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
   // ALL their positions (e.g. PM + MP, or Cabinet Minister + MP), not one generic block.
   const rolesHeld: string[] = [];
   if (person.is_pm) rolesHeld.push('pm');
-  else if (person.is_minister && person.ministerRank === 'Cabinet') rolesHeld.push('unionCabinet');
+  else if (person.govScope === 'state') {
+    rolesHeld.push(person.stateRank === 'CM' ? 'cm' : person.stateRank === 'DyCM' ? 'dyCm' : 'stateCabinet');
+  } else if (person.is_minister && person.ministerRank === 'Cabinet') rolesHeld.push('unionCabinet');
   else if (person.is_minister && (person.ministerRank === 'MoS-IC' || person.ministerRank === 'MoS')) rolesHeld.push('unionMos');
   const baseRole = ROLE_FOR_HOUSE[person.house || 'Lok Sabha'];
   if (baseRole && !rolesHeld.includes(baseRole)) rolesHeld.push(baseRole);
@@ -206,7 +208,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
       {/* Government role — the portfolios this person runs, with what each covers */}
       {person.portfolios.length > 0 && (
         <section className="mt-5 rounded-3xl border border-brand/20 bg-brand-soft/40 p-5 shadow-soft sm:p-6">
-          <h2 className="flex items-center gap-2 text-xl font-bold text-ink"><Icon name="parliament" size={20} className="text-brand" /> {tr('profile.govRoleTitle')}</h2>
+          <h2 className="flex items-center gap-2 text-xl font-bold text-ink"><Icon name="parliament" size={20} className="text-brand" /> {person.govScope === 'state' ? tr('profile.govRoleTitleState', { state: person.state || '' }) : tr('profile.govRoleTitle')}</h2>
           <p className="mt-1 text-sm text-ink-soft">{tr('profile.govRoleDesc', { rank: person.ministerRankLabel || tr('profile.minister') })}</p>
           {person.is_pm && (
             <p className="mt-2 flex items-start gap-2 rounded-xl bg-white/70 p-3 text-sm text-ink-soft">

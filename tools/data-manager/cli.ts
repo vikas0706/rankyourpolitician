@@ -63,6 +63,12 @@ async function main() {
       await import('./enrich-affidavits');
       break;
     }
+    case 'import-state-gov': {
+      // Build state_government.json from the ryp-state-governments workflow output.
+      process.argv[2] = process.argv[3] || '';
+      await import('./import-state-gov');
+      break;
+    }
     case 'import': {
       const path = process.argv[3];
       if (!path) {
