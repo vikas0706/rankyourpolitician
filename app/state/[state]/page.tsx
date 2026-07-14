@@ -6,6 +6,7 @@ import { getI18n } from '@/lib/i18n/server';
 import { t } from '@/lib/i18n';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import RankingList from '@/components/RankingList';
+import PagedConstituencies from '@/components/PagedConstituencies';
 import AdSlot from '@/components/AdSlot';
 import { SectionCard } from '@/components/ui';
 
@@ -68,16 +69,9 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
           </SectionCard>
 
           <SectionCard title={tr('search.groups.constituencies')} icon="pin">
-            <ul className="space-y-1.5 text-sm">
-              {constituencies.map((c) => (
-                <li key={c.id}>
-                  <Link href={`/area/${c.id}`} className="text-brand hover:underline">
-                    {c.name}
-                  </Link>
-                  <span className="text-ink-faint"> · {c.type}</span>
-                </li>
-              ))}
-            </ul>
+            <PagedConstituencies
+              items={constituencies.map((c) => ({ id: c.id, name: c.name, type: c.type }))}
+            />
           </SectionCard>
 
           <AdSlot />

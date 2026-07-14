@@ -38,9 +38,14 @@ export function validateDataset(): { issues: Issue[]; ok: boolean } {
     issues.push({ politicianId: p.id, name: p.name, severity, message });
 
   for (const p of politicians) {
-    if (!p.constituencyId || !consIds.has(p.constituencyId)) push(p, 'error', `constituencyId "${p.constituencyId}" not found in constituencies`);
+    // Rajya Sabha members are state-elected with NO territorial constituency, so
+    // an empty constituencyId (and no districts) is correct for them.
+    const upperHouse = p.constituencyType === 'RS' || p.house === 'Rajya Sabha';
+    if (!upperHouse) {
+      if (!p.constituencyId || !consIds.has(p.constituencyId)) push(p, 'error', `constituencyId "${p.constituencyId}" not found in constituencies`);
+      if (!p.districts?.length) push(p, 'warn', 'no districts listed (district-level ranking will be empty)');
+    }
     if (!p.state || !p.stateCode) push(p, 'error', 'missing state/stateCode');
-    if (!p.districts?.length) push(p, 'warn', 'no districts listed (district-level ranking will be empty)');
     for (const f of p.facts as Fact[]) {
       if (!f.source_url) push(p, 'error', `fact "${f.field_type}" has no source_url (no citation, no claim)`);
       if (!f.retrieved_date) push(p, 'warn', `fact "${f.field_type}" has no retrieved_date`);

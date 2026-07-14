@@ -48,6 +48,21 @@ async function main() {
       await import('./import-lok-sabha');
       break;
     }
+    case 'import-rajya-sabha': {
+      // Add the ~245 Rajya Sabha members (upper house) from the canonical list.
+      await import('./import-rajya-sabha');
+      break;
+    }
+    case 'enrich-mps': {
+      // Add cited per-member detail (bio, career, photo) from Wikidata.
+      await import('./enrich-mps');
+      break;
+    }
+    case 'enrich-affidavits': {
+      // Add declared assets/liabilities/criminal cases from MyNeta (ADR).
+      await import('./enrich-affidavits');
+      break;
+    }
     case 'import': {
       const path = process.argv[3];
       if (!path) {

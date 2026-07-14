@@ -2,7 +2,9 @@
 // Used by the public site (lib/, app/) and the local data manager (tools/).
 
 export type House = 'Lok Sabha' | 'Rajya Sabha' | 'Vidhan Sabha';
-export type ConstituencyType = 'PC' | 'AC';
+// PC = parliamentary (Lok Sabha), AC = assembly (Vidhan Sabha), RS = Rajya Sabha
+// (state-elected, no territorial constituency), MLC = legislative council.
+export type ConstituencyType = 'PC' | 'AC' | 'RS' | 'MLC';
 export type RankingLevel = 'national' | 'state' | 'district' | 'constituency';
 
 /** Objective, per-member metrics that feed the Verified Performance axis. */

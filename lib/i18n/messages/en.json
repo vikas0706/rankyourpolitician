@@ -343,6 +343,11 @@
     "officialContact": "Office contact",
     "govRoleTitle": "Role in the Government of India",
     "govRoleDesc": "As {rank}, this leader runs these national departments:",
+    "pmRoleNote": "As Prime Minister, {name} leads the entire Union government and Cabinet and oversees every ministry — not only the departments held directly, listed below.",
+    "accountabilityTitle": "What they are accountable for",
+    "accountabilityIntro": "As your representative, here is the full list of what a citizen can hold them to account for.",
+    "accountabilityIntroMulti": "This person holds more than one office. Here is what they are accountable for in each role.",
+    "roleSeeMore": "What this role covers — and what it does not",
     "rateThis": "Rate this leader",
     "responsibilitiesTitle": "What they are responsible for",
     "jurisdictionTitle": "Areas represented",
@@ -431,5 +436,10 @@
     "thisOffice": "This office",
     "varies": "How this varies by state",
     "sources": "Sources"
+  },
+  "pager": {
+    "prev": "Previous",
+    "next": "Next",
+    "showing": "Showing {from}–{to} of {total}"
   }
 }

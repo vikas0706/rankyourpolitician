@@ -4,8 +4,10 @@ import type { Metadata } from 'next';
 import { getPerson, getAllPersonIds, officialPersonId, type PersonView } from '@/lib/data';
 import { getSentiment } from '@/lib/votes';
 import { getI18n } from '@/lib/i18n/server';
-import { t, tArr } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
 import { roleKeyForHouse, RECORD_GROUPS } from '@/lib/roles';
+import { portfolioMandate } from '@/lib/portfolios';
+import { ROLE_ACCOUNTABILITY, ROLE_FOR_HOUSE, type RoleAccountability } from '@/lib/role-accountability';
 import { OFFICE_META, CPGRAMS_URL } from '@/lib/offices';
 import { ESCALATION_CHAINS, OFFICE_CHAIN_POSITION } from '@/lib/escalation';
 import EscalationChain from '@/components/EscalationChain';
@@ -69,6 +71,16 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
   const factByType = new Map<string, Fact>();
   for (const f of person.facts) if (!factByType.has(f.field_type)) factByType.set(f.field_type, f);
   const scoredMetrics = (Object.keys(person.metrics) as PerfMetric[]).filter((m) => person.metrics[m] != null);
+
+  // Every role this person holds — senior-most first — so accountability reflects
+  // ALL their positions (e.g. PM + MP, or Cabinet Minister + MP), not one generic block.
+  const rolesHeld: string[] = [];
+  if (person.is_pm) rolesHeld.push('pm');
+  else if (person.is_minister && person.ministerRank === 'Cabinet') rolesHeld.push('unionCabinet');
+  else if (person.is_minister && (person.ministerRank === 'MoS-IC' || person.ministerRank === 'MoS')) rolesHeld.push('unionMos');
+  const baseRole = ROLE_FOR_HOUSE[person.house || 'Lok Sabha'];
+  if (baseRole && !rolesHeld.includes(baseRole)) rolesHeld.push(baseRole);
+  const roleContent = rolesHeld.map((rk) => ROLE_ACCOUNTABILITY[rk]).filter(Boolean) as RoleAccountability[];
 
   const crumbs: { label: string; href?: string }[] = [{ label: tr('levels.national'), href: '/' }];
   if (person.stateCode && person.state) crumbs.push({ label: person.state, href: `/state/${person.stateCode}` });
@@ -191,28 +203,54 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
         </section>
       )}
 
-      {/* Government role (all portfolios) */}
+      {/* Government role — the portfolios this person runs, with what each covers */}
       {person.portfolios.length > 0 && (
         <section className="mt-5 rounded-3xl border border-brand/20 bg-brand-soft/40 p-5 shadow-soft sm:p-6">
           <h2 className="flex items-center gap-2 text-xl font-bold text-ink"><Icon name="parliament" size={20} className="text-brand" /> {tr('profile.govRoleTitle')}</h2>
           <p className="mt-1 text-sm text-ink-soft">{tr('profile.govRoleDesc', { rank: person.ministerRankLabel || tr('profile.minister') })}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {person.portfolios.map((pf) => (
-              <span key={pf} className="inline-flex items-center gap-1.5 rounded-full bg-white px-3 py-1.5 text-sm font-semibold text-brand-ink shadow-sm">
-                <Icon name="check" size={14} className="text-brand" /> {pf}
-              </span>
-            ))}
-          </div>
+          {person.is_pm && (
+            <p className="mt-2 flex items-start gap-2 rounded-xl bg-white/70 p-3 text-sm text-ink-soft">
+              <Icon name="sparkle" size={16} className="mt-0.5 shrink-0 text-brand" />
+              {tr('profile.pmRoleNote', { name: person.name })}
+            </p>
+          )}
+          <ul className="mt-3 space-y-2">
+            {person.portfolios.map((pf) => {
+              const mandate = portfolioMandate(pf);
+              return (
+                <li key={pf} className="rounded-xl bg-white px-4 py-3 shadow-sm">
+                  <p className="flex items-center gap-1.5 font-semibold text-brand-ink">
+                    <Icon name="check" size={14} className="shrink-0 text-brand" /> {pf}
+                  </p>
+                  {mandate && <p className="mt-1 pl-5 text-sm text-ink-soft">{mandate}</p>}
+                </li>
+              );
+            })}
+          </ul>
         </section>
       )}
 
-      {/* Responsibilities */}
+      {/* Accountability — comprehensive, per role held (fixes the old generic block) */}
       <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
-        <h2 className="text-xl font-bold text-ink">{tr('profile.responsibilitiesTitle')}</h2>
-        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <RoleCol icon="shield" tint="bg-perf-soft text-perf" label={tr('accountability.accountableLabel')} items={tArr(dict, `accountability.roles.${roleKey}.accountableFor`)} mark="check" />
-          <RoleCol icon="parliament" tint="bg-brand-soft text-brand" label={tr('accountability.handlesLabel')} items={tArr(dict, `accountability.roles.${roleKey}.handles`)} mark="check" />
-          <RoleCol icon="back" tint="bg-paper-sink text-ink-soft" label={tr('accountability.notResponsibleLabel')} items={tArr(dict, `accountability.roles.${roleKey}.notResponsible`)} mark="arrow" />
+        <h2 className="text-xl font-bold text-ink">{tr('profile.accountabilityTitle')}</h2>
+        <p className="mt-1 text-sm text-ink-soft">
+          {roleContent.length > 1 ? tr('profile.accountabilityIntroMulti') : tr('profile.accountabilityIntro')}
+        </p>
+        <div className="mt-4 space-y-4">
+          {roleContent.map((role, i) => (
+            <RoleAccountabilityCard
+              key={role.roleKey}
+              role={role}
+              defaultOpen={i === 0}
+              labels={{
+                accountable: tr('accountability.accountableLabel'),
+                handles: tr('accountability.handlesLabel'),
+                notResponsible: tr('accountability.notResponsibleLabel'),
+                sources: tr('common.sources'),
+                seeMore: tr('profile.roleSeeMore'),
+              }}
+            />
+          ))}
         </div>
         <Link href="/accountability" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand">{tr('nav.accountability')} <Icon name="arrow" size={15} /></Link>
       </section>
@@ -401,18 +439,69 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
   );
 }
 
-function RoleCol({ icon, tint, label, items, mark }: { icon: IconName; tint: string; label: string; items: string[]; mark: IconName }) {
+function RoleAccountabilityCard({
+  role,
+  defaultOpen,
+  labels,
+}: {
+  role: RoleAccountability;
+  defaultOpen?: boolean;
+  labels: { accountable: string; handles: string; notResponsible: string; sources: string; seeMore: string };
+}) {
   return (
-    <div className="rounded-2xl bg-paper-soft p-4">
-      <p className="flex items-center gap-2 text-sm font-bold text-ink">
-        <span className={`inline-grid h-7 w-7 place-items-center rounded-lg ${tint}`}><Icon name={icon} size={16} /></span>
-        {label}
+    <div className="rounded-2xl border border-line bg-paper-soft p-4 sm:p-5">
+      <div className="flex items-start gap-2.5">
+        <span className="mt-0.5 inline-grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-brand-soft text-brand">
+          <Icon name="parliament" size={18} />
+        </span>
+        <div className="min-w-0">
+          <h3 className="font-bold text-ink">{role.title}</h3>
+          <p className="mt-0.5 text-sm text-ink-soft">{role.oneLine}</p>
+        </div>
+      </div>
+
+      {/* The comprehensive accountability list is always visible — this is the point. */}
+      <p className="mt-4 flex items-center gap-1.5 text-sm font-bold text-ink">
+        <span className="inline-grid h-6 w-6 place-items-center rounded-lg bg-perf-soft text-perf"><Icon name="shield" size={14} /></span>
+        {labels.accountable}
       </p>
-      <ul className="mt-2.5 space-y-2">
-        {items.map((it, i) => (
-          <li key={i} className="flex gap-1.5 text-sm text-ink-soft"><Icon name={mark} size={15} className="mt-0.5 shrink-0 text-ink-faint" /><span>{it}</span></li>
+      <ul className="mt-2 space-y-1.5">
+        {role.accountableFor.map((it, i) => (
+          <li key={i} className="flex gap-2 text-sm text-ink-soft">
+            <Icon name="check" size={15} className="mt-0.5 shrink-0 text-perf" />
+            <span>{it}</span>
+          </li>
         ))}
       </ul>
+
+      <details className="group mt-3" {...(defaultOpen ? { open: true } : {})}>
+        <summary className="flex cursor-pointer items-center gap-1 text-sm font-semibold text-brand">
+          <Icon name="chevron" size={15} className="transition group-open:rotate-180" /> {labels.seeMore}
+        </summary>
+        <div className="mt-3 grid gap-4 sm:grid-cols-2">
+          <div>
+            <p className="flex items-center gap-1.5 text-sm font-bold text-ink"><Icon name="parliament" size={14} className="text-brand" /> {labels.handles}</p>
+            <ul className="mt-2 space-y-1.5">
+              {role.handles.map((it, i) => (
+                <li key={i} className="flex gap-2 text-sm text-ink-soft"><Icon name="check" size={15} className="mt-0.5 shrink-0 text-brand" /><span>{it}</span></li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="flex items-center gap-1.5 text-sm font-bold text-ink"><Icon name="back" size={14} className="text-ink-faint" /> {labels.notResponsible}</p>
+            <ul className="mt-2 space-y-1.5">
+              {role.notResponsible.map((it, i) => (
+                <li key={i} className="flex gap-2 text-sm text-ink-soft"><Icon name="arrow" size={15} className="mt-0.5 shrink-0 text-ink-faint" /><span>{it}</span></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        {role.sources.length > 0 && (
+          <p className="mt-3 border-t border-line pt-2 text-xs text-ink-faint">
+            <span className="font-semibold">{labels.sources}:</span> {role.sources.join(' · ')}
+          </p>
+        )}
+      </details>
     </div>
   );
 }
