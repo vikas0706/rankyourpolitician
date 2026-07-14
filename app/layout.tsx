@@ -1,6 +1,5 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import { Manrope } from 'next/font/google';
 import { getI18n } from '@/lib/i18n/server';
 import { I18nProvider } from '@/lib/i18n/provider';
@@ -39,6 +38,8 @@ export const metadata: Metadata = {
     type: 'website',
   },
   robots: { index: true, follow: true },
+  // AdSense site-ownership verification (the crawler reads this from raw HTML).
+  other: { 'google-adsense-account': ADSENSE_CLIENT },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -53,16 +54,29 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             "var(--font-manrope), 'Segoe UI', system-ui, -apple-system, 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Bengali', sans-serif",
         }}
       >
-        {/* Google AdSense loader — enables Auto ads + the in-content <ins> units
-            rendered by <AdSlot>. afterInteractive so it never blocks first paint. */}
+        {/* Google AdSense — RAW script tags (not next/script afterInteractive),
+            so they are present in the initial HTML of EVERY page: the AdSense
+            crawler reads raw HTML, and an injected-after-hydration tag is
+            invisible to it (ads then never serve). `async` keeps first paint
+            unblocked; React hoists async scripts and dedupes across navigations.
+            The inline push requests page-level Auto ads from code, so ads can
+            place site-wide even before ad units / console toggles exist. */}
         {ADSENSE_CLIENT && (
-          <Script
-            id="adsbygoogle-init"
-            async
-            strategy="afterInteractive"
-            crossOrigin="anonymous"
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
-          />
+          <>
+            <script
+              async
+              crossOrigin="anonymous"
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                // Guarded: streamed/dynamic pages can execute layout inline
+                // scripts twice, and AdSense rejects a second
+                // enable_page_level_ads push ("only one allowed per page").
+                __html: `if(!window.__rypAds){window.__rypAds=1;(window.adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"${ADSENSE_CLIENT}",enable_page_level_ads:true});}`,
+              }}
+            />
+          </>
         )}
         <div className="aurora" aria-hidden="true" />
         <I18nProvider locale={locale} dict={dict} dir={dir}>

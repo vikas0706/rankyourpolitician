@@ -3,6 +3,7 @@ import { getI18n } from '@/lib/i18n/server';
 import { t } from '@/lib/i18n';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import Finder from '@/components/Finder';
+import AdSlot from '@/components/AdSlot';
 
 export const metadata: Metadata = {
   title: "Who's responsible for what? — find the right person",
@@ -23,6 +24,9 @@ export default async function WhoPage() {
             useSearchParams), so no Suspense boundary is needed — the old one
             could wedge on its fallback and leave the page blank. */}
         <Finder />
+      </div>
+      <div className="mt-8">
+        <AdSlot />
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { getI18n } from '@/lib/i18n/server';
 import { t } from '@/lib/i18n';
 import RankingsExplorer from '@/components/RankingsExplorer';
+import AdSlot from '@/components/AdSlot';
 import { PageHero } from '@/components/ui';
 
 export const revalidate = 3600;
@@ -27,6 +28,9 @@ export default async function RankingsPage() {
         <Suspense fallback={<div className="skeleton h-40 w-full" />}>
           <RankingsExplorer />
         </Suspense>
+        <div className="mt-8">
+          <AdSlot />
+        </div>
       </div>
     </>
   );
