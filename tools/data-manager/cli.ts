@@ -59,6 +59,12 @@ async function main() {
       await import('./import-mlas');
       break;
     }
+    case 'import-mlcs': {
+      // Add the ~426 sitting MLCs (Legislative Council members) across the 6
+      // states that have an upper house, from each council's Wikipedia roster.
+      await import('./import-mlcs');
+      break;
+    }
     case 'enrich-mps': {
       // Add cited per-member detail (bio, career, photo) from Wikidata.
       await import('./enrich-mps');

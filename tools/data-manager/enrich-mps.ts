@@ -171,8 +171,12 @@ async function main() {
   const pols: Politician[] = JSON.parse(readFileSync(resolve(SEED_DIR, 'politicians.json'), 'utf8'));
   const byCons = new Map(pols.map((p) => [p.constituencyId, p]));
   const qidByPol = new Map<string, string>();
-  for (const [cid, qid] of consToQid) { const p = byCons.get(cid); if (p) qidByPol.set(p.id, qid); }
-  for (const p of pols) if (p.wikidata_qid && !qidByPol.has(p.id)) qidByPol.set(p.id, p.wikidata_qid);
+  // ENRICH_ONLY_NEW=1 restricts to records that carry no facts and no photo yet
+  // (e.g. a freshly-imported tier) so we don't re-fetch thousands already enriched.
+  const onlyNew = process.env.ENRICH_ONLY_NEW === '1';
+  const needs = (p: Politician) => !onlyNew || (p.facts.length === 0 && !p.photo_url);
+  for (const [cid, qid] of consToQid) { const p = byCons.get(cid); if (p && needs(p)) qidByPol.set(p.id, qid); }
+  for (const p of pols) if (p.wikidata_qid && !qidByPol.has(p.id) && needs(p)) qidByPol.set(p.id, p.wikidata_qid);
   const qids = [...new Set([...qidByPol.values()])];
   console.log(`Enriching ${qidByPol.size} records (${qids.length} unique QIDs). Fetching Wikidata entities…`);
   const entities = await getEntities(qids);

@@ -615,4 +615,5 @@ export const ROLE_FOR_HOUSE: Record<string, RoleKey> = {
   'Lok Sabha': 'lokSabha',
   'Rajya Sabha': 'rajyaSabha',
   'Vidhan Sabha': 'mla',
+  'Vidhan Parishad': 'mlc',
 };

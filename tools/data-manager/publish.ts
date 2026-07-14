@@ -38,9 +38,12 @@ export function validateDataset(): { issues: Issue[]; ok: boolean } {
     issues.push({ politicianId: p.id, name: p.name, severity, message });
 
   for (const p of politicians) {
-    // Rajya Sabha members are state-elected with NO territorial constituency, so
-    // an empty constituencyId (and no districts) is correct for them.
-    const upperHouse = p.constituencyType === 'RS' || p.house === 'Rajya Sabha';
+    // Upper-house members (Rajya Sabha MPs, and MLCs in the Legislative Council)
+    // are indirectly elected/nominated with NO territorial constituency, so an
+    // empty constituencyId (and no districts) is correct for them.
+    const upperHouse =
+      p.constituencyType === 'RS' || p.constituencyType === 'MLC' ||
+      p.house === 'Rajya Sabha' || p.house === 'Vidhan Parishad';
     if (!upperHouse) {
       if (!p.constituencyId || !consIds.has(p.constituencyId)) push(p, 'error', `constituencyId "${p.constituencyId}" not found in constituencies`);
       if (!p.districts?.length) push(p, 'warn', 'no districts listed (district-level ranking will be empty)');

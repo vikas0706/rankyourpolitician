@@ -1,9 +1,11 @@
 // Shared domain types for rankyourpolitician.com
 // Used by the public site (lib/, app/) and the local data manager (tools/).
 
-export type House = 'Lok Sabha' | 'Rajya Sabha' | 'Vidhan Sabha';
+export type House = 'Lok Sabha' | 'Rajya Sabha' | 'Vidhan Sabha' | 'Vidhan Parishad';
 // PC = parliamentary (Lok Sabha), AC = assembly (Vidhan Sabha), RS = Rajya Sabha
-// (state-elected, no territorial constituency), MLC = legislative council.
+// (state-elected, no territorial constituency), MLC = legislative council (Vidhan
+// Parishad — elected by MLAs/local bodies/graduates/teachers or Governor-nominated,
+// so likewise no territorial constituency).
 export type ConstituencyType = 'PC' | 'AC' | 'RS' | 'MLC';
 export type RankingLevel = 'national' | 'state' | 'district' | 'constituency';
 
