@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "next dev",
+    "prebuild": "tsx tools/build-search-index.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

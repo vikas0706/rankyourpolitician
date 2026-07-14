@@ -5,7 +5,8 @@ export type IconName =
   | 'search' | 'pin' | 'parliament' | 'law' | 'wallet' | 'shield' | 'star'
   | 'people' | 'clock' | 'arrow' | 'chevron' | 'globe' | 'home' | 'back'
   | 'info' | 'warn' | 'check' | 'megaphone' | 'cap' | 'briefcase' | 'calendar'
-  | 'link' | 'sparkle' | 'scales' | 'flag' | 'layers' | 'x';
+  | 'link' | 'sparkle' | 'scales' | 'flag' | 'layers' | 'x'
+  | 'map' | 'compass' | 'building' | 'phone' | 'mail' | 'external' | 'network' | 'grid';
 
 const P: Record<IconName, React.ReactNode> = {
   search: <><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></>,
@@ -35,6 +36,14 @@ const P: Record<IconName, React.ReactNode> = {
   flag: <><path d="M5 21V4m0 0h11l-2 4 2 4H5" /></>,
   layers: <><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17l9 5 9-5" /></>,
   x: <><path d="M6 6l12 12M18 6L6 18" /></>,
+  map: <><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14m6-12v14" /></>,
+  compass: <><circle cx="12" cy="12" r="9" /><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z" /></>,
+  building: <><rect x="5" y="3" width="14" height="18" rx="1.5" /><path d="M9 7h2m2 0h2M9 11h2m2 0h2M9 15h2m2 0h2M10 21v-3h4v3" /></>,
+  phone: <><path d="M5 4h4l1.5 4-2 1.5a12 12 0 006 6L16 13.5l4 1.5v4a2 2 0 01-2 2A15 15 0 013 6a2 2 0 012-2z" /></>,
+  mail: <><rect x="3" y="5" width="18" height="14" rx="2" /><path d="M3 7l9 6 9-6" /></>,
+  external: <><path d="M14 4h6v6M20 4L10 14M18 13v6a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h6" /></>,
+  network: <><circle cx="12" cy="5" r="2.5" /><circle cx="5" cy="18" r="2.5" /><circle cx="19" cy="18" r="2.5" /><path d="M12 7.5V12m0 0l-5.5 4M12 12l5.5 4" /></>,
+  grid: <><rect x="4" y="4" width="7" height="7" rx="1.5" /><rect x="13" y="4" width="7" height="7" rx="1.5" /><rect x="4" y="13" width="7" height="7" rx="1.5" /><rect x="13" y="13" width="7" height="7" rx="1.5" /></>,
 };
 
 export default function Icon({

@@ -7,13 +7,22 @@ export function Avatar({ name, src, size = 44 }: { name: string; src?: string; s
   if (src) {
     // eslint-disable-next-line @next/next/no-img-element
     return (
-      <img src={src} alt="" width={size} height={size} className="rounded-2xl object-cover ring-1 ring-line" style={{ width: size, height: size }} />
+      <img
+        src={src}
+        alt=""
+        width={size}
+        height={size}
+        loading="lazy"
+        decoding="async"
+        className="shrink-0 rounded-2xl object-cover shadow-soft ring-1 ring-white/70"
+        style={{ width: size, height: size }}
+      />
     );
   }
   return (
     <span
       aria-hidden="true"
-      className="grid shrink-0 place-items-center rounded-2xl font-bold text-white ring-1 ring-black/5"
+      className="grid shrink-0 place-items-center rounded-2xl font-bold text-white shadow-soft ring-1 ring-white/40"
       style={{ width: size, height: size, background: avatarTint(name), fontSize: size * 0.38 }}
     >
       {initials(name)}
@@ -48,6 +57,7 @@ export function Chip({ children, tone = 'neutral', icon }: { children: React.Rea
   );
 }
 
+/** Frosted-glass section container — the standard content surface. */
 export function SectionCard({
   title,
   subtitle,
@@ -64,7 +74,7 @@ export function SectionCard({
   className?: string;
 }) {
   return (
-    <section className={clsx('rounded-2xl border border-line bg-white p-5 shadow-soft sm:p-6', className)}>
+    <section className={clsx('glass rounded-3xl p-5 sm:p-6', className)}>
       {(title || aside) && (
         <div className="mb-4 flex items-start justify-between gap-3">
           <div className="flex items-start gap-3">
@@ -83,5 +93,83 @@ export function SectionCard({
       )}
       {children}
     </section>
+  );
+}
+
+/** Hero stat: big count-up number over a quiet label. Pass a <CountUp> or text. */
+export function StatPill({
+  value,
+  label,
+  icon,
+  tone = 'brand',
+}: {
+  value: React.ReactNode;
+  label: string;
+  icon?: IconName;
+  tone?: 'brand' | 'perf' | 'rating' | 'ink';
+}) {
+  const tones = {
+    brand: 'text-brand',
+    perf: 'text-perf',
+    rating: 'text-rating-ink',
+    ink: 'text-ink',
+  };
+  return (
+    <div className="glass pressable flex min-w-0 flex-col items-center rounded-2xl px-4 py-3 text-center">
+      <span className={clsx('flex items-center gap-1.5 text-2xl font-extrabold tabular-nums tracking-tight sm:text-3xl', tones[tone])}>
+        {icon && <Icon name={icon} size={20} className="opacity-70" />}
+        {value}
+      </span>
+      <span className="mt-0.5 text-[11px] font-semibold uppercase tracking-wide text-ink-faint sm:text-xs">{label}</span>
+    </div>
+  );
+}
+
+/** Small uppercase section label with a leading icon — quiet hierarchy marker. */
+export function Eyebrow({ children, icon }: { children: React.ReactNode; icon?: IconName }) {
+  return (
+    <p className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ink-faint">
+      {icon && <Icon name={icon} size={14} />}
+      {children}
+    </p>
+  );
+}
+
+/** Standard page hero shell: breadcrumb slot, big title, subtitle, side slot. */
+export function PageHero({
+  crumbs,
+  title,
+  titleAccent,
+  subtitle,
+  chips,
+  aside,
+  children,
+}: {
+  crumbs?: React.ReactNode;
+  title: string;
+  titleAccent?: string;
+  subtitle?: React.ReactNode;
+  chips?: React.ReactNode;
+  aside?: React.ReactNode;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="relative overflow-hidden border-b border-line/70">
+      <div className="mx-auto max-w-content px-4 pb-6 pt-5 sm:pb-8">
+        {crumbs}
+        <div className="mt-3 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div className="min-w-0">
+            {chips && <div className="mb-2 flex flex-wrap items-center gap-2">{chips}</div>}
+            <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">
+              {title}
+              {titleAccent && <span className="text-brand"> {titleAccent}</span>}
+            </h1>
+            {subtitle && <div className="mt-2 max-w-2xl text-base text-ink-soft sm:text-lg">{subtitle}</div>}
+          </div>
+          {aside && <div className="shrink-0">{aside}</div>}
+        </div>
+        {children}
+      </div>
+    </div>
   );
 }

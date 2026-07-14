@@ -1,9 +1,12 @@
 import type { Config } from 'tailwindcss';
 
 /**
- * Warm, friendly, non-partisan civic palette. Deliberately avoids party colours
+ * Warm, friendly, non-partisan civic palette — deliberately avoids party colours
  * as dominant hues. Two ranking axes use distinct, colourblind-safe families:
  * teal = Verified Performance, amber = Public Rating.
+ *
+ * v2 adds the "glass" layer: frosted surfaces over a soft aurora background,
+ * spring-feel motion keyframes, and a display type scale.
  */
 const config: Config = {
   darkMode: 'class',
@@ -11,10 +14,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ink: { DEFAULT: '#20242e', soft: '#4a5160', faint: '#7c8496' },
-        paper: { DEFAULT: '#ffffff', soft: '#faf7f2', sink: '#f3eee6' },
-        line: '#ece7df',
-        brand: { DEFAULT: '#4f46e5', ink: '#3730a3', soft: '#eef1ff' },
+        ink: { DEFAULT: '#1c202a', soft: '#4a5160', faint: '#7c8496' },
+        paper: { DEFAULT: '#ffffff', soft: '#f8f7f4', sink: '#f0eee8' },
+        line: '#e8e4dc',
+        brand: { DEFAULT: '#4f46e5', ink: '#3730a3', soft: '#eef1ff', deep: '#312e81' },
         accent: { DEFAULT: '#f97316', ink: '#c2410c', soft: '#fff3e9' },
         perf: { DEFAULT: '#0d9488', ink: '#0f766e', soft: '#e6f5f3' }, // verified performance
         rating: { DEFAULT: '#f59e0b', ink: '#b45309', soft: '#fef4e2' }, // public rating
@@ -23,21 +26,77 @@ const config: Config = {
       },
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-display)', 'var(--font-sans)', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        // slightly larger, friendlier scale
         base: ['1.0625rem', { lineHeight: '1.6' }],
       },
       borderRadius: {
         xl: '1rem',
         '2xl': '1.5rem',
         '3xl': '2rem',
+        '4xl': '2.5rem',
       },
       boxShadow: {
-        soft: '0 1px 2px rgba(32,36,46,0.04), 0 8px 24px rgba(32,36,46,0.06)',
-        lift: '0 2px 4px rgba(32,36,46,0.05), 0 16px 40px rgba(32,36,46,0.10)',
+        soft: '0 1px 2px rgba(28,32,42,0.04), 0 8px 24px rgba(28,32,42,0.06)',
+        lift: '0 2px 4px rgba(28,32,42,0.05), 0 16px 40px rgba(28,32,42,0.10)',
+        glass: '0 1px 1px rgba(255,255,255,0.6) inset, 0 1px 2px rgba(28,32,42,0.04), 0 12px 32px rgba(49,46,129,0.08)',
+        glow: '0 0 0 1px rgba(79,70,229,0.12), 0 12px 40px rgba(79,70,229,0.18)',
+        'tab-bar': '0 -8px 30px rgba(28,32,42,0.08)',
       },
       maxWidth: { content: '75rem' },
+      transitionTimingFunction: {
+        spring: 'cubic-bezier(0.32, 0.72, 0, 1)', // iOS-style deceleration
+      },
+      keyframes: {
+        'fade-up': {
+          from: { opacity: '0', transform: 'translateY(14px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        'fade-in': {
+          from: { opacity: '0' },
+          to: { opacity: '1' },
+        },
+        'scale-in': {
+          from: { opacity: '0', transform: 'scale(0.96)' },
+          to: { opacity: '1', transform: 'scale(1)' },
+        },
+        shimmer: {
+          from: { backgroundPosition: '200% 0' },
+          to: { backgroundPosition: '-200% 0' },
+        },
+        'ring-fill': {
+          from: { strokeDashoffset: 'var(--ring-circ)' },
+        },
+        'meter-fill': {
+          from: { width: '0%' },
+        },
+        'map-in': {
+          from: { opacity: '0', transform: 'scale(0.985)' },
+          to: { opacity: '1', transform: 'scale(1)' },
+        },
+        'aurora-drift': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '33%': { transform: 'translate(2%, -3%) scale(1.05)' },
+          '66%': { transform: 'translate(-2%, 2%) scale(0.98)' },
+        },
+        'pop-in': {
+          '0%': { opacity: '0', transform: 'scale(0.4)' },
+          '70%': { transform: 'scale(1.15)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+      },
+      animation: {
+        'fade-up': 'fade-up 0.55s cubic-bezier(0.32,0.72,0,1) both',
+        'fade-in': 'fade-in 0.4s ease-out both',
+        'scale-in': 'scale-in 0.45s cubic-bezier(0.32,0.72,0,1) both',
+        shimmer: 'shimmer 1.6s linear infinite',
+        'ring-fill': 'ring-fill 1.1s cubic-bezier(0.32,0.72,0,1) both',
+        'meter-fill': 'meter-fill 0.9s cubic-bezier(0.32,0.72,0,1) both',
+        'map-in': 'map-in 0.7s cubic-bezier(0.32,0.72,0,1) both',
+        'aurora-drift': 'aurora-drift 24s ease-in-out infinite',
+        'pop-in': 'pop-in 0.5s cubic-bezier(0.32,0.72,0,1) both',
+      },
     },
   },
   plugins: [],

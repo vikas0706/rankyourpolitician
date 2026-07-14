@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import type { Metadata } from 'next';
-import { getCentralGovernment } from '@/lib/data';
+import { getCentralGovernment, getNationalStats } from '@/lib/data';
 import { getI18n } from '@/lib/i18n/server';
 import { t } from '@/lib/i18n';
 import { MINISTER_RANK_LABEL, type Minister, type MinisterRank } from '@/lib/types';
 import Breadcrumbs from '@/components/Breadcrumbs';
 import HierarchyLadder from '@/components/HierarchyLadder';
-import { Avatar, PartyChip, Chip } from '@/components/ui';
+import { Avatar, PartyChip, Chip, StatPill, SectionCard } from '@/components/ui';
+import { CompositionBar } from '@/components/viz';
+import { Reveal, CountUp } from '@/components/motion';
 import Icon from '@/components/Icon';
 import LastUpdated from '@/components/LastUpdated';
 import AdSlot from '@/components/AdSlot';
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export default async function IndiaPage() {
-  const ministers = await getCentralGovernment();
+  const [ministers, stats] = await Promise.all([getCentralGovernment(), getNationalStats()]);
   const { dict } = await getI18n();
   const tr = (k: string, v?: Record<string, string | number>) => t(dict, k, v);
 
@@ -33,17 +35,32 @@ export default async function IndiaPage() {
     <div className="mx-auto max-w-content px-4 py-6">
       <Breadcrumbs items={[{ label: tr('levels.national'), href: '/' }, { label: tr('central.title') }]} />
 
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+      <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-ink">{tr('central.title')}</h1>
+          <h1 className="font-display text-3xl font-extrabold tracking-tight text-ink sm:text-4xl">{tr('central.title')}</h1>
           <p className="mt-2 max-w-2xl text-lg text-ink-soft">{tr('central.subtitle')}</p>
         </div>
-        <LastUpdated date={updated} />
+        <div className="flex flex-wrap items-center gap-2.5">
+          <StatPill value={<CountUp value={stats.lokSabha} />} label={tr('hierarchyPage.chipLokSabha')} tone="brand" />
+          <StatPill value={<CountUp value={stats.rajyaSabha} />} label={tr('hierarchyPage.chipRajyaSabha')} tone="ink" />
+          <StatPill value={<CountUp value={ministers.length} />} label={tr('hierarchyPage.chipMinisters')} tone="rating" />
+        </div>
       </div>
+      <div className="mt-2"><LastUpdated date={updated} /></div>
 
       <div className="mt-5">
         <HierarchyLadder current="national" />
       </div>
+
+      <Reveal className="mt-6">
+        <SectionCard title={tr('india.compositionTitle')} subtitle={tr('india.compositionHelp')} icon="people">
+          <CompositionBar
+            segments={stats.lokSabhaComposition.segments}
+            total={stats.lokSabhaComposition.total}
+            ariaLabel={tr('india.compositionTitle')}
+          />
+        </SectionCard>
+      </Reveal>
 
       {ministers.length === 0 ? (
         <div className="mt-8 rounded-2xl border border-line bg-white p-8 text-center shadow-soft">

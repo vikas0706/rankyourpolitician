@@ -10,6 +10,7 @@ import type {
   PerformanceScore,
   SentimentScore,
   VoteAggregate,
+  House,
 } from './types';
 import {
   buildRankings,
@@ -518,5 +519,166 @@ export async function getDatasetMeta() {
     source: idx.source,
     politicians: idx.politicians.length,
     states: idx.states.length,
+  };
+}
+
+// ---- Geography views (state / district / constituency pages) ---------------
+
+const normSimple = (s: string) =>
+  s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/&/g, 'and').replace(/[^a-z0-9]/g, '');
+
+/** Party seat counts for a list of politicians, largest first. */
+export function partyComposition(list: Politician[], top = 8): { segments: { label: string; count: number }[]; total: number } {
+  const counts = new Map<string, number>();
+  for (const p of list) {
+    const short = p.party.match(/\(([^)]+)\)\s*$/)?.[1] ?? p.party;
+    counts.set(short, (counts.get(short) ?? 0) + 1);
+  }
+  const sorted = [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  const segments = sorted.slice(0, top).map(([label, count]) => ({ label, count }));
+  const rest = sorted.slice(top).reduce((s, [, c]) => s + c, 0);
+  if (rest > 0) segments.push({ label: 'Others', count: rest });
+  return { segments, total: list.length };
+}
+
+export interface StateView {
+  stateCode: string;
+  state: string;
+  total: number;
+  byHouse: { house: House; count: number }[];
+  /** Vidhan Sabha composition (party seat counts) — factual, neutral display. */
+  assemblyComposition: { segments: { label: string; count: number }[]; total: number } | null;
+  /** district → number of representatives linked to it (for the map choropleth). */
+  districtCounts: { district: string; mps: number; mlas: number }[];
+  constituencyCounts: { PC: number; AC: number; RS: number; MLC: number };
+}
+
+export async function getStateView(stateCode: string): Promise<StateView | null> {
+  const idx = await getIndex();
+  const info = idx.states.find((s) => s.stateCode === stateCode);
+  if (!info) return null;
+  const inState = idx.politicians.filter((p) => p.stateCode === stateCode);
+
+  const houseOrder: House[] = ['Lok Sabha', 'Rajya Sabha', 'Vidhan Sabha', 'Vidhan Parishad'];
+  const byHouse = houseOrder
+    .map((house) => ({ house, count: inState.filter((p) => p.house === house).length }))
+    .filter((x) => x.count > 0);
+
+  const mlas = inState.filter((p) => p.house === 'Vidhan Sabha');
+  const assemblyComposition = mlas.length > 0 ? partyComposition(mlas) : null;
+
+  const dc = new Map<string, { mps: number; mlas: number }>();
+  for (const p of inState) {
+    for (const d of p.districts) {
+      const cur = dc.get(d) ?? { mps: 0, mlas: 0 };
+      if (p.constituencyType === 'PC') cur.mps++;
+      if (p.constituencyType === 'AC') cur.mlas++;
+      dc.set(d, cur);
+    }
+  }
+  const districtCounts = [...dc.entries()]
+    .map(([district, v]) => ({ district, ...v }))
+    .sort((a, b) => a.district.localeCompare(b.district));
+
+  const constituencyCounts = { PC: 0, AC: 0, RS: 0, MLC: 0 };
+  for (const c of idx.constituencies) {
+    if (c.stateCode === stateCode) constituencyCounts[c.type]++;
+  }
+
+  return { stateCode, state: info.state, total: inState.length, byHouse, assemblyComposition, districtCounts, constituencyCounts };
+}
+
+export interface DistrictView {
+  stateCode: string;
+  state: string;
+  /** Canonical display name (as stored in the seed / map). */
+  district: string;
+  mps: Politician[];
+  mlas: Politician[];
+  /** Constituencies overlapping this district. */
+  constituencies: Constituency[];
+  neighbours: string[]; // other districts of the state (for quick nav)
+}
+
+export async function getDistrictView(stateCode: string, districtParam: string): Promise<DistrictView | null> {
+  const idx = await getIndex();
+  const info = idx.states.find((s) => s.stateCode === stateCode);
+  if (!info) return null;
+  const want = normSimple(districtParam);
+
+  const all = await getDistrictsInState(stateCode);
+  const district = all.find((d) => normSimple(d) === want) ?? districtParam;
+
+  const inDistrict = idx.politicians.filter(
+    (p) => p.stateCode === stateCode && p.districts.some((d) => normSimple(d) === want),
+  );
+  const byName = (a: Politician, b: Politician) => a.constituencyName.localeCompare(b.constituencyName);
+  const mps = inDistrict.filter((p) => p.constituencyType === 'PC').sort(byName);
+  const mlas = inDistrict.filter((p) => p.constituencyType === 'AC').sort(byName);
+
+  const constituencies = idx.constituencies
+    .filter((c) => c.stateCode === stateCode && c.districts.some((d) => normSimple(d) === want))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const neighbours = all.filter((d) => normSimple(d) !== want);
+
+  if (mps.length === 0 && mlas.length === 0 && constituencies.length === 0 && !all.some((d) => normSimple(d) === want)) {
+    return null;
+  }
+  return { stateCode, state: info.state, district, mps, mlas, constituencies, neighbours };
+}
+
+export interface ConstituencyView {
+  constituency: Constituency;
+  representatives: Politician[];
+  /** Other constituencies sharing a district with this one (same type first). */
+  siblings: Constituency[];
+}
+
+export async function getConstituencyView(id: string): Promise<ConstituencyView | null> {
+  const idx = await getIndex();
+  const c = idx.constituencyById.get(id);
+  if (!c) return null;
+  const representatives = idx.politicians.filter((p) => p.constituencyId === id);
+  const dset = new Set(c.districts.map(normSimple));
+  const siblings =
+    dset.size > 0
+      ? idx.constituencies
+          .filter((x) => x.id !== id && x.stateCode === c.stateCode && x.districts.some((d) => dset.has(normSimple(d))))
+          .sort((a, b) => (a.type === c.type ? -1 : 1) - (b.type === c.type ? -1 : 1) || a.name.localeCompare(b.name))
+          .slice(0, 24)
+      : [];
+  return { constituency: c, representatives, siblings };
+}
+
+export interface NationalStats {
+  politicians: number;
+  lokSabha: number;
+  rajyaSabha: number;
+  mlas: number;
+  mlcs: number;
+  states: number;
+  districts: number;
+  constituencies: number;
+  lokSabhaComposition: { segments: { label: string; count: number }[]; total: number };
+}
+
+export async function getNationalStats(): Promise<NationalStats> {
+  const idx = await getIndex();
+  const by = (h: House) => idx.politicians.filter((p) => p.house === h);
+  const ls = by('Lok Sabha');
+  const districtSet = new Set<string>();
+  for (const p of idx.politicians) for (const d of p.districts) districtSet.add(`${p.stateCode}|${d}`);
+  return {
+    politicians: idx.politicians.length,
+    lokSabha: ls.length,
+    rajyaSabha: by('Rajya Sabha').length,
+    mlas: by('Vidhan Sabha').length,
+    mlcs: by('Vidhan Parishad').length,
+    // "NOM" groups the President's nominees to the Rajya Sabha — not a geography.
+    states: idx.states.filter((s) => s.stateCode !== 'NOM').length,
+    districts: districtSet.size,
+    constituencies: idx.constituencies.length,
+    lokSabhaComposition: partyComposition(ls),
   };
 }

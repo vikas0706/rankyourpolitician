@@ -5,6 +5,7 @@
 :root {
   --font-sans: 'Segoe UI', system-ui, -apple-system, 'Noto Sans', 'Noto Sans Devanagari',
     'Noto Sans Tamil', 'Noto Sans Bengali', sans-serif;
+  --font-display: var(--font-sans);
 }
 
 html {
@@ -13,6 +14,134 @@ html {
 
 body {
   @apply bg-paper-soft text-ink antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------------------------------------------------------------------------
+ * Aurora backdrop — soft national-palette light wash behind the glass layer.
+ * Fixed, non-interactive, extremely low saturation so content stays readable.
+ * ------------------------------------------------------------------------- */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.aurora::before,
+.aurora::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(38% 34% at 18% 8%, rgba(79, 70, 229, 0.1), transparent 70%),
+    radial-gradient(30% 30% at 85% 12%, rgba(249, 115, 22, 0.09), transparent 70%),
+    radial-gradient(36% 32% at 78% 78%, rgba(13, 148, 136, 0.08), transparent 70%),
+    radial-gradient(28% 26% at 12% 86%, rgba(245, 158, 11, 0.06), transparent 70%);
+  animation: aurora-drift 26s ease-in-out infinite;
+}
+.aurora::after {
+  background:
+    radial-gradient(26% 24% at 55% 30%, rgba(79, 70, 229, 0.05), transparent 70%),
+    radial-gradient(24% 26% at 35% 65%, rgba(13, 148, 136, 0.05), transparent 70%);
+  animation-duration: 34s;
+  animation-direction: reverse;
+}
+
+/* ---------------------------------------------------------------------------
+ * Glass surfaces
+ * ------------------------------------------------------------------------- */
+.glass {
+  background: rgba(255, 255, 255, 0.66);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.65) inset,
+    0 1px 2px rgba(28, 32, 42, 0.04),
+    0 12px 32px rgba(49, 46, 129, 0.07);
+}
+.glass-strong {
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  backdrop-filter: blur(24px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+}
+.glass-dark {
+  background: rgba(28, 32, 42, 0.82);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+/* Tricolor hairline — national accent used sparingly (flag, not party). */
+.tricolor-line {
+  background: linear-gradient(
+    90deg,
+    #f97316 0%, #f97316 33.3%,
+    #e8e4dc 33.3%, #e8e4dc 66.6%,
+    #16803c 66.6%, #16803c 100%
+  );
+  height: 3px;
+  border-radius: 999px;
+}
+
+/* iOS-style press feedback for any interactive card/button. */
+.pressable {
+  transition: transform 0.25s cubic-bezier(0.32, 0.72, 0, 1), box-shadow 0.25s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.pressable:active {
+  transform: scale(0.975);
+}
+
+/* ---------------------------------------------------------------------------
+ * Scroll-reveal system. <Reveal> toggles data-shown; children may stagger via
+ * --reveal-delay. Server-rendered content is visible by default (no-JS safe):
+ * the hidden initial state is applied only when JS has marked the element.
+ * ------------------------------------------------------------------------- */
+[data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal='pending'] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+[data-reveal='shown'] {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.6s cubic-bezier(0.32, 0.72, 0, 1),
+    transform 0.6s cubic-bezier(0.32, 0.72, 0, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+/* Page-enter transition (applied by app/template.tsx on every navigation). */
+.page-enter {
+  animation: fade-up 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Skeleton shimmer for loading states. */
+.skeleton {
+  background: linear-gradient(90deg, #efece6 25%, #f8f7f4 50%, #efece6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+  border-radius: 0.75rem;
+}
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
 }
 
 /* Reserve space for the ad slot so filling it never shifts layout (CLS < 0.1). */
@@ -20,22 +149,47 @@ body {
   min-height: 200px;
 }
 
-/* Choropleth polygons — warm, friendly interactions */
+/* ---------------------------------------------------------------------------
+ * Maps — interactive choropleth polygons.
+ * ------------------------------------------------------------------------- */
 .geo-path {
-  stroke: #b9ac90;
-  stroke-width: 0.9;
+  stroke: #ffffff;
+  stroke-width: 0.8;
   stroke-linejoin: round;
-  cursor: pointer;
-  transition: opacity 120ms ease, filter 120ms ease;
   outline: none;
+  transition: fill 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
 }
 .geo-path--active {
-  stroke: #ffffff;
-  stroke-width: 1.4;
+  cursor: pointer;
 }
-.geo-path:hover,
-.geo-path:focus-visible {
-  filter: brightness(0.94);
+.geo-path--active:hover,
+.geo-path--active:focus-visible {
+  filter: brightness(1.12) saturate(1.15);
+}
+.geo-path--dim {
+  opacity: 0.55;
+}
+/* Staggered entrance: each path fades in with --geo-delay set inline. */
+.geo-animate .geo-path {
+  animation: geo-in 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
+  animation-delay: var(--geo-delay, 0ms);
+}
+@keyframes geo-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.geo-marker {
+  animation: pop-in 0.5s cubic-bezier(0.32, 0.72, 0, 1) both;
+  animation-delay: var(--geo-delay, 0ms);
+}
+@keyframes pop-in {
+  0% { opacity: 0; transform: scale(0.4); transform-origin: center; transform-box: fill-box; }
+  70% { transform: scale(1.15); }
+  100% { opacity: 1; transform: scale(1); }
 }
 
 /* Big, obvious focus ring for keyboard + low-vision users */
@@ -56,4 +210,29 @@ details > summary {
 }
 details > summary::-webkit-details-marker {
   display: none;
+}
+
+/* Room for the iOS-style tab bar on mobile. */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: calc(4.25rem + env(safe-area-inset-bottom));
+  }
+}
+
+/* Respect users who prefer less motion: kill all decorative animation. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal='pending'] {
+    opacity: 1;
+    transform: none;
+  }
 }

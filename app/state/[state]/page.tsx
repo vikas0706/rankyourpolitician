@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
-import { getStateByCode, getRanking, getConstituenciesInState, getDistrictsInState, getStates, getStateGovernment } from '@/lib/data';
+import { getStateByCode, getRanking, getConstituenciesInState, getStates, getStateGovernment, getStateView } from '@/lib/data';
+import { buildDistrictMap } from '@/lib/geo-districts';
 import { getI18n } from '@/lib/i18n/server';
 import { t } from '@/lib/i18n';
 import Breadcrumbs from '@/components/Breadcrumbs';
@@ -9,7 +10,11 @@ import RankingList from '@/components/RankingList';
 import PagedConstituencies from '@/components/PagedConstituencies';
 import StateGovernmentSection from '@/components/StateGovernment';
 import AdSlot from '@/components/AdSlot';
-import { SectionCard } from '@/components/ui';
+import GeoMap, { type GeoMapShape } from '@/components/GeoMap';
+import { SectionCard, StatPill, PageHero, Eyebrow } from '@/components/ui';
+import { CompositionBar } from '@/components/viz';
+import { Reveal, CountUp } from '@/components/motion';
+import Icon from '@/components/Icon';
 
 export const revalidate = 300;
 
@@ -20,24 +25,47 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ state: string }> }): Promise<Metadata> {
   const { state } = await params;
   const s = await getStateByCode(state);
-  return { title: s ? `${s.state} — representatives` : 'State' };
+  return { title: s ? `${s.state} — government, MPs, MLAs & districts` : 'State' };
 }
 
 export default async function StatePage({ params }: { params: Promise<{ state: string }> }) {
   const { state } = await params;
-  const info = await getStateByCode(state);
-  if (!info) notFound();
+  const view = await getStateView(state);
+  if (!view) notFound();
 
-  const [ranking, districts, constituencies, stateGov] = await Promise.all([
+  const [ranking, constituencies, stateGov] = await Promise.all([
     getRanking('state', state),
-    getDistrictsInState(state),
     getConstituenciesInState(state),
     getStateGovernment(state),
   ]);
   const { dict } = await getI18n();
   const tr = (k: string, v?: Record<string, string | number>) => t(dict, k, v);
+
+  // District drill-down map — choropleth by number of linked representatives.
+  const districtMap = buildDistrictMap(state, 520);
+  const countByDistrict = new Map(view.districtCounts.map((d) => [d.district, d.mps + d.mlas]));
+  const maxDistrictCount = Math.max(1, ...view.districtCounts.map((d) => d.mps + d.mlas));
+  const mapShapes: GeoMapShape[] | null = districtMap
+    ? districtMap.shapes.map((s) => {
+        const n = countByDistrict.get(s.name) ?? 0;
+        return {
+          ...s,
+          href: n > 0 ? `/district/${state}/${encodeURIComponent(s.name)}` : undefined,
+          sub: n > 0 ? tr('state.mapDistrictSub', { n }) : tr('state.mapDistrictEmpty'),
+          value: n > 0 ? Math.sqrt(n / maxDistrictCount) : null,
+        };
+      })
+    : null;
+
+  const houseLabel: Record<string, string> = {
+    'Lok Sabha': tr('state.houseMps'),
+    'Rajya Sabha': tr('state.houseRs'),
+    'Vidhan Sabha': tr('state.houseMlas'),
+    'Vidhan Parishad': tr('state.houseMlcs'),
+  };
+
   const govLabels = {
-    title: tr('stateGov.title', { state: info.state }),
+    title: tr('stateGov.title', { state: view.state }),
     cm: tr('stateGov.cm'),
     deputyCm: tr('stateGov.deputyCm'),
     cabinet: tr('stateGov.cabinet'),
@@ -52,53 +80,107 @@ export default async function StatePage({ params }: { params: Promise<{ state: s
   };
 
   return (
-    <div className="mx-auto max-w-content px-4 py-6">
-      <Breadcrumbs items={[{ label: tr('levels.national'), href: '/' }, { label: info.state }]} />
-      <h1 className="mt-3 text-2xl font-bold text-ink">{info.state}</h1>
-      <p className="mt-1 text-sm text-ink-faint">
-        {info.count} {tr('search.groups.politicians').toLowerCase()}
-      </p>
+    <>
+      <PageHero
+        crumbs={<Breadcrumbs items={[{ label: tr('levels.national'), href: '/' }, { label: view.state }]} />}
+        title={view.state}
+        subtitle={tr('state.subtitle', { state: view.state })}
+        aside={
+          <div className="flex flex-wrap gap-2.5">
+            {view.byHouse.map((h, i) => (
+              <StatPill
+                key={h.house}
+                value={<CountUp value={h.count} duration={900 + i * 100} />}
+                label={houseLabel[h.house] ?? h.house}
+                tone={h.house === 'Vidhan Sabha' ? 'perf' : h.house === 'Lok Sabha' ? 'brand' : 'ink'}
+              />
+            ))}
+          </div>
+        }
+      />
 
-      {stateGov && (stateGov.ministers.length > 0 || stateGov.governmentStatus === 'presidents_rule') && (
-        <div className="mt-6">
-          <StateGovernmentSection gov={stateGov} labels={govLabels} />
+      <div className="mx-auto max-w-content px-4 py-6">
+        <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
+          {/* Left column: map + composition + districts */}
+          <div className="space-y-6">
+            {mapShapes && (
+              <Reveal>
+                <SectionCard title={tr('state.mapTitle')} subtitle={tr('state.mapHelp')} icon="map">
+                  <GeoMap shapes={mapShapes} w={districtMap!.w} h={districtMap!.h} ariaLabel={tr('state.mapAria', { state: view.state })} maxWidthClass="max-w-lg" />
+                </SectionCard>
+              </Reveal>
+            )}
+
+            {view.assemblyComposition && (
+              <Reveal>
+                <SectionCard title={tr('state.compositionTitle')} subtitle={tr('state.compositionHelp')} icon="people">
+                  <CompositionBar
+                    segments={view.assemblyComposition.segments}
+                    total={view.assemblyComposition.total}
+                    ariaLabel={tr('state.compositionTitle')}
+                  />
+                </SectionCard>
+              </Reveal>
+            )}
+
+            <Reveal>
+              <SectionCard title={tr('levels.district')} icon="layers" subtitle={tr('state.districtsHelp')}>
+                <ul className="flex flex-wrap gap-2">
+                  {view.districtCounts.map((d) => (
+                    <li key={d.district}>
+                      <Link
+                        href={`/district/${state}/${encodeURIComponent(d.district)}`}
+                        className="pressable inline-flex items-center gap-1.5 rounded-full border border-line bg-white/60 px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
+                      >
+                        {d.district}
+                        <span className="rounded-full bg-paper-sink px-1.5 text-xs tabular-nums">{d.mps + d.mlas}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </SectionCard>
+            </Reveal>
+
+            <Reveal>
+              <SectionCard title={tr('search.groups.constituencies')} icon="pin">
+                <PagedConstituencies items={constituencies.map((c) => ({ id: c.id, name: c.name, type: c.type }))} />
+              </SectionCard>
+            </Reveal>
+
+            <AdSlot />
+          </div>
+
+          {/* Right column: government + leaders */}
+          <div className="space-y-6">
+            {stateGov && (stateGov.ministers.length > 0 || stateGov.governmentStatus === 'presidents_rule') && (
+              <Reveal>
+                <StateGovernmentSection gov={stateGov} labels={govLabels} />
+              </Reveal>
+            )}
+
+            <Reveal>
+              <SectionCard title={tr('home.topTitle')} subtitle={tr('home.topHelp')} icon="star">
+                {ranking && ranking.entries.length > 0 ? (
+                  <RankingList entries={ranking.entries} />
+                ) : (
+                  <p className="text-sm text-ink-faint">{tr('search.noResults')}</p>
+                )}
+              </SectionCard>
+            </Reveal>
+          </div>
         </div>
-      )}
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
-        <SectionCard title={tr('home.topTitle')} subtitle={tr('home.topHelp')} icon="star">
-          {ranking && ranking.entries.length > 0 ? (
-            <RankingList entries={ranking.entries} />
-          ) : (
-            <p className="text-sm text-ink-faint">{tr('search.noResults')}</p>
-          )}
-        </SectionCard>
-
-        <div className="space-y-6">
-          <SectionCard title={tr('levels.district')} icon="layers">
-            <ul className="flex flex-wrap gap-2">
-              {districts.map((d) => (
-                <li key={d}>
-                  <Link
-                    href={`/district/${state}/${encodeURIComponent(d)}`}
-                    className="rounded-full border border-line px-3 py-1 text-sm text-ink-soft hover:border-brand hover:text-brand"
-                  >
-                    {d}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </SectionCard>
-
-          <SectionCard title={tr('search.groups.constituencies')} icon="pin">
-            <PagedConstituencies
-              items={constituencies.map((c) => ({ id: c.id, name: c.name, type: c.type }))}
-            />
-          </SectionCard>
-
-          <AdSlot />
-        </div>
+        <Reveal className="mt-8">
+          <Link href="/hierarchy" className="pressable flex items-center gap-3 rounded-3xl glass p-4 hover:shadow-lift">
+            <span className="inline-grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-brand-soft text-brand"><Icon name="network" size={22} /></span>
+            <div className="min-w-0 flex-1">
+              <Eyebrow>{tr('nav.hierarchy')}</Eyebrow>
+              <p className="text-sm font-semibold text-ink">{tr('state.hierarchyCta', { state: view.state })}</p>
+            </div>
+            <Icon name="arrow" size={18} className="shrink-0 text-brand" />
+          </Link>
+        </Reveal>
       </div>
-    </div>
+    </>
   );
 }

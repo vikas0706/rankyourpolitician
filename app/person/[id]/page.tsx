@@ -14,6 +14,8 @@ import EscalationChain from '@/components/EscalationChain';
 import { profileLastUpdated, formatDate } from '@/lib/format';
 import { PERF_METRIC_META, type PerfMetric, type Fact, type House } from '@/lib/types';
 import Breadcrumbs from '@/components/Breadcrumbs';
+import { buildSpotMap } from '@/lib/geo-constituencies';
+import SpotMiniMap from '@/components/SpotMiniMap';
 import { Avatar, PartyChip, Chip } from '@/components/ui';
 import { ScoreRing, Stars, StatTile } from '@/components/viz';
 import Icon, { type IconName } from '@/components/Icon';
@@ -89,12 +91,19 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
   if (person.constituencyId && person.constituency) crumbs.push({ label: person.constituency, href: `/area/${person.constituencyId}` });
   crumbs.push({ label: person.name });
 
+  // "Where is this seat" mini-map (Lok Sabha / Vidhan Sabha members only).
+  const seatType = person.house === 'Lok Sabha' ? 'PC' : person.house === 'Vidhan Sabha' ? 'AC' : null;
+  const spot =
+    seatType && person.stateCode && person.constituency
+      ? buildSpotMap(person.stateCode, seatType, person.constituency, 300)
+      : null;
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-5">
       <Breadcrumbs items={crumbs} />
 
       {/* HERO */}
-      <div className="mt-4 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-7">
+      <div className="glass mt-4 rounded-3xl p-5 sm:p-7 animate-fade-up">
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left">
           <Avatar name={person.name} src={person.photo_url} size={92} />
           <div className="min-w-0 flex-1">
@@ -106,24 +115,43 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
               ) : null}
               {person.house === 'Lok Sabha' && <Chip tone="brand" icon="parliament">{tr('profile.yourMp')}</Chip>}
             </div>
-            <h1 className="mt-2 text-3xl font-extrabold tracking-tight text-ink">{person.name}</h1>
+            <h1 className="mt-2 font-display text-3xl font-extrabold tracking-tight text-ink">{person.name}</h1>
             <div className="mt-1 flex flex-wrap items-center justify-center gap-2 sm:justify-start">
               {person.party && <PartyChip party={person.party} />}
-              {person.constituency && (
+              {person.constituency && person.constituencyId ? (
+                <Link href={`/area/${person.constituencyId}`} className="flex items-center gap-1 text-sm text-brand hover:underline">
+                  <Icon name="pin" size={15} /> {person.constituency}{person.state ? `, ${person.state}` : ''}
+                </Link>
+              ) : person.constituency ? (
                 <span className="flex items-center gap-1 text-sm text-ink-faint">
                   <Icon name="pin" size={15} /> {person.constituency}{person.state ? `, ${person.state}` : ''}
                 </span>
-              )}
+              ) : null}
             </div>
             <p className="mt-3 text-ink-soft">{person.current_position || tr(`accountability.roles.${roleKey}.oneLine`)}</p>
             {updated && <div className="mt-3 flex justify-center sm:justify-start"><LastUpdated date={updated} /></div>}
           </div>
+          {spot && (
+            <div className="w-36 shrink-0 sm:w-40">
+              <SpotMiniMap
+                outline={spot.outline}
+                spot={spot.spot}
+                spotCx={spot.spotCx}
+                spotCy={spot.spotCy}
+                w={spot.w}
+                h={spot.h}
+                label={`${person.constituency}, ${person.state}`}
+                className="mx-auto h-auto w-full"
+              />
+              <p className="mt-1 text-center text-[11px] text-ink-faint">{person.constituency}</p>
+            </div>
+          )}
         </div>
       </div>
 
       {/* SCORECARDS */}
       <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <div className="rounded-3xl border border-perf/20 bg-white p-5 shadow-soft">
+        <div className="glass rounded-3xl border-perf/20 p-5">
           <div className="flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-bold text-ink">
               <span className="inline-grid h-8 w-8 place-items-center rounded-lg bg-perf-soft text-perf"><Icon name="shield" size={18} /></span>
@@ -145,7 +173,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
           </div>
         </div>
 
-        <div className="rounded-3xl border border-rating/25 bg-white p-5 shadow-soft" id="rate">
+        <div className="glass rounded-3xl border-rating/25 p-5" id="rate">
           <div className="flex items-center justify-between">
             <h2 className="flex items-center gap-2 font-bold text-ink">
               <span className="inline-grid h-8 w-8 place-items-center rounded-lg bg-rating-soft text-rating-ink"><Icon name="star" size={18} /></span>
@@ -168,7 +196,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
 
       {/* About: plain-language summary + party-change note + identity citation */}
       {(person.neutral_summary || person.party_note || person.identity_source) && (
-        <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
+        <section className="mt-5 glass rounded-3xl p-5 sm:p-6">
           <h2 className="text-xl font-bold text-ink">{tr('profile.aboutTitle')}</h2>
           {person.neutral_summary && <p className="mt-2 text-ink-soft">{person.neutral_summary}</p>}
           {person.party_history && person.party_history.length > 0 && (
@@ -233,7 +261,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
       )}
 
       {/* Accountability — comprehensive, per role held (fixes the old generic block) */}
-      <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
+      <section className="mt-5 glass rounded-3xl p-5 sm:p-6">
         <h2 className="text-xl font-bold text-ink">{tr('profile.accountabilityTitle')}</h2>
         <p className="mt-1 text-sm text-ink-soft">
           {roleContent.length > 1 ? tr('profile.accountabilityIntroMulti') : tr('profile.accountabilityIntro')}
@@ -258,7 +286,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
       </section>
 
       {/* Record */}
-      <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
+      <section className="mt-5 glass rounded-3xl p-5 sm:p-6">
         <h2 className="text-xl font-bold text-ink">{tr('profile.recordTitle')}</h2>
         {!person.hasRecord ? (
           <p className="mt-2 text-sm text-ink-faint">{tr('profile.recordComingSoon')}</p>
@@ -325,7 +353,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
       {/* Areas + right to reply */}
       <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
         {person.districts.length > 0 && (
-          <section className="rounded-3xl border border-line bg-white p-5 shadow-soft">
+          <section className="glass rounded-3xl p-5">
             <h2 className="flex items-center gap-2 font-bold text-ink"><Icon name="pin" size={18} className="text-brand" /> {tr('profile.jurisdictionTitle')}</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {person.districts.map((d) => (
@@ -334,7 +362,7 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
             </div>
           </section>
         )}
-        <section className="rounded-3xl border border-line bg-brand-soft/50 p-5 shadow-soft">
+        <section className="glass rounded-3xl bg-brand-soft/40 p-5">
           <h2 className="flex items-center gap-2 font-bold text-ink"><Icon name="info" size={18} className="text-brand" /> {tr('profile.rightToReplyTitle')}</h2>
           <p className="mt-1 text-sm text-ink-soft">{tr('profile.rightToReplyBody')}</p>
           <Link href={`/grievance?ref=${encodeURIComponent(person.id)}`} className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-sm font-semibold text-brand shadow-soft hover:bg-brand hover:text-white">{tr('profile.rightToReplyCta')} <Icon name="arrow" size={15} /></Link>
@@ -359,7 +387,7 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
         ]}
       />
 
-      <div className="mt-4 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-7">
+      <div className="mt-4 glass rounded-3xl p-5 sm:p-7">
         <div className="flex flex-col items-center gap-4 text-center sm:flex-row sm:items-start sm:text-left">
           <Avatar name={p.name} size={84} />
           <div className="min-w-0 flex-1">
@@ -381,7 +409,7 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
       </div>
 
       {/* Role & responsibility */}
-      <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
+      <section className="mt-5 glass rounded-3xl p-5 sm:p-6">
         <h2 className="text-xl font-bold text-ink">{tr('profile.officialRole')}</h2>
         <p className="mt-2 text-ink-soft">{tr(`offices.${ot}.handles`)}</p>
         <div className="mt-3 rounded-xl bg-paper-soft p-3 text-sm">
@@ -392,7 +420,7 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
 
       {/* Reporting chain — where this office sits and who to escalate to */}
       {OFFICE_CHAIN_POSITION[ot] && (
-        <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
+        <section className="mt-5 glass rounded-3xl p-5 sm:p-6">
           <h2 className="flex items-center gap-2 text-xl font-bold text-ink">
             <Icon name="layers" size={20} className="text-brand" /> {tr('officials.chainTitle')}
           </h2>
@@ -416,7 +444,7 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
 
       {/* Office contact */}
       {(p.office_email || p.office_phone) && (
-        <section className="mt-5 rounded-3xl border border-line bg-white p-5 shadow-soft sm:p-6">
+        <section className="mt-5 glass rounded-3xl p-5 sm:p-6">
           <h2 className="flex items-center gap-2 font-bold text-ink"><Icon name="link" size={18} className="text-brand" /> {tr('profile.officialContact')}</h2>
           <div className="mt-3 flex flex-wrap gap-x-6 gap-y-1 text-sm">
             {p.office_email && <a href={`mailto:${p.office_email}`} className="text-brand hover:underline">{p.office_email}</a>}

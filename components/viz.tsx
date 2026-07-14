@@ -1,20 +1,25 @@
 // Pure visual primitives (no hooks) — big, friendly, scannable.
+// Entrance animations are CSS-only (see tailwind keyframes), so these stay
+// server-safe and work without JavaScript.
 import Icon, { type IconName } from './Icon';
 import { clsx } from 'clsx';
 
-/** Circular progress ring for the Verified Performance percentile. */
+/** Circular progress ring for the Verified Performance percentile.
+ *  The arc sweeps in on first paint (CSS `ring-fill` keyframe). */
 export function ScoreRing({
   value,
   size = 132,
   label,
   sublabel,
   color = '#0d9488',
+  animate = true,
 }: {
   value: number | null;
   size?: number;
   label?: string;
   sublabel?: string;
   color?: string;
+  animate?: boolean;
 }) {
   const stroke = size * 0.1;
   const r = size / 2 - stroke / 2 - 1;
@@ -24,7 +29,7 @@ export function ScoreRing({
   return (
     <div className="relative inline-grid place-items-center" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#eef0f4" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e9e6df" strokeWidth={stroke} />
         {value != null && (
           <circle
             cx={size / 2}
@@ -36,6 +41,8 @@ export function ScoreRing({
             strokeLinecap="round"
             strokeDasharray={circ}
             strokeDashoffset={offset}
+            className={animate ? 'animate-ring-fill' : undefined}
+            style={{ ['--ring-circ' as string]: `${circ}px` }}
           />
         )}
       </svg>
@@ -44,7 +51,7 @@ export function ScoreRing({
           <span className="text-2xl font-bold text-ink-faint">—</span>
         ) : (
           <div>
-            <div className="text-3xl font-extrabold leading-none" style={{ color }}>
+            <div className="text-3xl font-extrabold leading-none tabular-nums" style={{ color }}>
               {value}
               <span className="text-base font-bold">%</span>
             </div>
@@ -96,11 +103,11 @@ export function StatTile({
     ink: 'bg-paper-sink text-ink-soft',
   }[accent];
   return (
-    <div className="rounded-2xl border border-line bg-white p-4">
+    <div className="glass pressable rounded-2xl p-4">
       <span className={clsx('inline-grid h-9 w-9 place-items-center rounded-xl', tint)}>
         <Icon name={icon} size={20} />
       </span>
-      <div className="mt-2.5 text-2xl font-extrabold text-ink">{value}</div>
+      <div className="mt-2.5 text-2xl font-extrabold tabular-nums text-ink">{value}</div>
       <div className="text-sm font-medium text-ink-soft">{label}</div>
       {hint && <div className="mt-0.5 text-xs text-ink-faint">{hint}</div>}
     </div>
@@ -111,11 +118,11 @@ export function StatTile({
 export function RankBadge({ rank }: { rank: number }) {
   const medal =
     rank === 1
-      ? 'bg-[#f6c945] text-[#7a5a00]'
+      ? 'bg-gradient-to-br from-[#ffe28a] to-[#f0b429] text-[#6b4e00] shadow-soft'
       : rank === 2
-        ? 'bg-[#cdd3db] text-[#4a5160]'
+        ? 'bg-gradient-to-br from-[#e8ecf2] to-[#c3cbd6] text-[#414a59] shadow-soft'
         : rank === 3
-          ? 'bg-[#e6a774] text-[#7a3d12]'
+          ? 'bg-gradient-to-br from-[#f3c39a] to-[#dd9257] text-[#6b350e] shadow-soft'
           : 'bg-paper-sink text-ink-faint';
   return (
     <span className={clsx('grid h-9 w-9 shrink-0 place-items-center rounded-full text-sm font-extrabold', medal)}>
@@ -124,17 +131,62 @@ export function RankBadge({ rank }: { rank: number }) {
   );
 }
 
-/** Horizontal meter for a single metric. */
+/** Horizontal meter for a single metric — fills in on first paint. */
 export function Meter({ value, label, value2, color = '#0d9488' }: { value: number | null; label: string; value2?: string; color?: string }) {
   return (
     <div>
       <div className="mb-1 flex items-baseline justify-between gap-2">
         <span className="text-sm text-ink-soft">{label}</span>
-        {value2 && <span className="text-sm font-bold" style={{ color }}>{value2}</span>}
+        {value2 && <span className="text-sm font-bold tabular-nums" style={{ color }}>{value2}</span>}
       </div>
       <div className="h-2.5 w-full overflow-hidden rounded-full bg-paper-sink">
-        <div className="h-full rounded-full" style={{ width: `${value ?? 0}%`, background: color }} />
+        <div className="h-full animate-meter-fill rounded-full" style={{ width: `${value ?? 0}%`, background: color }} />
       </div>
+    </div>
+  );
+}
+
+/** Proportional composition bar (e.g. house seats by party) with a legend.
+ *  Neutral tints only — parties are NEVER given their brand colours. */
+export function CompositionBar({
+  segments,
+  total,
+  ariaLabel,
+}: {
+  segments: { label: string; count: number }[];
+  total: number;
+  ariaLabel: string;
+}) {
+  // Neutral, colourblind-distinct tints (no party identity implied).
+  const TINTS = ['#6366f1', '#0d9488', '#f59e0b', '#64748b', '#a855f7', '#0ea5e9', '#84cc16', '#f43f5e', '#78716c', '#14b8a6'];
+  const known = segments.reduce((s, x) => s + x.count, 0);
+  const rest = Math.max(0, total - known);
+  return (
+    <div>
+      <div
+        className="flex h-4 w-full overflow-hidden rounded-full bg-paper-sink ring-1 ring-line"
+        role="img"
+        aria-label={ariaLabel}
+      >
+        {segments.map((s, i) => (
+          <div
+            key={s.label}
+            className="h-full animate-meter-fill"
+            style={{ width: `${(s.count / total) * 100}%`, background: TINTS[i % TINTS.length], animationDelay: `${i * 60}ms` }}
+            title={`${s.label}: ${s.count}`}
+          />
+        ))}
+        {rest > 0 && <div className="h-full" style={{ width: `${(rest / total) * 100}%` }} />}
+      </div>
+      <ul className="mt-2.5 flex flex-wrap gap-x-4 gap-y-1.5">
+        {segments.map((s, i) => (
+          <li key={s.label} className="flex items-center gap-1.5 text-xs text-ink-soft">
+            <span className="h-2.5 w-2.5 rounded-full" style={{ background: TINTS[i % TINTS.length] }} aria-hidden />
+            <span className="font-semibold text-ink">{s.label}</span>
+            <span className="tabular-nums text-ink-faint">{s.count}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
