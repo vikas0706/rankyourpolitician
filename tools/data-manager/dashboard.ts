@@ -7,12 +7,33 @@ dotenv.config({ path: '.env.local' });
 dotenv.config();
 
 import express from 'express';
+import { spawn } from 'node:child_process';
+import { resolve, dirname } from 'node:path';
 import { validateDataset, datasetStats, publishDataset, loadSeed, savePoliticians } from './publish';
 import { isFirestoreConfigured } from '../../lib/firebase-admin';
 
+const ROOT = resolve(dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..', '..');
 const app = express();
 app.use(express.json());
 const PORT = 4321;
+
+// Stream a full "pull latest from every source + rebuild" run to the browser.
+app.get('/api/update', (req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/event-stream', 'Cache-Control': 'no-cache', Connection: 'keep-alive' });
+  const args = ['run', 'dm', '--', 'update-all'];
+  if (req.query.skipHeavy === '1') args.push('--skip-heavy');
+  const child = spawn('npm', args, { cwd: ROOT, shell: true, env: process.env });
+  const send = (buf: Buffer) => {
+    for (const line of String(buf).split(/\r?\n/)) {
+      const clean = line.replace(/\x1b\[[0-9;]*m/g, ''); // strip ANSI colour
+      if (clean.length) res.write(`data: ${clean.replace(/\n/g, ' ')}\n\n`);
+    }
+  };
+  child.stdout.on('data', send);
+  child.stderr.on('data', send);
+  child.on('close', (code) => { res.write(`event: done\ndata: ${code}\n\n`); res.end(); });
+  req.on('close', () => { try { child.kill(); } catch {} });
+});
 
 app.get('/api/data', (_req, res) => {
   const { politicians } = loadSeed();
@@ -92,10 +113,13 @@ const PAGE = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewp
 </style></head><body>
 <header><span class="badge">LOCAL</span><h1>RankYourPolitician — Data Manager</h1>
   <span id="fs"></span><span id="msg"></span>
-  <button class="sec" onclick="load()">Refresh</button>
+  <label style="font-size:12px;color:#6b7280;display:flex;align-items:center;gap:4px"><input type="checkbox" id="skipHeavy" style="width:auto"> skip heavy (Wikidata/photos)</label>
+  <button class="sec" onclick="updateAll()">⟳ Update all data</button>
+  <button class="sec" onclick="load()">Refresh view</button>
   <button onclick="publish()">Publish to Firestore</button>
 </header>
 <div class="wrap">
+  <pre id="log" style="display:none;background:#0f172a;color:#e2e8f0;padding:14px;border-radius:12px;max-height:320px;overflow:auto;font-size:12px;line-height:1.5;white-space:pre-wrap;margin:0 0 18px"></pre>
   <div id="stats"></div>
   <table><thead><tr><th>Name</th><th>Party</th><th>Area</th><th>Facts</th><th>Metrics</th><th>Status</th></tr></thead><tbody id="rows"></tbody></table>
   <form onsubmit="addFact(event)">
@@ -120,6 +144,19 @@ async function load(){
     return '<tr><td>'+p.name+(p.minister?' <span class="badge">min</span>':'')+'</td><td>'+p.party+'</td><td>'+p.constituency+', '+p.state+'</td><td>'+p.factCount+'</td><td>'+p.metricCount+'</td><td>'+st+' '+(p.issues.map(i=>i.message).join('; ')||'')+'</td></tr>';
   }).join('');
   document.getElementById('f_pid').innerHTML = d.politicians.map(p=>'<option value="'+p.id+'">'+p.name+'</option>').join('');
+}
+function updateAll(){
+  const skip = document.getElementById('skipHeavy').checked ? '?skipHeavy=1' : '';
+  const log = document.getElementById('log'); log.textContent=''; log.style.display='block';
+  document.getElementById('msg').textContent='Updating from sources…';
+  const es = new EventSource('/api/update'+skip);
+  es.onmessage = function(e){ log.textContent += e.data + '\\n'; log.scrollTop = log.scrollHeight; };
+  es.addEventListener('done', function(e){
+    es.close();
+    document.getElementById('msg').textContent = e.data==='0' ? '✓ Update complete — commit the seed + indexes, then redeploy' : ('✗ Finished with errors (exit '+e.data+')');
+    load();
+  });
+  es.onerror = function(){ es.close(); };
 }
 async function publish(){
   document.getElementById('msg').textContent='Publishing…';

@@ -13,6 +13,7 @@ import { SectionCard, Avatar, PartyChip, Chip, StatPill, Eyebrow } from '@/compo
 import { ScoreRing, Stars } from '@/components/viz';
 import { Reveal, CountUp } from '@/components/motion';
 import Icon, { type IconName } from '@/components/Icon';
+import { Analytics } from '@vercel/analytics/next';
 
 export const revalidate = 300;
 
@@ -54,8 +55,11 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* HERO — search + the living map of India */}
-      <section className="relative overflow-hidden border-b border-line/60">
+      {/* HERO — search + the living map of India.
+          overflow-x-clip (not overflow-hidden) keeps decorative bleed from
+          causing horizontal scroll WITHOUT vertically clipping the search
+          dropdown, which is absolutely-positioned and overflows this section. */}
+      <section className="relative overflow-x-clip border-b border-line/60">
         <div className="mx-auto max-w-content px-4 pb-10 pt-10 sm:pt-14">
           <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_1fr]">
             <div className="text-center lg:text-left">
@@ -274,6 +278,9 @@ export default async function HomePage() {
           <AdSlot />
         </div>
       </div>
+      {/* Web analytics only on the landing page, to stay within the free
+          analytics-events budget (not mounted in the root layout). */}
+      <Analytics />
     </>
   );
 }

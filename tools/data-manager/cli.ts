@@ -101,6 +101,18 @@ async function main() {
       await import('./enrich-performance');
       break;
     }
+    case 'update-all': {
+      // Orchestrator: pull latest from every source, rebuild indexes, validate.
+      await import('./update-all');
+      break;
+    }
+    case 'rebuild-indexes':
+    case '--rebuild-indexes': {
+      // Regenerate the static search-index.json + who/*.json from the seed.
+      await import('../build-search-index');
+      await import('../build-who-data');
+      break;
+    }
     case 'enrich-photos': {
       // Raise photo coverage from Hindi/regional-Wikipedia lead images (Commons).
       await import('./enrich-photos');

@@ -87,6 +87,9 @@ export default function SearchBox({ variant = 'header' }: { variant?: 'header' |
   const [open, setOpen] = useState(false);
   const [cursor, setCursor] = useState(-1);
   const [recents, setRecents] = useState<string[]>([]);
+  // Cap the dropdown to the space below the input so its last rows never fall
+  // off-screen (or behind a clipped ancestor) on short viewports.
+  const [maxH, setMaxH] = useState(416);
   const ref = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listId = `search-list-${variant}`;
@@ -98,6 +101,19 @@ export default function SearchBox({ variant = 'header' }: { variant?: 'header' |
     document.addEventListener('mousedown', onDoc);
     return () => document.removeEventListener('mousedown', onDoc);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const compute = () => {
+      const el = inputRef.current;
+      if (!el) return;
+      const avail = window.innerHeight - el.getBoundingClientRect().bottom - 16;
+      setMaxH(Math.max(200, Math.min(416, avail)));
+    };
+    compute();
+    window.addEventListener('resize', compute);
+    return () => window.removeEventListener('resize', compute);
+  }, [open]);
 
   const labels = useMemo(
     () => ({
@@ -221,7 +237,8 @@ export default function SearchBox({ variant = 'header' }: { variant?: 'header' |
         <div
           id={listId}
           role="listbox"
-          className="glass-overlay absolute left-0 right-0 z-40 mt-2 max-h-[26rem] overflow-auto rounded-2xl bg-white p-1.5 animate-scale-in origin-top"
+          style={{ maxHeight: maxH }}
+          className="glass-overlay absolute left-0 right-0 z-40 mt-2 overflow-auto rounded-2xl bg-white p-1.5 animate-scale-in origin-top"
         >
           {showRecents && (
             <div className="py-1">

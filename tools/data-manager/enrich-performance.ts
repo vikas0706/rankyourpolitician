@@ -36,6 +36,9 @@ const UA = 'RankYourPolitician-DataManager/1.0 (civic info; vikas070696@gmail.co
 const TODAY = new Date().toISOString().slice(0, 10);
 const LIMIT = process.env.PERF_LIMIT ? parseInt(process.env.PERF_LIMIT, 10) : Infinity;
 const SKIP_RS = process.env.PERF_SKIP_RS === '1';
+// PERF_REFRESH re-fetches even MPs that already have metrics and OVERWRITES them
+// (attendance/questions grow each session) — used by `update-all` to stay current.
+const REFRESH = process.env.PERF_REFRESH === '1';
 // Public token sansad.in's own frontend ships for the RS attendance service.
 const RS_BEARER = 'Y0hKaFltaGhkQzVyYVhKaGJn';
 
@@ -140,12 +143,17 @@ async function main() {
   // Resumable per metric: checkpoints write the seed every 25 MPs, and each
   // metric is fetched only if still missing — so a re-run backfills exactly
   // the gaps (e.g. a questions-only pass costs one request per MP).
-  const pending = pairs.filter(
-    ({ p }) =>
-      p.metrics.attendance_pct === undefined ||
-      p.metrics.debates_participated === undefined ||
-      p.metrics.questions_asked === undefined,
-  );
+  // In REFRESH mode we re-do everyone and overwrite (metrics grow each session).
+  const isPerfFact = (f: Fact) => /Digital Sansad/i.test(f.source_name || '');
+  const perfFields = new Set(['attendance_pct', 'questions_asked', 'debates_participated']);
+  const pending = REFRESH
+    ? pairs
+    : pairs.filter(
+        ({ p }) =>
+          p.metrics.attendance_pct === undefined ||
+          p.metrics.debates_participated === undefined ||
+          p.metrics.questions_asked === undefined,
+      );
   console.log(`LS pending (no metrics yet): ${pending.length}`);
   const work = LIMIT === Infinity ? pending : pending.slice(0, LIMIT);
 
@@ -158,6 +166,11 @@ async function main() {
 
   let done = 0;
   for (const { p, m } of work) {
+    // REFRESH: clear prior Sansad metrics/facts so this pass fully overwrites.
+    if (REFRESH) {
+      for (const f of perfFields) delete (p.metrics as Record<string, number | undefined>)[f];
+      p.facts = p.facts.filter((f) => !(perfFields.has(f.field_type) && isPerfFact(f)));
+    }
     // 1. attendance: date-grouped by type per session; S* variants = signed.
     let signed = 0, eligible = 0;
     if (p.metrics.attendance_pct === undefined) {
@@ -266,6 +279,7 @@ async function main() {
           const p = cands[0];
           const pct = Math.round((days / totalSittings) * 1000) / 10;
           if (pct > 100) continue; // defensive: bad denominator
+          if (REFRESH) p.facts = p.facts.filter((f) => !(f.field_type === 'attendance_pct' && isPerfFact(f)));
           p.metrics.attendance_pct = pct;
           const have = new Set(p.facts.map((f) => f.field_type));
           if (!have.has('attendance_pct')) {

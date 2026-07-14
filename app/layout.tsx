@@ -1,11 +1,16 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Manrope } from 'next/font/google';
 import { getI18n } from '@/lib/i18n/server';
 import { I18nProvider } from '@/lib/i18n/provider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileTabBar from '@/components/MobileTabBar';
+
+// Google AdSense publisher id (public — it ships in the browser). Override via
+// NEXT_PUBLIC_ADSENSE_CLIENT if the account changes.
+const ADSENSE_CLIENT = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || 'ca-pub-6343301891816750';
 
 // Self-hosted at build time by next/font — no runtime request to Google.
 // Indic scripts (Devanagari, Tamil, Bengali, …) fall back to the Noto Sans
@@ -48,6 +53,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             "var(--font-manrope), 'Segoe UI', system-ui, -apple-system, 'Noto Sans', 'Noto Sans Devanagari', 'Noto Sans Tamil', 'Noto Sans Bengali', sans-serif",
         }}
       >
+        {/* Google AdSense loader — enables Auto ads + the in-content <ins> units
+            rendered by <AdSlot>. afterInteractive so it never blocks first paint. */}
+        {ADSENSE_CLIENT && (
+          <Script
+            id="adsbygoogle-init"
+            async
+            strategy="afterInteractive"
+            crossOrigin="anonymous"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+          />
+        )}
         <div className="aurora" aria-hidden="true" />
         <I18nProvider locale={locale} dict={dict} dir={dir}>
           <a
