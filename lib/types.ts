@@ -382,8 +382,9 @@ export interface VoteAggregate {
 }
 
 /** One row of the trending list: recent rating ACTIVITY, not a quality verdict.
- *  `recent_mean` is the plain average of the window's rating events - that is
- *  what gets displayed; the decayed score is for ordering only (never shown). */
+ *  The decayed activity score is for ordering only (never shown). The rating
+ *  displayed is the leader's REAL rating - the same all-time plain average the
+ *  profile shows - not an average of the week's events. */
 export interface TrendingEntry {
   politician_id: string;
   name: string;
@@ -391,10 +392,11 @@ export interface TrendingEntry {
   constituencyName?: string;
   state?: string;
   photo_url?: string;
-  /** Rating events inside the trending window. */
+  /** Rating events inside the trending window (the "N this week" line). */
   recent_votes: number;
-  /** Plain average of the window's rating events (1..5). */
-  recent_mean: number | null;
-  /** All-time vote count, for context. */
+  /** The leader's actual rating: plain all-time average of votes cast (1..5),
+   *  identical to the profile's displayed number. Never the Bayesian score. */
+  rating_mean: number | null;
+  /** All-time vote count behind rating_mean. */
   total_votes: number;
 }

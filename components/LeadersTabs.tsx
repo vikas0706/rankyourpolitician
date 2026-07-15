@@ -157,9 +157,11 @@ function TrendingPanel({ state, onRetry }: { state: TrendingState; onRetry: () =
               )}
             </div>
             <span className="shrink-0 text-right">
-              {e.recent_mean != null && (
+              {/* The leader's actual rating (all-time average, same number as
+                  their profile) - NOT an average of the week's events. */}
+              {e.rating_mean != null && (
                 <span className="flex items-center justify-end gap-1 text-sm font-bold text-rating-ink">
-                  {e.recent_mean.toFixed(1)}
+                  {e.rating_mean.toFixed(1)}
                   <Icon name="star" size={13} style={{ fill: 'currentColor' }} />
                 </span>
               )}

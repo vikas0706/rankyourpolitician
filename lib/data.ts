@@ -534,7 +534,12 @@ export async function getTrending(limit = 5): Promise<TrendingEntry[]> {
   const out: TrendingEntry[] = [];
   for (const s of signals) {
     if (out.length >= limit) break;
-    const total = idx.voteAggregates.get(s.politician_id)?.total ?? s.recent_votes;
+    // The displayed rating is the leader's REAL one - the all-time plain
+    // average of standing votes, exactly what their profile shows - not the
+    // mean of this week's events (re-votes make those diverge).
+    const agg = idx.voteAggregates.get(s.politician_id);
+    const total = agg?.total ?? 0;
+    const rating_mean = agg && agg.total > 0 ? Math.round((agg.sum / agg.total) * 100) / 100 : null;
     const p = idx.politicianById.get(s.politician_id);
     if (p) {
       out.push({
@@ -545,7 +550,7 @@ export async function getTrending(limit = 5): Promise<TrendingEntry[]> {
         state: p.state,
         photo_url: p.photo_url,
         recent_votes: s.recent_votes,
-        recent_mean: s.recent_mean,
+        rating_mean,
         total_votes: total,
       });
       continue;
@@ -560,7 +565,7 @@ export async function getTrending(limit = 5): Promise<TrendingEntry[]> {
         state: m.state,
         photo_url: m.photo_url,
         recent_votes: s.recent_votes,
-        recent_mean: s.recent_mean,
+        rating_mean,
         total_votes: total,
       });
     }

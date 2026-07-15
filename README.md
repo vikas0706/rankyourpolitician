@@ -81,9 +81,9 @@ This is the most important thing to understand before changing `lib/data.ts`:
     aggregate doc (`daily`, pruned to 14 days), and trending is derived from the same
     in-process aggregate cache: a 7-day window, exponential decay (3-day half-life) so
     recency beats raw bulk, and a 3-vote floor so one drive-by rating never trends.
-    Ordering is by decayed activity only - the displayed number is the plain mean of
-    the week's ratings, and the list is labelled attention, not a verdict.
-    All rules live in `lib/trending.ts`.
+    Ordering is by decayed activity only - the rating displayed is the leader's real
+    one (the same all-time plain average their profile shows), and the list is
+    labelled attention, not a verdict. All rules live in `lib/trending.ts`.
   - *Data publishes* - `npm run dm -- publish` calls `POST /api/revalidate` (Bearer
     `REVALIDATE_SECRET`), which sweeps the page cache; each page regenerates on its next
     visit. A page that regenerates within ~30 min of a publish can still bake the previous
