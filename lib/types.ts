@@ -371,12 +371,13 @@ export interface VoteAggregate {
   sum: number;
   updated_at: string;
   /**
-   * Rating EVENTS per UTC day, for the trending window - {"2026-07-15":{"5":3}}.
-   * Every vote cast or changed counts as one event on the day it happens;
-   * buckets are never decremented (a changed vote IS that day's activity, and
-   * we could not know which day the earlier vote landed in anyway). The vote
-   * transaction prunes keys older than TRENDING_RETENTION_DAYS, so the doc
-   * stays bounded. Absent on aggregates that predate the trending feature.
+   * NEW votes per UTC day, for the trending window - {"2026-07-15":{"5":3}}.
+   * Only a voter's FIRST vote is counted, on the day it is cast; a later rating
+   * change is not re-counted (else the weekly count could exceed the person's
+   * distinct-voter total - one voter is not three ratings). Buckets are never
+   * decremented; the vote transaction prunes keys older than
+   * TRENDING_RETENTION_DAYS so the doc stays bounded. Absent on aggregates that
+   * predate the trending feature.
    */
   daily?: Record<string, Record<string, number>>;
 }
@@ -392,7 +393,7 @@ export interface TrendingEntry {
   constituencyName?: string;
   state?: string;
   photo_url?: string;
-  /** Rating events inside the trending window (the "N this week" line). */
+  /** New votes inside the trending window (the "N this week" line). */
   recent_votes: number;
   /** The leader's actual rating: plain all-time average of votes cast (1..5),
    *  identical to the profile's displayed number. Never the Bayesian score. */

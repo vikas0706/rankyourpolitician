@@ -5,7 +5,7 @@
 import { getDb } from './firebase-admin';
 import type { VoteAggregate, SentimentScore } from './types';
 import { computeSentimentScore } from './ranking';
-import { bumpDaily } from './trending';
+import { bumpDaily, pruneDaily } from './trending';
 
 const memVotes = new Map<string, Map<string, number>>(); // politicianId -> voterKey -> rating
 // politicianId -> day -> rating -> event count (trending signal, dev fallback)
@@ -38,7 +38,9 @@ export async function recordVote(
     const updated = m.has(key);
     m.set(key, rating);
     memVotes.set(politicianId, m);
-    memDaily.set(politicianId, bumpDaily(memDaily.get(politicianId), new Date(), rating));
+    // Only a genuinely new voter is trending activity; a re-vote is not, or the
+    // weekly count would exceed the person's distinct-voter total.
+    if (!updated) memDaily.set(politicianId, bumpDaily(memDaily.get(politicianId), new Date(), rating));
     const aggregate = aggFromMem(politicianId);
     return { aggregate, sentiment: computeSentimentScore(politicianId, aggregate), updated };
   }
@@ -64,9 +66,12 @@ export async function recordVote(
     counts[rating] = (counts[rating] || 0) + 1;
     sum += rating;
 
-    // Trending signal: this cast/change is one activity event today. bumpDaily
-    // also prunes buckets past the retention window, so the doc stays bounded.
-    const daily = bumpDaily(data?.daily, new Date(), rating);
+    // Trending signal: only a NEW voter (prev == null) is a rating event, so
+    // the weekly count can never exceed the person's distinct-voter total - a
+    // re-vote is not three ratings. Either way we prune buckets past the
+    // retention window so the doc stays bounded.
+    const daily =
+      prev == null ? bumpDaily(data?.daily, new Date(), rating) : pruneDaily(data?.daily, new Date());
 
     const newAgg: VoteAggregate = { politician_id: politicianId, counts, total, sum, updated_at: now, daily };
     tx.set(voteRef, { politician_id: politicianId, rating, updated_at: now }, { merge: true });

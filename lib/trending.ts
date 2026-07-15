@@ -1,12 +1,13 @@
 // Pure trending math - no I/O, mirroring lib/ranking.ts. "Trending" measures
-// ATTENTION (how many rating events a leader drew recently), never approval:
-// ordering uses a time-decayed event count, and only the window's vote count
-// and plain mean are ever displayed. Inputs are the per-day event buckets that
-// the vote transaction maintains on each aggregate (VoteAggregate.daily).
+// ATTENTION (how many NEW voters a leader drew recently), never approval:
+// ordering uses a time-decayed new-vote count. Inputs are the per-day buckets
+// of first-time votes that the vote transaction maintains on each aggregate
+// (VoteAggregate.daily); re-votes are never counted, so a person's weekly count
+// can never exceed their distinct-voter total.
 
 import type { VoteAggregate } from './types';
 
-/** Only events inside this window count toward trending. */
+/** Only new votes inside this window count toward trending. */
 export const TRENDING_WINDOW_DAYS = 7;
 
 /** How long daily buckets are kept on the aggregate doc. Longer than the
@@ -17,7 +18,7 @@ export const TRENDING_RETENTION_DAYS = 14;
  *  a vote from 3 days ago 0.5, from 6 days ago 0.25. Recency beats raw bulk. */
 export const TRENDING_HALF_LIFE_DAYS = 3;
 
-/** Activity floor: below this many events in the window a person is not
+/** Activity floor: below this many new votes in the window a person is not
  *  "trending" - one drive-by rating must never put someone on the list. */
 export const TRENDING_MIN_RECENT_VOTES = 3;
 
@@ -44,7 +45,7 @@ export function pruneDaily(
   return out;
 }
 
-/** Record one rating event on a daily-buckets map (returns a new map). */
+/** Record one new-vote event on a daily-buckets map (returns a new map). */
 export function bumpDaily(
   daily: Record<string, Record<string, number>> | undefined,
   now: Date,
