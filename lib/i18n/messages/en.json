@@ -310,7 +310,9 @@
     "ratingHelp": "What people think - from your ratings.",
     "tiersTitle": "Who is responsible for what?",
     "tiersHelp": "Different problems need different leaders. Tap to see who to ask.",
-    "moreExplore": "More ways to explore"
+    "moreExplore": "More ways to explore",
+    "langHint": "Read this in {n} languages:",
+    "langMore": "+{n} more"
   },
   "state": {
     "subtitle": "Everyone who represents {state} - the state government, MPs in Delhi, MLAs in the assembly, and every district.",

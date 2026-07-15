@@ -7,6 +7,7 @@ import SearchBox from '@/components/SearchBox';
 import GeoMap, { type GeoMapShape } from '@/components/GeoMap';
 import LastUpdated from '@/components/LastUpdated';
 import LeadersTabs from '@/components/LeadersTabs';
+import { LanguageHint } from '@/components/LanguageSwitcher';
 import AdSlot from '@/components/AdSlot';
 import HierarchyLadder from '@/components/HierarchyLadder';
 import { SectionCard, Avatar, PartyChip, StatPill, Eyebrow } from '@/components/ui';
@@ -109,6 +110,11 @@ export default async function HomePage({ params }: { params: Promise<LangParams>
                     </Link>
                   ))}
                 </div>
+                {/* Language discovery without landing friction: a muted line
+                    stating the language count, with native-script one-tap
+                    switches. Lives in the hero so nobody has to spot the small
+                    header globe to learn the site speaks their language. */}
+                <LanguageHint className="mt-4 justify-center lg:justify-start" />
               </div>
 
               {/* Live counters */}
