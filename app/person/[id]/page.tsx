@@ -197,15 +197,26 @@ export default async function PersonPage({ params }: { params: Promise<{ id: str
             </h2>
             <Chip tone="rating">{tr('common.notVerified')}</Chip>
           </div>
+          {/* The plain average of the votes cast — NOT the Bayesian score used for
+              ordering. This sits directly above the vote breakdown, so a shrunk
+              number here would visibly contradict it (five 1-star votes reading
+              as "2.3"). Thin samples are conveyed by the vote count + confidence,
+              not by silently moving the number toward neutral. */}
           <div className="mt-4 flex items-center gap-3">
-            <span className="text-4xl font-extrabold text-rating-ink">{sentiment.bayesian_mean != null ? sentiment.bayesian_mean.toFixed(1) : '—'}</span>
+            <span className="text-4xl font-extrabold text-rating-ink">{sentiment.raw_mean != null ? sentiment.raw_mean.toFixed(1) : '—'}</span>
             <div>
-              <Stars value={sentiment.bayesian_mean} size={20} />
-              <p className="mt-0.5 text-xs text-ink-faint">{sentiment.n_votes === 0 ? tr('vote.confidenceNone') : tr('ranking.votes', { n: sentiment.n_votes })}</p>
+              <Stars value={sentiment.raw_mean} size={20} />
+              <p className="mt-0.5 text-xs text-ink-faint">
+                {sentiment.n_votes === 0
+                  ? tr('vote.confidenceNone')
+                  : sentiment.n_votes === 1
+                    ? tr('ranking.voteOne')
+                    : tr('ranking.votes', { n: sentiment.n_votes })}
+              </p>
             </div>
           </div>
           <div className="mt-4 border-t border-line pt-4">
-            <VoteWidget politicianId={person.id} initial={{ mean: sentiment.bayesian_mean, votes: sentiment.n_votes, distribution: sentiment.distribution, confidence: sentiment.confidence }} />
+            <VoteWidget politicianId={person.id} initial={{ mean: sentiment.raw_mean, votes: sentiment.n_votes, distribution: sentiment.distribution, confidence: sentiment.confidence }} />
           </div>
         </div>
       </div>

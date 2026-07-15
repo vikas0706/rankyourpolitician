@@ -42,7 +42,10 @@ export async function POST(req: NextRequest) {
     updated,
     dev: bot.dev ?? false,
     sentiment: {
-      mean: sentiment.bayesian_mean,
+      // The plain average of votes cast: this refreshes the number shown right
+      // above the vote breakdown, so it must agree with it. The Bayesian score
+      // is for ordering only and is never displayed.
+      mean: sentiment.raw_mean,
       votes: sentiment.n_votes,
       distribution: sentiment.distribution,
       confidence: sentiment.confidence,

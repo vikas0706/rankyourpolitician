@@ -119,10 +119,15 @@ export default function RankingList({
                   </p>
                   {/* Rating + (mobile) performance shown inline */}
                   <div className="mt-1.5 flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                    {/* Show the plain average of votes cast. Sorting uses the
+                        shrunk score (below), but printing that here would state a
+                        number nobody voted for. */}
                     <span className="flex items-center gap-1.5">
-                      <Stars value={e.sentiment_mean} size={15} />
+                      <Stars value={e.sentiment_raw_mean} size={15} />
                       <span className="text-xs text-ink-faint">
-                        {e.sentiment_mean == null ? t('ranking.noVotes') : `${e.sentiment_mean.toFixed(1)} · ${t('ranking.votes', { n: e.sentiment_votes })}`}
+                        {e.sentiment_raw_mean == null
+                          ? t('ranking.noVotes')
+                          : `${e.sentiment_raw_mean.toFixed(1)} · ${e.sentiment_votes === 1 ? t('ranking.voteOne') : t('ranking.votes', { n: e.sentiment_votes })}`}
                       </span>
                     </span>
                     {e.performance_percentile != null && (

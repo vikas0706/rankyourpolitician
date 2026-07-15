@@ -55,7 +55,9 @@ const entries: (RankingEntry & { house: string })[] = politicians.map((p) => {
     performance_percentile: ps?.composite_percentile ?? null,
     performance_cohort: ps?.cohort_label ?? '',
     metrics_used: ps?.metrics_used.length ?? 0,
+    // Ratings are live-only; this static payload never carries vote data.
     sentiment_mean: null,
+    sentiment_raw_mean: null,
     sentiment_votes: 0,
     photo_url: p.photo_url,
     house: HOUSE_SHORT[p.house] || p.house,

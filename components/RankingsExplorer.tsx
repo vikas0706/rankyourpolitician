@@ -74,7 +74,9 @@ export default function RankingsExplorer() {
         performance_percentile: r[7],
         performance_cohort: HOUSE_LABEL[r[6]] || r[6],
         metrics_used: r[8],
+        // The prebuilt payload carries no vote data (ratings are live-only).
         sentiment_mean: null,
+        sentiment_raw_mean: null,
         sentiment_votes: 0,
         photo_url: r[9],
       });

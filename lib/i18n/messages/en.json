@@ -576,7 +576,8 @@
     "filterHouse": "House",
     "allStates": "All states",
     "allHouses": "All houses",
-    "loading": "Loading rankings…"
+    "loading": "Loading rankings…",
+    "voteOne": "1 rating"
   },
   "vote": {
     "title": "Rate this leader",

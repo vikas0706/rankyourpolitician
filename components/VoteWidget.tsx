@@ -147,6 +147,8 @@ export default function VoteWidget({
   const labels = [t('vote.scale1'), '', '', '', t('vote.scale5')];
   const confKey =
     'vote.confidence' + sentiment.confidence.charAt(0).toUpperCase() + sentiment.confidence.slice(1);
+  // "1 ratings" reads as a bug; t() has no plural support, so pick the form.
+  const votesLabel = sentiment.votes === 1 ? t('ranking.voteOne') : t('ranking.votes', { n: sentiment.votes });
 
   return (
     <div>
@@ -233,7 +235,7 @@ export default function VoteWidget({
             })}
             <p className="pt-1 text-right text-xs text-ink-faint">
               {sentiment.mean != null && `${sentiment.mean.toFixed(1)}/5 · `}
-              {t('ranking.votes', { n: sentiment.votes })}
+              {votesLabel}
             </p>
           </div>
         )}

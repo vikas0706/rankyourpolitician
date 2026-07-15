@@ -180,10 +180,13 @@ export function computeSentimentScore(
         (SENTIMENT_PRIOR_STRENGTH + n)
       : null;
 
+  // 'none' means literally no votes — it renders as "No ratings yet", which is a
+  // false statement next to a rating. A handful of votes is LOW confidence, not
+  // absent confidence, so anything from the first vote up is 'low'.
   let confidence: SentimentScore['confidence'] = 'none';
   if (n >= 200) confidence = 'high';
   else if (n >= 50) confidence = 'medium';
-  else if (n >= 5) confidence = 'low';
+  else if (n >= 1) confidence = 'low';
 
   return {
     politician_id: politicianId,
@@ -215,6 +218,7 @@ function toEntry(
     performance_cohort: ps?.cohort_label ?? '',
     metrics_used: ps?.metrics_used.length ?? 0,
     sentiment_mean: ss?.bayesian_mean ?? null,
+    sentiment_raw_mean: ss?.raw_mean ?? null,
     sentiment_votes: ss?.n_votes ?? 0,
     photo_url: p.photo_url,
   };

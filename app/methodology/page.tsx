@@ -71,10 +71,17 @@ export default function MethodologyPage() {
 
       <h2>Public Sentiment</h2>
       <p>
-        Ratings (1–5) are collected without login. To keep thin or coordinated samples from distorting the
-        picture we apply <strong>Bayesian shrinkage</strong>: a rating with few votes stays near the neutral
-        mean until enough independent votes accumulate. We display the full distribution, the vote count, and a
-        confidence indicator so you can judge for yourself.
+        Ratings (1–5) are collected without login. <strong>The score we show is the plain average of the votes
+        actually cast</strong> — if five people rate someone 1, it reads 1.0. Alongside it we always show the
+        full distribution, the vote count and a confidence indicator, so a thin sample is visible as a thin
+        sample rather than being quietly adjusted.
+      </p>
+      <p>
+        <strong>Ordering</strong> is a different question from <em>reporting</em>. When you sort by rating we
+        rank on a <strong>Bayesian-shrunk</strong> score — one that stays near the neutral mean until enough
+        independent votes accumulate — because otherwise a single 5-star vote would top the table. That shrunk
+        number is used only to decide order; we never print it as someone’s rating, because it is not a number
+        anyone voted for.
       </p>
       <p>
         Vote integrity is layered: a Cloudflare Turnstile human-check, a soft device signal, and rate limiting

@@ -113,8 +113,15 @@ export interface PerformanceScore {
 
 export interface SentimentScore {
   politician_id: string;
-  /** Bayesian-shrunk mean on a 1..5 scale (3 = neutral prior). */
+  /**
+   * Bayesian-shrunk mean on a 1..5 scale (3 = neutral prior). For ORDERING only
+   * — it stops a lone 5-star vote topping the list. It must never be shown as
+   * "the rating": it is not what anyone actually voted, and printing it next to
+   * the vote breakdown produces a visible contradiction (five 1-star votes
+   * reading as "2.3"). Display `raw_mean` and let `confidence` convey thinness.
+   */
   bayesian_mean: number | null;
+  /** The plain average of the votes actually cast — the number we display. */
   raw_mean: number | null;
   n_votes: number;
   distribution: Record<string, number>; // {"1":..,"5":..}
@@ -134,7 +141,10 @@ export interface RankingEntry {
   performance_cohort: string;
   /** How many verified metrics fed the composite (0 → unranked). */
   metrics_used?: number;
+  /** Bayesian-shrunk — SORT by this, never print it (see SentimentScore). */
   sentiment_mean: number | null;
+  /** The plain average of votes cast — print this. */
+  sentiment_raw_mean: number | null;
   sentiment_votes: number;
   photo_url?: string;
 }
