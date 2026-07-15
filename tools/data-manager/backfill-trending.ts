@@ -4,9 +4,8 @@
 // so "N ratings this week" undercounts anyone who was rated before the
 // deploy. The votes collection stores one doc per (politician, voter) with an
 // updated_at timestamp, so the buckets can be rebuilt from the actual vote
-// records: bucket every standing vote by its UTC day, keep the days inside
-// the retention window, and merge with whatever the live vote transaction has
-// already tracked.
+// records: bucket every standing vote by its UTC day, keeping the days inside
+// the retention window.
 //
 // The rebuilt buckets REPLACE the live-tracked ones: both count the same vote
 // docs (one entry per standing voter), so replacing is idempotent and keeps

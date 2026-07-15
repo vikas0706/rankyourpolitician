@@ -32,7 +32,7 @@ export default function LeadersTabs({ top }: { top: React.ReactNode }) {
   const loadTrending = useCallback(() => {
     startedRef.current = true;
     setTrending({ status: 'loading' });
-    fetch('/api/trending?limit=5')
+    fetch('/api/trending?limit=10')
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
       .then((data) => setTrending({ status: 'ready', entries: data?.entries ?? [] }))
       .catch(() => setTrending({ status: 'error' }));
@@ -108,7 +108,7 @@ function TrendingPanel({ state, onRetry }: { state: TrendingState; onRetry: () =
   if (state.status === 'idle' || state.status === 'loading') {
     return (
       <ul className="space-y-2" aria-label={t('trending.loading')} aria-busy="true">
-        {[0, 1, 2, 3, 4].map((i) => (
+        {Array.from({ length: 10 }, (_, i) => (
           <li key={i} className="h-[58px] animate-pulse rounded-xl border border-line bg-paper-sink" />
         ))}
       </ul>
