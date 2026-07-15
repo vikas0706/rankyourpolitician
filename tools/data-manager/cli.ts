@@ -131,6 +131,12 @@ async function main() {
       await import('./update-all');
       break;
     }
+    case 'backfill-trending': {
+      // Rebuild trending daily buckets from the votes collection - covers votes
+      // cast before the trending feature shipped. Dry-run unless --apply.
+      await import('./backfill-trending');
+      break;
+    }
     case 'rebuild-indexes':
     case '--rebuild-indexes': {
       // Regenerate the static search-index.json + who/*.json from the seed.
