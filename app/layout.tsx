@@ -46,6 +46,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const { locale, dict, dir } = await getI18n();
   return (
     <html lang={locale} dir={dir} data-scroll-behavior="smooth" className={manrope.variable}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const theme = localStorage.getItem('theme');
+                  if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (_) {}
+              })()
+            `,
+          }}
+        />
+      </head>
       <body
         className="flex min-h-screen flex-col"
         style={{
