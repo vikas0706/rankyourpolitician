@@ -34,7 +34,7 @@ on any fact missing a `source_url`.
 ## Quick start
 
 ```bash
-git clone https://github.com/vikas0706/rankyourpolitician.git
+git clone https://github.com/ForPublicOrg/rankyourpolitician.git
 cd rankyourpolitician
 npm install
 npm run dev          # http://localhost:3000 - serves the seed, no credentials needed
@@ -186,7 +186,7 @@ This is a politically sensitive, public-figure site. **Get a one-time review by 
 (geospatial + media/IT + data-protection). Before going live:
 
 - [ ] **Map:** verify J&K, Ladakh (Aksai Chin) and Arunachal render as Indian with no dispute markings, at every zoom. Never swap in GADM/Natural Earth/OSM basemaps.
-- [ ] **Grievance Officer (IT Rules 2021):** put a real India-based name + monitored email on `/grievance`; honour 24h ack / ~15-day resolution.
+- [ ] **Grievance Officer (IT Rules 2021):** name and a real monitored mailbox are published on `/grievance` (both come from `lib/site-contact.ts`, overridable via `NEXT_PUBLIC_GRIEVANCE_EMAIL`). Outstanding is the operational duty, not the plumbing: honour 24h ack / ~15-day resolution, and keep the mailbox out of spam.
 - [ ] **Defamation (BNS s.356):** keep the objective layer to official-sourced, dated, neutral facts; no guilt inferences. Keep the right-to-reply prominent.
 - [ ] **DPDP Act 2023:** publish the privacy policy; store only salted hashes for vote dedupe; add a pre-vote consent notice; rotate the salt; don't retain raw IP/fingerprint.
 - [ ] **AdSense/Razorpay:** keep content strictly factual and non-partisan.

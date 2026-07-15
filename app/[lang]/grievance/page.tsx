@@ -1,16 +1,10 @@
 import type { Metadata } from 'next';
 import Prose from '@/components/Prose';
 import GrievanceMailto from '@/components/GrievanceMailto';
+import { CONTACT_EMAIL as EMAIL, GRIEVANCE_OFFICER_NAME } from '@/lib/site-contact';
 
 export const metadata: Metadata = { title: 'Grievance / Right to Reply' };
 export { allLocaleStaticParams as generateStaticParams } from '@/lib/i18n/server';
-
-// TEMPORARY: grievance@rankyourpolitician.com is not a provisioned mailbox, so
-// grievance mail - which the IT Rules 2021 require us to acknowledge in 24h -
-// was silently going nowhere. This personal address is a monitored stopgap
-// until a mailbox on the domain exists. Override per-environment with
-// NEXT_PUBLIC_GRIEVANCE_EMAIL; switch this default the moment the real one is up.
-const EMAIL = process.env.NEXT_PUBLIC_GRIEVANCE_EMAIL || 'shelock221bholmes@gmail.com';
 
 export default function GrievancePage() {
   return (
@@ -44,15 +38,10 @@ export default function GrievancePage() {
         In accordance with the IT Rules, 2021, grievances are handled by our Grievance Officer:
       </p>
       <ul>
-        <li><strong>Name:</strong> [add Grievance Officer name]</li>
+        <li><strong>Name:</strong> {GRIEVANCE_OFFICER_NAME}</li>
         <li><strong>Email:</strong> {EMAIL}</li>
         <li><strong>Based in:</strong> India</li>
       </ul>
-      <p className="text-sm">
-        <em>Note for the site operator: replace the placeholders above with a real, India-based grievance
-        officer and monitored contact before going live. This is a legal requirement for intermediary safe
-        harbour.</em>
-      </p>
     </Prose>
   );
 }

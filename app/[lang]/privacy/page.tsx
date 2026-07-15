@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Prose from '@/components/Prose';
+import { CONTACT_EMAIL } from '@/lib/site-contact';
 
 export const metadata: Metadata = { title: 'Privacy Policy' };
 export { allLocaleStaticParams as generateStaticParams } from '@/lib/i18n/server';
@@ -56,7 +57,7 @@ export default function PrivacyPage() {
 
       <h2>Contact</h2>
       <p>
-        Data-protection queries: <strong>[add your contact email]</strong>. See also our{' '}
+        Data-protection queries: <strong>{CONTACT_EMAIL}</strong>. See also our{' '}
         <a href="/grievance">Grievance / Right to reply</a> page.
       </p>
     </Prose>
