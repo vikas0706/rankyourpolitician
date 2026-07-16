@@ -619,6 +619,7 @@
     "submitting": "Submitting…",
     "thanks": "Thanks - your rating was counted!",
     "already": "Your rating was updated.",
+    "alreadyVotedHint": "You previously rated this leader {rating}★. Select a new rating to update.",
     "oncePerPerson": "One rating per person. You can change it later.",
     "notVerifiedNote": "Ratings are people's opinion, shown separately from official facts.",
     "distribution": "How people rated",
