@@ -45,8 +45,12 @@
 .dark {
   --color-ink: 240 240 240;
   --color-ink-soft: 180 180 180;
-  --color-ink-faint: 120 120 120;
-  
+  /* 150, not 120: at 120 this hit only 3.78:1 on --color-paper-sink, below the
+     4.5:1 WCAG AA floor for body text. It carries locations, metric labels and
+     timestamps, so it has to clear AA on the LIGHTEST dark surface, not just on
+     pure black. */
+  --color-ink-faint: 150 150 150;
+
   --color-paper: 18 18 18;
   --color-paper-soft: 0 0 0;
   --color-paper-sink: 30 30 30;
@@ -56,7 +60,12 @@
   --color-brand: 99 102 241;
   --color-brand-ink: 199 210 254;
   --color-brand-soft: 28 27 45;
-  --color-brand-deep: 67 56 202;
+  /* Indigo-600, not indigo-700: this is the `via` stop of the hero headline's
+     bg-clip-text gradient, where 67 56 202 fell to 2.66:1 on black - under the
+     3:1 floor for large text. Still deep enough that white stays legible on
+     `hover:bg-brand-deep` fills (6.3:1) and still darker than --color-brand,
+     so the gradient keeps its direction. */
+  --color-brand-deep: 79 70 229;
 
   --color-accent: 251 146 60;
   --color-accent-ink: 255 237 213;
@@ -373,4 +382,50 @@ details > summary::-webkit-details-marker {
 }
 .dark .bg-white\/15 {
   background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Dark-mode role forks.
+ *
+ * Two token families are used for BOTH text and fills, and on a dark background
+ * those roles want opposite luminances. There is no single value for either:
+ *
+ *  - --color-brand is link text (113 `text-brand`) AND a fill under white labels
+ *    (12 `bg-brand ... text-white`). As text on --color-paper-sink it needs
+ *    luminance >= 0.233; under white text it needs <= 0.183.
+ *  - `*-ink` is a hue's text colour, so dark mode rightly flips it light - 34
+ *    `text-*-ink` usages sit on `*-soft` fills, and `text-brand-ink` would fall
+ *    to 1.70:1 if it stayed dark. But four places use it as a fill under a
+ *    hardcoded `text-white`, which flipping turned into white-on-near-white:
+ *    VoteWidget's selected chip and Submit button measured 1.16:1 - invisible at
+ *    rest - and the CPGRAMS / who-fixes-what CTAs do the same on hover.
+ *
+ * So: fork per role. Text keeps the light value, fills keep the dark one, and
+ * white then clears AA on each (9.9:1 / 5.2:1 / 5.0:1). The rating fill still
+ * holds 3.32:1 against the card, so a selected chip still reads as selected.
+ *
+ * :where(.dark) is load-bearing. It contributes no specificity, so each rule
+ * lands at exactly the weight of the utility it patches and wins on source order
+ * alone - while any `hover:`/`focus:` variant, being one class heavier, still
+ * overrides it. A plain `.dark .text-brand` would outrank `hover:text-white` and
+ * freeze the hover state; `.dark .text-brand:not(:hover)` would instead let a
+ * link with no hover colour of its own snap back to the failing 3.73:1 indigo at
+ * the exact moment the pointer lands on it. Light mode is untouched: #4f46e5
+ * already passes in both roles. */
+:where(.dark) .text-brand {
+  color: rgb(129 140 248);
+}
+:where(.dark) .bg-rating-ink {
+  background-color: rgb(180 83 9);
+}
+:where(.dark) .border-rating-ink {
+  border-color: rgb(180 83 9);
+}
+:where(.dark) .hover\:bg-rating-ink\/90:hover {
+  background-color: rgb(180 83 9 / 0.9);
+}
+:where(.dark) .hover\:bg-brand-ink:hover {
+  background-color: rgb(55 48 163);
+}
+:where(.dark) .hover\:bg-accent-ink:hover {
+  background-color: rgb(194 65 12);
 }

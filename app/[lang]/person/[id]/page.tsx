@@ -18,13 +18,18 @@ import Breadcrumbs from '@/components/Breadcrumbs';
 import { buildSpotMap } from '@/lib/geo-constituencies';
 import SpotMiniMap from '@/components/SpotMiniMap';
 import { Avatar, PartyChip, Chip } from '@/components/ui';
-import { ScoreRing, Stars, StatTile } from '@/components/viz';
+import { ScoreRing, StatTile } from '@/components/viz';
 import Icon, { type IconName } from '@/components/Icon';
 import LastUpdated from '@/components/LastUpdated';
 import VoteWidget from '@/components/VoteWidget';
 import AdSlot from '@/components/AdSlot';
 
-export const revalidate = 300;
+// Daily self-heal only. Profile facts change via deploy or /api/revalidate, and
+// the one fast-moving input - live vote numbers - is re-fetched client-side by
+// VoteWidget on mount, so regenerating this HTML every 5 minutes bought nothing
+// while billing an ISR write per visited page per cycle (~6k people x 23
+// locales of crawlable long tail). See README "How data flows".
+export const revalidate = 86400;
 
 const METRIC_ICON: Record<PerfMetric, IconName> = {
   attendance_pct: 'calendar',
@@ -75,7 +80,17 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
   const updated = profileLastUpdated({ facts: person.facts } as any);
   const factByType = new Map<string, Fact>();
   for (const f of person.facts) if (!factByType.has(f.field_type)) factByType.set(f.field_type, f);
-  const scoredMetrics = (Object.keys(person.metrics) as PerfMetric[]).filter((m) => person.metrics[m] != null);
+  // Parliament publishes attendance/questions/debates, so for an MP all three
+  // tiles ALWAYS render - with the value, an "exempt" state (ministers and
+  // presiding officers, for whom the house keeps no record), or an explicit
+  // "unavailable". Missing is shown as missing, never as 0 and never hidden.
+  const isMP = person.house === 'Lok Sabha' || person.house === 'Rajya Sabha';
+  const CORE_METRICS: PerfMetric[] = ['attendance_pct', 'questions_asked', 'debates_participated'];
+  const withValue = (Object.keys(person.metrics) as PerfMetric[]).filter((m) => person.metrics[m] != null);
+  const parliamentaryMetrics = isMP
+    ? [...CORE_METRICS, ...withValue.filter((m) => !CORE_METRICS.includes(m))]
+    : withValue;
+  const fullyExempt = isMP && CORE_METRICS.every((m) => person.metrics_exempt?.[m] != null);
 
   // Every role this person holds - senior-most first - so accountability reflects
   // ALL their positions (e.g. PM + MP, or Cabinet Minister + MP), not one generic block.
@@ -184,7 +199,7 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
                   <p className="mt-0.5 text-xs text-ink-faint">{tr('ranking.basedOn', { n: person.performance.metrics_used.length })}</p>
                 </>
               ) : (
-                <p className="text-sm text-ink-faint">{person.is_minister ? tr('profile.ministerExempt') : tr('profile.performanceInsufficient')}</p>
+                <p className="text-sm text-ink-faint">{fullyExempt ? tr('profile.presidingExempt') : person.is_minister ? tr('profile.ministerExempt') : tr('profile.performanceInsufficient')}</p>
               )}
               <p className="mt-1 text-sm text-ink-faint">{tr('profile.perfHelp')}</p>
               <Link href="/methodology" className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-brand">{tr('common.howCalculated')} <Icon name="arrow" size={14} /></Link>
@@ -200,27 +215,10 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
             </h2>
             <Chip tone="rating">{tr('common.notVerified')}</Chip>
           </div>
-          {/* The plain average of the votes cast - NOT the Bayesian score used for
-              ordering. This sits directly above the vote breakdown, so a shrunk
-              number here would visibly contradict it (five 1-star votes reading
-              as "2.3"). Thin samples are conveyed by the vote count + confidence,
-              not by silently moving the number toward neutral. */}
-          <div className="mt-4 flex items-center gap-3">
-            <span className="text-4xl font-extrabold text-rating-ink">{sentiment.raw_mean != null ? sentiment.raw_mean.toFixed(1) : '-'}</span>
-            <div>
-              <Stars value={sentiment.raw_mean} size={20} />
-              <p className="mt-0.5 text-xs text-ink-faint">
-                {sentiment.n_votes === 0
-                  ? tr('vote.confidenceNone')
-                  : sentiment.n_votes === 1
-                    ? tr('ranking.voteOne')
-                    : tr('ranking.votes', { n: sentiment.n_votes })}
-              </p>
-            </div>
-          </div>
-          <div className="mt-4 border-t border-line pt-4">
-            <VoteWidget politicianId={person.id} initial={{ mean: sentiment.raw_mean, votes: sentiment.n_votes, distribution: sentiment.distribution, confidence: sentiment.confidence }} />
-          </div>
+          {/* Rating summary + vote form live in the client widget: the server
+              renders the (possibly day-old) numbers into the static HTML, and
+              the widget re-fetches the live score on mount. */}
+          <VoteWidget politicianId={person.id} initial={{ mean: sentiment.raw_mean, votes: sentiment.n_votes, distribution: sentiment.distribution, confidence: sentiment.confidence }} />
         </div>
       </div>
 
@@ -349,14 +347,25 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
         ) : (
           <>
             <p className="mt-1 text-sm text-ink-faint">{tr('profile.recordSubtitle')}</p>
-            {scoredMetrics.length > 0 && (
+            {parliamentaryMetrics.length > 0 ? (
               <div className="mt-4">
                 <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-faint">{tr('profile.groups.parliamentary')}</h3>
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {scoredMetrics.map((m) => (
-                    <StatTile key={m} icon={METRIC_ICON[m]} value={`${person.metrics[m]}${PERF_METRIC_META[m].unit}`} label={tr(`fields.${m}`)} hint={person.performance?.metric_percentiles[m] != null ? `${tr('ranking.topLabel')} ${person.performance.metric_percentiles[m]}%` : undefined} />
-                  ))}
+                  {parliamentaryMetrics.map((m) => {
+                    const v = person.metrics[m];
+                    const exempt = person.metrics_exempt?.[m];
+                    if (v != null)
+                      return <StatTile key={m} icon={METRIC_ICON[m]} value={`${v}${PERF_METRIC_META[m].unit}`} label={tr(`fields.${m}`)} hint={person.performance?.metric_percentiles[m] != null ? `${tr('ranking.topLabel')} ${person.performance.metric_percentiles[m]}%` : undefined} />;
+                    if (exempt)
+                      return <StatTile key={m} icon={METRIC_ICON[m]} value={tr('profile.metricExempt')} label={tr(`fields.${m}`)} hint={tr(`profile.exemptReason.${exempt}`)} accent="ink" />;
+                    return <StatTile key={m} icon={METRIC_ICON[m]} value={tr('profile.metricNotPublished')} label={tr(`fields.${m}`)} hint={person.house === 'Rajya Sabha' && m === 'debates_participated' ? tr('profile.rsDebatesNotPublished') : undefined} accent="ink" />;
+                  })}
                 </div>
+              </div>
+            ) : (
+              <div className="mt-4">
+                <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-faint">{tr('profile.groups.parliamentary')}</h3>
+                <p className="text-sm text-ink-faint">{tr('profile.stateHouseNoRecords')}</p>
               </div>
             )}
             <div className="mt-5">

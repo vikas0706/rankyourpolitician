@@ -6,6 +6,8 @@ import { buildStatePaths } from '@/lib/geo';
 import SearchBox from '@/components/SearchBox';
 import GeoMap, { type GeoMapShape } from '@/components/GeoMap';
 import LastUpdated from '@/components/LastUpdated';
+import LeadersTabs from '@/components/LeadersTabs';
+import { LanguageHint } from '@/components/LanguageSwitcher';
 import AdSlot from '@/components/AdSlot';
 import HierarchyLadder from '@/components/HierarchyLadder';
 import { SectionCard, Avatar, PartyChip, StatPill, Eyebrow } from '@/components/ui';
@@ -14,7 +16,9 @@ import { Reveal, CountUp } from '@/components/motion';
 import Icon, { type IconName } from '@/components/Icon';
 import { Analytics } from '@vercel/analytics/next';
 
-export const revalidate = 300;
+// Daily self-heal only - content changes arrive via deploy or /api/revalidate,
+// and every ISR regeneration is a billed write (see README "How data flows").
+export const revalidate = 86400;
 export { allLocaleStaticParams as generateStaticParams } from '@/lib/i18n/server';
 
 export default async function HomePage({ params }: { params: Promise<LangParams> }) {
@@ -59,6 +63,15 @@ export default async function HomePage({ params }: { params: Promise<LangParams>
     { role: 'vidhanSabha', icon: 'flag', tint: 'bg-perf-soft text-perf' },
     { role: 'localBody', icon: 'home', tint: 'bg-rating-soft text-rating-ink' },
   ];
+  // "NOM" groups the President's Rajya Sabha nominees - not a geography, so it
+  // gets no state chip (same exclusion as getNationalStats).
+  const geoStates = states.filter((s) => s.stateCode !== 'NOM').sort((a, b) => b.count - a.count);
+  const exploreLinks: { href: string; icon: IconName; label: string }[] = [
+    { href: '/india', icon: 'parliament', label: tr('nav.central') },
+    { href: '/hierarchy', icon: 'network', label: tr('nav.hierarchy') },
+    { href: '/rankings', icon: 'star', label: tr('ranking.fullTitle') },
+    { href: '/accountability', icon: 'people', label: tr('nav.accountability') },
+  ];
 
   return (
     <>
@@ -97,6 +110,11 @@ export default async function HomePage({ params }: { params: Promise<LangParams>
                     </Link>
                   ))}
                 </div>
+                {/* Language discovery without landing friction: a muted line
+                    stating the language count, with native-script one-tap
+                    switches. Lives in the hero so nobody has to spot the small
+                    header globe to learn the site speaks their language. */}
+                <LanguageHint className="mt-4 justify-center lg:justify-start" />
               </div>
 
               {/* Live counters */}
@@ -208,77 +226,101 @@ export default async function HomePage({ params }: { params: Promise<LangParams>
 
         {/* State drill-down + top leaders */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_1.15fr]">
-          <Reveal>
-            <SectionCard title={tr('home.exploreTitle')} subtitle={tr('home.exploreHelp')} icon="map">
+          <Reveal className="h-full">
+            {/* Full-height card so the left column visually matches the (tall)
+                trending list. Desktop shows EVERY state/UT - the column is tall
+                anyway; mobile keeps the top 12 + "+N" so the stacked page stays
+                short. A quick-links footer fills the remaining height with the
+                main explore destinations instead of dead space. */}
+            <SectionCard title={tr('home.exploreTitle')} subtitle={tr('home.exploreHelp')} icon="map" className="flex h-full flex-col">
               <Eyebrow>{tr('home.statesWithData')}</Eyebrow>
-              {/* Top 12 only - the hero map covers every state, and /hierarchy
-                  lists them all. Keeps the home page within ~2 screens. */}
-              <ul className="mt-2 flex flex-wrap gap-2">
-                {[...states]
-                  .sort((a, b) => b.count - a.count)
-                  .slice(0, 12)
-                  .map((s) => (
-                    <li key={s.stateCode}>
-                      <Link
-                        href={`/state/${s.stateCode}`}
-                        className="pressable inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3.5 py-1.5 text-sm font-semibold text-brand-ink hover:bg-brand hover:text-white"
-                      >
-                        {s.state}
-                        <span className="rounded-full bg-white/90 px-1.5 text-xs tabular-nums text-brand-ink">{s.count}</span>
-                      </Link>
-                    </li>
-                  ))}
-                <li>
+              <ul className="mt-2 flex flex-wrap content-start gap-2">
+                {geoStates.map((s, i) => (
+                  <li key={s.stateCode} className={i >= 12 ? 'hidden lg:block' : undefined}>
+                    <Link
+                      href={`/state/${s.stateCode}`}
+                      className="pressable inline-flex items-center gap-1.5 rounded-full bg-brand-soft px-3.5 py-1.5 text-sm font-semibold text-brand-ink hover:bg-brand hover:text-white"
+                    >
+                      {s.state}
+                      <span className="rounded-full bg-white/90 px-1.5 text-xs tabular-nums text-brand-ink">{s.count}</span>
+                    </Link>
+                  </li>
+                ))}
+                <li className="lg:hidden">
                   <Link
                     href="/hierarchy"
                     className="pressable inline-flex items-center gap-1 rounded-full border border-brand/30 px-3.5 py-1.5 text-sm font-bold text-brand hover:bg-brand-soft"
                   >
-                    +{Math.max(0, states.length - 12)} <Icon name="arrow" size={13} />
+                    +{Math.max(0, geoStates.length - 12)} <Icon name="arrow" size={13} />
                   </Link>
                 </li>
               </ul>
+              <div className="mt-auto pt-5">
+                <Eyebrow icon="compass">{tr('home.moreExplore')}</Eyebrow>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {exploreLinks.map((l) => (
+                    <Link
+                      key={l.href}
+                      href={l.href}
+                      className="pressable flex items-center gap-2 rounded-xl border border-line bg-white/85 px-3 py-2.5 text-sm font-semibold text-ink-soft hover:border-brand/40 hover:text-brand"
+                    >
+                      <Icon name={l.icon} size={16} className="shrink-0 text-brand" />
+                      <span className="truncate">{l.label}</span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </SectionCard>
           </Reveal>
 
           <Reveal delay={90}>
-            <SectionCard title={tr('home.topTitle')} subtitle={tr('home.topHelp')} icon="star" aside={<LastUpdated date={meta.lastUpdated} />}>
-              {topLeaders.length > 0 ? (
-                <>
-                  <ol className="space-y-2">
-                    {topLeaders.map((e, i) => (
-                      <li key={e.politician_id}>
-                        <Link
-                          href={`/person/${e.politician_id}`}
-                          className="pressable flex items-center gap-3 rounded-xl border border-line bg-white px-3 py-2 transition hover:border-brand/40 hover:shadow-lift"
-                        >
-                          <RankBadge rank={i + 1} />
-                          <Avatar name={e.name} src={e.photo_url} size={40} />
-                          <div className="min-w-0 flex-1">
-                            <div className="flex flex-wrap items-center gap-x-2">
-                              <span className="truncate text-sm font-bold text-ink">{e.name}</span>
-                              <PartyChip party={e.party} />
-                            </div>
-                            <p className="truncate text-xs text-ink-faint">
-                              {e.constituencyName}, {e.state}
-                            </p>
-                          </div>
-                          <span className="shrink-0 rounded-full bg-perf-soft px-2.5 py-1 text-xs font-bold text-perf">
-                            {tr('ranking.topShort', { n: Math.max(1, Math.round(100 - (e.performance_percentile ?? 0))) })}
-                          </span>
-                        </Link>
-                      </li>
-                    ))}
-                  </ol>
-                  <Link
-                    href="/rankings"
-                    className="mt-3 flex items-center justify-center gap-1.5 rounded-xl border border-line bg-white px-3 py-2.5 text-sm font-semibold text-brand hover:bg-brand-soft/60"
-                  >
-                    {tr('ranking.seeAllCount', { n: totalLeaders })} <Icon name="arrow" size={14} />
-                  </Link>
-                </>
-              ) : (
-                <p className="text-sm text-ink-faint">{tr('search.noResults')}</p>
-              )}
+            {/* Two views of the same card: "Trending" (default - recent rating
+                activity, client-fetched on mount so the page stays static
+                while the list stays fresh) and "Top rated" (this
+                server-rendered list - by verified performance, baked into the
+                ISR page). */}
+            <SectionCard title={tr('home.topTitle')} icon="star" aside={<LastUpdated date={meta.lastUpdated} />}>
+              <LeadersTabs
+                top={
+                  topLeaders.length > 0 ? (
+                    <>
+                      <ol className="space-y-2">
+                        {topLeaders.map((e, i) => (
+                          <li key={e.politician_id}>
+                            <Link
+                              href={`/person/${e.politician_id}`}
+                              className="pressable flex items-center gap-3 rounded-xl border border-line bg-white px-3 py-2 transition hover:border-brand/40 hover:shadow-lift"
+                            >
+                              <RankBadge rank={i + 1} />
+                              <Avatar name={e.name} src={e.photo_url} size={40} />
+                              <div className="min-w-0 flex-1">
+                                <div className="flex flex-wrap items-center gap-x-2">
+                                  <span className="truncate text-sm font-bold text-ink">{e.name}</span>
+                                  <PartyChip party={e.party} />
+                                </div>
+                                <p className="truncate text-xs text-ink-faint">
+                                  {e.constituencyName}, {e.state}
+                                </p>
+                              </div>
+                              <span className="shrink-0 rounded-full bg-perf-soft px-2.5 py-1 text-xs font-bold text-perf">
+                                {tr('ranking.topShort', { n: Math.max(1, Math.round(100 - (e.performance_percentile ?? 0))) })}
+                              </span>
+                            </Link>
+                          </li>
+                        ))}
+                      </ol>
+                      <Link
+                        href="/rankings"
+                        className="mt-3 flex items-center justify-center gap-1.5 rounded-xl border border-line bg-white px-3 py-2.5 text-sm font-semibold text-brand hover:bg-brand-soft/60"
+                      >
+                        {tr('ranking.seeAllCount', { n: totalLeaders })} <Icon name="arrow" size={14} />
+                      </Link>
+                    </>
+                  ) : (
+                    <p className="text-sm text-ink-faint">{tr('search.noResults')}</p>
+                  )
+                }
+              />
             </SectionCard>
           </Reveal>
         </div>

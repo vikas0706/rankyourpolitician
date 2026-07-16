@@ -8,7 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
-import { validateDataset, datasetStats, publishDataset } from './publish';
+import { validateDataset, datasetStats, publishDataset, requestSiteRevalidation } from './publish';
 
 async function main() {
   const cmd = process.argv[2] || 'help';
@@ -40,6 +40,7 @@ async function main() {
         `✓ Published ${res.politicians} politicians, ${res.constituencies} constituencies, ` +
           `${res.central_government} ministers, ${res.office_seats} office seats.`,
       );
+      await requestSiteRevalidation();
       break;
     }
     case 'refresh-mps': {
@@ -92,6 +93,19 @@ async function main() {
       await import('./enrich-affidavits-states');
       break;
     }
+    case 'verify-affidavits': {
+      // Read-only audit: does each affidavit fact still match the page it cites,
+      // and is that page really about our member?
+      await import('./verify-affidavits');
+      break;
+    }
+    case 'enrich-affidavits-byseat': {
+      // Gap-filler for both of the above: walks MyNeta's PER-SEAT pages, which
+      // (unlike its summary lists) also cover candidates whose figures are
+      // rendered as images. Fill-only, so run it after the two steps above.
+      await import('./enrich-affidavits-byseat');
+      break;
+    }
     case 'normalize-fields': {
       // Post-enrichment data-quality cleanup (party role prefixes, bad ages).
       await import('./normalize-fields');
@@ -128,6 +142,12 @@ async function main() {
     case 'update-all': {
       // Orchestrator: pull latest from every source, rebuild indexes, validate.
       await import('./update-all');
+      break;
+    }
+    case 'backfill-trending': {
+      // Rebuild trending daily buckets from the votes collection - covers votes
+      // cast before the trending feature shipped. Dry-run unless --apply.
+      await import('./backfill-trending');
       break;
     }
     case 'rebuild-indexes':

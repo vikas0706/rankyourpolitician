@@ -51,6 +51,21 @@ export interface Fact {
   as_of?: string; // the period/session the value refers to, if stated by source
 }
 
+/**
+ * Why a member has NO value for a metric even though the house tracks it:
+ *  - 'minister'          members of the Council of Ministers are exempt from the
+ *                        attendance register and do not table questions (they
+ *                        answer them). LS marks their days "NR", RS marks "M".
+ *  - 'presiding-officer' the Speaker / Deputy Chairperson presides and neither
+ *                        signs the register nor asks questions or debates.
+ *  - 'no-register-record' the house keeps no signing record for this member
+ *                        (e.g. Leader of the Opposition, who holds Cabinet rank).
+ * A metric that is exempt is ABSENT from `metrics` (never 0) and carries a cited
+ * fact explaining the exemption; this map lets the UI say "exempt" instead of
+ * "unavailable".
+ */
+export type MetricExemptReason = 'minister' | 'presiding-officer' | 'no-register-record';
+
 export interface Politician {
   id: string; // stable slug, e.g. "north-goa-shripad-naik"
   name: string;
@@ -71,6 +86,8 @@ export interface Politician {
   neutral_summary?: string;
   /** Normalised numeric metrics for scoring, derived ONLY from verified facts. */
   metrics: Partial<Record<PerfMetric, number>>;
+  /** Metrics this member is exempt from (see MetricExemptReason). */
+  metrics_exempt?: Partial<Record<PerfMetric, MetricExemptReason>>;
   /** Contextual facts shown but never scored (assets, cases, education...). */
   facts: Fact[];
   terms_served?: number;
@@ -370,4 +387,34 @@ export interface VoteAggregate {
   total: number;
   sum: number;
   updated_at: string;
+  /**
+   * NEW votes per UTC day, for the trending window - {"2026-07-15":{"5":3}}.
+   * Only a voter's FIRST vote is counted, on the day it is cast; a later rating
+   * change is not re-counted (else the weekly count could exceed the person's
+   * distinct-voter total - one voter is not three ratings). Buckets are never
+   * decremented; the vote transaction prunes keys older than
+   * TRENDING_RETENTION_DAYS so the doc stays bounded. Absent on aggregates that
+   * predate the trending feature.
+   */
+  daily?: Record<string, Record<string, number>>;
+}
+
+/** One row of the trending list: recent rating ACTIVITY, not a quality verdict.
+ *  The decayed activity score is for ordering only (never shown). The rating
+ *  displayed is the leader's REAL rating - the same all-time plain average the
+ *  profile shows - not an average of the week's events. */
+export interface TrendingEntry {
+  politician_id: string;
+  name: string;
+  party?: string;
+  constituencyName?: string;
+  state?: string;
+  photo_url?: string;
+  /** New votes inside the trending window (the "N this week" line). */
+  recent_votes: number;
+  /** The leader's actual rating: plain all-time average of votes cast (1..5),
+   *  identical to the profile's displayed number. Never the Bayesian score. */
+  rating_mean: number | null;
+  /** All-time vote count behind rating_mean. */
+  total_votes: number;
 }

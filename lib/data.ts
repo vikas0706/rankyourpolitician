@@ -11,12 +11,15 @@ import type {
   SentimentScore,
   VoteAggregate,
   House,
+  MetricExemptReason,
 } from './types';
 import {
   buildRankings,
   computePerformanceScores,
   computeSentimentScore,
 } from './ranking';
+import { computeTrendingSignals } from './trending';
+import type { TrendingEntry } from './types';
 import { getDb } from './firebase-admin';
 import { datasetLastUpdated } from './format';
 import { MINISTER_RANK_LABEL, type MinisterRank, type Fact, type PerfMetric } from './types';
@@ -42,6 +45,8 @@ export interface Index {
   performance: Map<string, PerformanceScore>;
   sentiment: Map<string, SentimentScore>;
   rankingByKey: Map<string, Ranking>;
+  /** Raw live aggregates (with daily trending buckets), keyed by person id. */
+  voteAggregates: Map<string, VoteAggregate>;
   states: { stateCode: string; state: string; count: number }[];
   source: 'firestore' | 'seed';
   builtAt: string;
@@ -154,6 +159,7 @@ function buildIndex(ds: Dataset): Index {
     performance,
     sentiment,
     rankingByKey,
+    voteAggregates: ds.voteAggregates,
     states: [...stateAgg.entries()]
       .map(([stateCode, v]) => ({ stateCode, state: v.state, count: v.count }))
       .sort((a, b) => a.state.localeCompare(b.state)),
@@ -246,6 +252,9 @@ export interface PersonView {
   terms_served?: number;
   facts: Fact[];
   metrics: Partial<Record<PerfMetric, number>>;
+  /** Metrics the house keeps no record of for this member (minister / presiding
+   *  officer / LoP) - rendered as "exempt", never as 0 or "unavailable". */
+  metrics_exempt?: Partial<Record<PerfMetric, MetricExemptReason>>;
   performance: PerformanceScore | null;
   hasRecord: boolean; // do we have the detailed MP fact record?
   sources: [string, string][];
@@ -314,6 +323,7 @@ export async function getPerson(
         terms_served: p.terms_served,
         facts: p.facts,
         metrics: p.metrics,
+        metrics_exempt: p.metrics_exempt,
         performance: idx.performance.get(id) ?? null,
         hasRecord: p.facts.length > 0,
         sources: [...new Map([...p.facts.map((f) => [f.source_url, f.source_name] as [string, string]), ...extraSources])],
@@ -496,6 +506,93 @@ export async function getDataSource(): Promise<'firestore' | 'seed'> {
 export async function getPersonSentiment(id: string): Promise<SentimentScore> {
   const idx = await getIndex();
   return idx.sentiment.get(id) ?? computeSentimentScore(id, undefined);
+}
+
+/** Live ratings for every leader with at least one vote, as compact rows of
+ *  [bayesian_mean, raw_mean, n_votes] keyed by person id. The rankings
+ *  explorer merges these into the static rankings.json payload client-side
+ *  (the Bayesian value orders the list, the raw mean is what gets displayed).
+ *  Served from the TTL-cached aggregates - zero extra Firestore reads - and
+ *  only rated leaders are included, so the payload stays tiny. */
+export async function getAllRatings(): Promise<Record<string, [number, number, number]>> {
+  const idx = await getIndex();
+  const out: Record<string, [number, number, number]> = {};
+  for (const [id, s] of idx.sentiment) {
+    if (s.n_votes > 0 && s.bayesian_mean != null && s.raw_mean != null) {
+      out[id] = [s.bayesian_mean, s.raw_mean, s.n_votes];
+    }
+  }
+  return out;
+}
+
+/**
+ * Trending leaders: most rating activity in the last week, decayed toward
+ * today (see lib/trending.ts for the exact rules). Derived entirely from the
+ * TTL-cached aggregates the index already loads - zero extra Firestore reads.
+ * Entries are joined to the politician index; a person rated on a
+ * minister-only profile (no linked MP/MLA record) is resolved from the
+ * government rosters. Ids that resolve to no one are skipped - missing beats
+ * wrong.
+ */
+export async function getTrending(limit = 5): Promise<TrendingEntry[]> {
+  const idx = await getIndex();
+  const signals = computeTrendingSignals(idx.voteAggregates.values());
+
+  // Lazily built roster lookup for the rare non-MP case (CM / minister stubs).
+  let rosterById: Map<string, { name: string; party?: string; state?: string; constituency?: string; photo_url?: string }> | null = null;
+  const loadRosters = async () => {
+    if (rosterById) return rosterById;
+    rosterById = new Map();
+    for (const m of await getCentralGovernment()) {
+      rosterById.set(m.politicianId || m.id, { name: m.name, party: m.party, state: m.state, constituency: m.constituency, photo_url: m.photo_url });
+    }
+    for (const sm of await allStateMinisters()) {
+      const key = sm.politicianId || sm.id;
+      if (!rosterById.has(key)) rosterById.set(key, { name: sm.name, party: sm.party, state: sm.state, photo_url: sm.photo_url });
+    }
+    return rosterById;
+  };
+
+  const out: TrendingEntry[] = [];
+  for (const s of signals) {
+    if (out.length >= limit) break;
+    // The displayed rating is the leader's REAL one - the all-time plain
+    // average of standing votes, exactly what their profile shows - not the
+    // mean of this week's events (re-votes make those diverge).
+    const agg = idx.voteAggregates.get(s.politician_id);
+    const total = agg?.total ?? 0;
+    const rating_mean = agg && agg.total > 0 ? Math.round((agg.sum / agg.total) * 100) / 100 : null;
+    const p = idx.politicianById.get(s.politician_id);
+    if (p) {
+      out.push({
+        politician_id: p.id,
+        name: p.name,
+        party: p.party,
+        constituencyName: p.constituencyName,
+        state: p.state,
+        photo_url: p.photo_url,
+        recent_votes: s.recent_votes,
+        rating_mean,
+        total_votes: total,
+      });
+      continue;
+    }
+    const m = (await loadRosters()).get(s.politician_id);
+    if (m) {
+      out.push({
+        politician_id: s.politician_id,
+        name: m.name,
+        party: m.party,
+        constituencyName: m.constituency,
+        state: m.state,
+        photo_url: m.photo_url,
+        recent_votes: s.recent_votes,
+        rating_mean,
+        total_votes: total,
+      });
+    }
+  }
+  return out;
 }
 
 /** Fill a minister record's missing photo from its linked politician profile -

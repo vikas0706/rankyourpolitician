@@ -5,6 +5,8 @@
 
 # next.js
 /.next/
+# isolated build output when NEXT_DIST_DIR is set (see next.config.mjs)
+/.next-*/
 /out/
 next-env.d.ts
 
@@ -43,3 +45,6 @@ firebase-service-account.json
 # Scratch fetches from the data-manager / debugging (curl dumps of source sites).
 # Data belongs in data/seed/*.json with its citation — never a raw page copy.
 /*.html
+
+# Data-manager scrape caches (re-fetchable; keeps reruns off the source sites).
+/tools/data-manager/.cache/
