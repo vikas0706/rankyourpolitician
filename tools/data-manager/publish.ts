@@ -150,15 +150,18 @@ export async function publishDataset(): Promise<{
 }
 
 /** Ask the deployed site to drop its page cache (POST /api/revalidate) so the
- *  publish shows up on the next visit instead of the next daily revalidation.
+ *  publish shows up on the next visit instead of the next timed revalidation.
  *  No-op unless REVALIDATE_URL and REVALIDATE_SECRET are set in .env.local,
- *  and never fatal: the publish itself already succeeded, and every page
- *  self-heals within a day regardless. */
+ *  and never fatal: the publish itself already succeeded, and pages self-heal
+ *  regardless (hub pages within a day, the long tail within a week - so a
+ *  failure here is worth fixing, not ignoring). */
 export async function requestSiteRevalidation(): Promise<void> {
   const base = process.env.REVALIDATE_URL;
   const secret = process.env.REVALIDATE_SECRET;
   if (!base || !secret) {
-    console.log('i Skipped site revalidation (REVALIDATE_URL / REVALIDATE_SECRET not set) - pages refresh within a day.');
+    console.log(
+      'i Skipped site revalidation (REVALIDATE_URL / REVALIDATE_SECRET not set) - hub pages refresh within a day, long-tail pages within a WEEK.',
+    );
     return;
   }
   try {
@@ -166,12 +169,24 @@ export async function requestSiteRevalidation(): Promise<void> {
       method: 'POST',
       headers: { authorization: `Bearer ${secret}` },
     });
-    console.log(
-      res.ok
-        ? '✓ Site cache invalidated - pages regenerate on next visit.'
-        : `⚠ Site revalidation returned ${res.status} - pages refresh within a day.`,
-    );
+    if (res.ok) {
+      console.log('✓ Site cache invalidated - pages regenerate on next visit.');
+      console.log(
+        '  Reminder: run `npm run dm -- revalidate` once more in ~35 min. A page that',
+        '\n  regenerates just after a publish can bake the previous in-process TTL snapshot',
+        '\n  (lib/data.ts memos, up to 30 min stale); a second sweep re-renders those.',
+      );
+    } else {
+      console.log(
+        `⚠ Site revalidation returned ${res.status} - the publish stays invisible until pages self-heal (long tail: up to a WEEK).` +
+          (res.status === 401
+            ? '\n  401 hint: REVALIDATE_URL must use the canonical www host - a host redirect drops the Authorization header (see CLAUDE.md).'
+            : ''),
+      );
+    }
   } catch (err) {
-    console.log(`⚠ Site revalidation failed (${err instanceof Error ? err.message : err}) - pages refresh within a day.`);
+    console.log(
+      `⚠ Site revalidation failed (${err instanceof Error ? err.message : err}) - the publish stays invisible until pages self-heal (long tail: up to a WEEK).`,
+    );
   }
 }

@@ -21,9 +21,11 @@ import { SectionCard, Avatar, PartyChip, Chip, PageHero, StatPill, Eyebrow } fro
 import { Reveal, CountUp } from '@/components/motion';
 import Icon from '@/components/Icon';
 
-// Daily self-heal only - content changes arrive via deploy or /api/revalidate,
-// and every ISR regeneration is a billed write (see README "How data flows").
-export const revalidate = 86400;
+// Weekly self-heal only - content changes arrive via deploy or /api/revalidate,
+// and every ISR regeneration is a billed write: at 86400 this long tail re-rendered
+// daily under crawler traffic and dominated the ISR-writes bill (see README
+// "How data flows").
+export const revalidate = 604800;
 
 // Prebuild every district page for English (~600) so first hits are CDN
 // cache hits; other locales render on demand and ISR-cache.
@@ -43,8 +45,14 @@ export async function generateMetadata({
 }: {
   params: Promise<{ lang: string; state: string; district: string }>;
 }): Promise<Metadata> {
-  const { district } = await params;
-  return { title: `${decodeURIComponent(district)} - MPs, MLAs & officials` };
+  const { state, district } = await params;
+  return {
+    title: `${decodeURIComponent(district)} - MPs, MLAs & officials`,
+    // Clean URL is the canonical for every /{locale}/... duplicate (see person
+    // page). decode-then-encode normalises the segment whether it arrives
+    // percent-encoded (runtime requests) or raw (generateStaticParams).
+    alternates: { canonical: `/district/${state}/${encodeURIComponent(decodeURIComponent(district))}` },
+  };
 }
 
 function RepCard({ p, roleChip }: { p: Politician; roleChip: string }) {
