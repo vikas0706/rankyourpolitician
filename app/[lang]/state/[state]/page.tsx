@@ -17,9 +17,11 @@ import { CompositionBar } from '@/components/viz';
 import { Reveal, CountUp } from '@/components/motion';
 import Icon from '@/components/Icon';
 
-// Daily self-heal only - content changes arrive via deploy or /api/revalidate,
-// and every ISR regeneration is a billed write (see README "How data flows").
-export const revalidate = 86400;
+// Weekly self-heal only - content changes arrive via deploy or /api/revalidate,
+// and every ISR regeneration is a billed write: at 86400 this long tail re-rendered
+// daily under crawler traffic and dominated the ISR-writes bill (see README
+// "How data flows").
+export const revalidate = 604800;
 
 export async function generateStaticParams() {
   return (await getStates()).map((s) => ({ lang: DEFAULT_LOCALE, state: s.stateCode }));
@@ -28,7 +30,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ lang: string; state: string }> }): Promise<Metadata> {
   const { state } = await params;
   const s = await getStateByCode(state);
-  return { title: s ? `${s.state} - government, MPs, MLAs & districts` : 'State' };
+  return {
+    title: s ? `${s.state} - government, MPs, MLAs & districts` : 'State',
+    // Clean URL is the canonical for every /{locale}/... duplicate (see person page).
+    alternates: { canonical: `/state/${s ? s.stateCode : state}` },
+  };
 }
 
 export default async function StatePage({ params }: { params: Promise<{ lang: string; state: string }> }) {

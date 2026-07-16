@@ -88,9 +88,11 @@ important thing to understand before changing `lib/data.ts`:
   vote aggregates refresh at most every 5 minutes, government collections every 30 minutes, per
   warm instance. The cache stores the *promise*, so a burst of concurrent requests shares one load
   instead of stampeding the database.
-- **ISR sits on top, but only as a daily self-heal** (`revalidate = 86400` on every page).
-  Pages are served straight from the CDN cache; with ~5,300 person pages x 23 locales, the
-  crawl-driven long tail would otherwise re-render around the clock for data that changes rarely.
+- **ISR sits on top, but only as a slow self-heal** (`revalidate = 86400` on the hub pages,
+  `604800` on the person/area/district/state long tail). Pages are served straight from the
+  CDN cache; with ~10.6k crawlable long-tail pages, the old daily window meant crawler
+  revisits re-rendered the whole tail every day - most of the ISR-writes bill - for data
+  that only changes via publish or deploy.
 - **Freshness is handled where the data actually changes, not by re-rendering everything:**
   - *Votes* - `VoteWidget` re-fetches the live score from `GET /api/vote` on mount
     (CDN-cached 5 min, served from the in-process aggregate cache: zero extra Firestore
@@ -106,7 +108,8 @@ important thing to understand before changing `lib/data.ts`:
   - *Data publishes* - `npm run dm -- publish` calls `POST /api/revalidate` (Bearer
     `REVALIDATE_SECRET`), which sweeps the page cache; each page regenerates on its next
     visit. A page that regenerates within ~30 min of a publish can still bake the previous
-    in-process TTL snapshot - the daily revalidate self-heals it.
+    in-process TTL snapshot - run `npm run dm -- revalidate` again ~35 min after the publish
+    to re-sweep those (the timed revalidate remains the backstop).
   - *Seed changes* still require a redeploy, which resets the whole cache anyway.
 - **Nothing reads Firestore during `next build`** - prerendering ~5,300 person pages would
   flood the database with reads on every deploy for data the seed already has. Override with
@@ -161,6 +164,7 @@ Runs on your machine with a Firebase service-account key that **stays local** (g
 npm run dm -- validate                 # check every fact is cited + consistent
 npm run dm -- stats                    # dataset summary
 npm run dm -- publish                  # push seed to Firestore (needs .env.local creds)
+npm run dm -- revalidate               # re-sweep the deployed page cache (~35 min after a publish)
 npm run dm -- update-all               # orchestrator: refresh every source, rebuild, validate
 npm run dm -- rebuild-indexes          # regenerate static search/who payloads from the seed
 npm run dm -- backfill-trending        # rebuild trending buckets from vote records (--apply)

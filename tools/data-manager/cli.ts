@@ -2,6 +2,7 @@
 //   validate   check every fact is cited and the dataset is consistent
 //   stats      dataset summary
 //   publish    push politicians + constituencies to Firestore (needs creds)
+//   revalidate re-sweep the deployed page cache (~35 min after a publish)
 //   import     rebuild the seed from a sourcing-workflow output JSON
 //                 npm run dm -- import <path-to-output.json>
 import dotenv from 'dotenv';
@@ -40,6 +41,14 @@ async function main() {
         `✓ Published ${res.politicians} politicians, ${res.constituencies} constituencies, ` +
           `${res.central_government} ministers, ${res.office_seats} office seats.`,
       );
+      await requestSiteRevalidation();
+      break;
+    }
+    case 'revalidate': {
+      // Standalone cache sweep - used ~35 min after a publish to re-render any
+      // page that regenerated against a still-warm in-process TTL snapshot
+      // (see the note in app/api/revalidate/route.ts), or after fixing
+      // REVALIDATE_URL/SECRET when the publish-time sweep failed.
       await requestSiteRevalidation();
       break;
     }

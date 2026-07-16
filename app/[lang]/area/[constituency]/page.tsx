@@ -14,9 +14,11 @@ import { SectionCard, Avatar, PartyChip, Chip, PageHero } from '@/components/ui'
 import { Reveal } from '@/components/motion';
 import Icon from '@/components/Icon';
 
-// Daily self-heal only - content changes arrive via deploy or /api/revalidate,
-// and every ISR regeneration is a billed write (see README "How data flows").
-export const revalidate = 86400;
+// Weekly self-heal only - content changes arrive via deploy or /api/revalidate,
+// and every ISR regeneration is a billed write: at 86400 this long tail re-rendered
+// daily under crawler traffic and dominated the ISR-writes bill (see README
+// "How data flows").
+export const revalidate = 604800;
 
 // Prebuild every constituency page for English (~4.6k) so first hits are CDN
 // cache hits; other locales render on demand and ISR-cache.
@@ -32,7 +34,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { constituency } = await params;
   const c = await getConstituency(constituency);
-  return { title: c ? `${c.name} - your representative` : 'Constituency' };
+  return {
+    title: c ? `${c.name} - your representative` : 'Constituency',
+    // Clean URL is the canonical for every /{locale}/... duplicate (see person page).
+    alternates: { canonical: `/area/${c ? c.id : constituency}` },
+  };
 }
 
 export default async function AreaPage({ params }: { params: Promise<{ lang: string; constituency: string }> }) {

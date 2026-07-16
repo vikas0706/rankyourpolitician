@@ -5,6 +5,7 @@ import Prose from '@/components/Prose';
 export const metadata: Metadata = {
   title: 'Methodology',
   description: 'How RankYourPolitician sources data and computes its two independent ranking axes.',
+  alternates: { canonical: '/methodology' },
 };
 export { allLocaleStaticParams as generateStaticParams } from '@/lib/i18n/server';
 
