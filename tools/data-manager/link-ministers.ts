@@ -36,6 +36,27 @@ function jac(a: Set<string>, b: Set<string>): number {
 
 interface Minister { id: string; name: string; stateCode?: string; constituency?: string; rank?: string; politicianId?: string }
 
+/** Tokens INCLUDING single letters, for initials-aware comparison. */
+const toksAll = (s: string) =>
+  (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(HON, ' ').replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+
+/**
+ * "J. P. Nadda" ~ "Jagat Prakash Nadda", "S. Jaishankar" ~ "Subrahmanyam
+ * Jaishankar": same token count, family name exact, and each remaining token
+ * pair either equal or an initial of the other. Token-count equality keeps
+ * "B. L. Verma" from matching "Laxmi Verma".
+ */
+function initialsCompatible(a: string, b: string): boolean {
+  const ta = toksAll(a), tb = toksAll(b);
+  if (!ta.length || ta.length !== tb.length) return false;
+  if (ta[ta.length - 1] !== tb[tb.length - 1]) return false;
+  for (let i = 0; i < ta.length - 1; i++) {
+    const t = ta[i], u = tb[i];
+    if (!(t === u || (t.length === 1 && u.startsWith(t)) || (u.length === 1 && t.startsWith(u)))) return false;
+  }
+  return true;
+}
+
 /** Find the unique politician in a state that a minister refers to. */
 function resolvePol(m: Minister, inState: Politician[]): string | null {
   const nm = normName(m.name);
@@ -96,13 +117,27 @@ function main() {
   for (const m of cg as Minister[]) {
     if (m.politicianId && byId.has(m.politicianId)) { already++; continue; }
     const nm = normName(m.name);
-    const cand = pols.filter((p) => normName(p.name) === nm);
+    let cand = pols.filter((p) => normName(p.name) === nm);
+    // Initials fallback: official rosters abbreviate ("J. P. Nadda") while the
+    // member roster spells names out ("Jagat Prakash Nadda").
+    if (cand.length !== 1) cand = pols.filter((p) => initialsCompatible(p.name, m.name));
     if (cand.length === 1) { m.politicianId = cand[0].id; cLinked++; linked++; }
     else unlinked.push(`${m.name} (central ${m.rank || ''})`);
   }
   writeFileSync(cgPath, JSON.stringify(cgRaw, null, 2) + '\n');
 
-  console.log(`✓ link-ministers: linked ${linked} (state + ${cLinked} central), ${already} already linked, ${unlinked.length} left unlinked.`);
+  // --- Sync the is_minister flag onto linked profiles. The ranking exempts
+  // ministers from attendance/questions (no register record is kept for them),
+  // so a stale false here silently turns an exemption into a fake bottom rank.
+  let flagged = 0;
+  const centralIds = new Set((cg as Minister[]).map((m) => m.politicianId).filter(Boolean) as string[]);
+  for (const id of centralIds) {
+    const p = byId.get(id);
+    if (p && !p.is_minister) { p.is_minister = true; flagged++; }
+  }
+  if (flagged) writeFileSync(resolve(SEED, 'politicians.json'), JSON.stringify(pols, null, 2) + '\n');
+
+  console.log(`✓ link-ministers: linked ${linked} (state + ${cLinked} central), ${already} already linked, ${unlinked.length} left unlinked, ${flagged} is_minister flags synced.`);
   if (unlinked.length) console.log(`  unlinked (kept own stub - likely not a legislator we track): ${unlinked.slice(0, 20).join('; ')}${unlinked.length > 20 ? ` …+${unlinked.length - 20}` : ''}`);
 }
 

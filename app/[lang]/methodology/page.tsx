@@ -53,9 +53,9 @@ export default function MethodologyPage() {
         </li>
         <li>
           <strong>Data floor:</strong> a member needs at least <strong>two</strong> verified metrics to be
-          ranked (one for ministers, who are exempt from questions/debates by parliamentary convention).
-          Below the floor we say "not enough data" - we never rank on a single number, and an alphabetical
-          list is never presented as a ranking.
+          ranked (one for ministers, who are exempt from the attendance register and from questions - see
+          "exemptions" below). Below the floor we say "not enough data" - we never rank on a single number,
+          and an alphabetical list is never presented as a ranking.
         </li>
         <li>
           <strong>Sparse metrics are never scored:</strong> a percentile only means something when enough
@@ -63,8 +63,22 @@ export default function MethodologyPage() {
           before it can affect anyone’s score. A number that only a handful of members happen to have is
           shown as a plain fact, never converted into a standing or a rank.
         </li>
-        <li>Ministers and presiding officers are exempt from questions/debates by parliamentary convention, so those metrics are excluded for them rather than counted as zero.</li>
-        <li>State legislatures do not publish comparable member-level attendance/questions data, so most MLAs/MLCs appear as "not enough data" rather than being given a made-up score.</li>
+        <li>
+          <strong>How attendance is counted:</strong> the Lok Sabha register marks each sitting day
+          "signed", "not signed" or <strong>"NR" (no record)</strong>. Attendance is signed days divided by
+          <em> recorded</em> days only, and we require at least 20 recorded days before stating a percentage.
+          "NR" days are excluded entirely: they are how the house marks members it keeps no register for.
+          The Rajya Sabha record works the same way, with the marker "M" for ministers.
+        </li>
+        <li>
+          <strong>Exemptions are not zeros:</strong> members of the Council of Ministers do not sign the
+          attendance register and answer questions rather than table them; presiding officers (the Speaker,
+          the Deputy Chairperson) run the house rather than participate in it; the house also keeps no
+          register record for the Leader of the Opposition, who holds Cabinet rank. For these members the
+          affected metrics are shown as <em>"exempt"</em> with the reason, are excluded from their score and
+          from the cohort distribution, and are never displayed or counted as 0.
+        </li>
+        <li>State legislatures do not publish comparable member-level attendance/questions data, so MLAs/MLCs show these fields as "not published" and appear as "not enough data" rather than being given a made-up score.</li>
         <li>Declared assets and criminal cases are shown as neutral factual context and are <strong>not</strong> scored.</li>
         <li>Where data is missing, we show "unavailable" - never a zero.</li>
         <li>Scores are displayed as "top X%" of the comparable cohort (e.g. percentile 87 → top 13%).</li>
@@ -94,8 +108,8 @@ export default function MethodologyPage() {
       <h2>Sources</h2>
       <p>
         "No citation, no claim." Identity and cross-references come from Wikidata; declared assets, education
-        and criminal cases from Election Commission affidavits; parliamentary activity from official Sansad /
-        PRS records. Every fact links to its source and shows the date it was retrieved.
+        and criminal cases from Election Commission affidavits; parliamentary activity exclusively from the
+        official Digital Sansad record. Every fact links to its source and shows the date it was retrieved.
       </p>
 
       <h2>Corrections</h2>

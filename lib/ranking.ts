@@ -19,10 +19,14 @@ export const FORMULA_VERSION = 'perf-v2-weighted-percentile';
 const SENTIMENT_PRIOR_MEAN = 3.0; // neutral
 const SENTIMENT_PRIOR_STRENGTH = 10; // "C" - equivalent number of prior votes
 
-// Metrics that ministers/presiding officers are exempt from by convention
-// (they do not ask questions / debate in the ordinary way). Excluding them
-// avoids both penalising the minister and skewing the cohort distribution.
-const MINISTER_EXEMPT: PerfMetric[] = ['questions_asked', 'debates_participated'];
+// Metrics that ministers are exempt from: they neither sign the attendance
+// register (the house keeps no record for them - LS marks their days "NR", RS
+// marks them "M") nor table questions (they answer them). Their debate
+// participation is real and IS scored. Excluding the exempt metrics avoids both
+// penalising the minister with a fake 0 and skewing the cohort distribution.
+// The seed also carries per-member `metrics_exempt` markers (covering the
+// Speaker/Deputy Chair and the LoP) which are respected below.
+const MINISTER_EXEMPT: PerfMetric[] = ['attendance_pct', 'questions_asked'];
 
 // perf-v2: explicit weights instead of equal-weighting whatever happens to be
 // available. Attendance is the most universal duty; questions and debates
@@ -38,9 +42,11 @@ export const METRIC_WEIGHT: Record<PerfMetric, number> = {
 };
 
 /** perf-v2 coverage rule: a composite needs at least this many scored metrics.
- *  Ministers are exempt from questions/debates, so one metric (attendance) is
+ *  Ministers are exempt from attendance and questions (no register record, and
+ *  they answer questions rather than ask), so one scored metric (debates) is
  *  enough for them; everyone else needs 2+ so a single number can never make
- *  a rank on its own. Below the floor → composite is null ("not enough data"). */
+ *  a rank on its own. Below the floor → composite is null ("not enough data"
+ *  - or "exempt" when every core metric carries an exemption marker). */
 export function minMetricsRequired(p: Politician): number {
   return p.is_minister ? 1 : 2;
 }
@@ -74,12 +80,13 @@ export function cohortLabel(p: Politician): string {
   return `${p.house}${t}`;
 }
 
-/** Metrics this politician is actually scored on (applies minister exemptions). */
+/** Metrics this politician is actually scored on (applies exemptions). */
 function scoredMetricsOf(p: Politician): [PerfMetric, number][] {
   const out: [PerfMetric, number][] = [];
   for (const m of PERF_METRICS) {
     const v = p.metrics[m];
     if (v == null || Number.isNaN(v)) continue;
+    if (p.metrics_exempt?.[m]) continue;
     if (p.is_minister && MINISTER_EXEMPT.includes(m)) continue;
     out.push([m, v]);
   }
@@ -116,6 +123,7 @@ export function computePerformanceScores(politicians: Politician[]): Map<string,
     for (const m of PERF_METRICS) {
       const vals: number[] = [];
       for (const p of members) {
+        if (p.metrics_exempt?.[m]) continue;
         if (p.is_minister && MINISTER_EXEMPT.includes(m)) continue;
         const v = p.metrics[m];
         if (v != null && !Number.isNaN(v)) vals.push(v);

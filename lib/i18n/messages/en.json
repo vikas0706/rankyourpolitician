@@ -501,7 +501,17 @@
     "topPercent": "Top {n}%",
     "amongCohort": "among {cohort}",
     "performanceInsufficient": "Not enough official data yet to score performance.",
-    "ministerExempt": "As a minister, they don't ask questions or table private bills by convention, so a performance percentile isn't shown.",
+    "ministerExempt": "Ministers are exempt from the attendance register and answer questions rather than ask them, so there isn't enough scored data for a percentile yet.",
+    "presidingExempt": "As presiding officer of the House, they neither sign the register, table questions nor join debates as a member, so a performance percentile isn't shown.",
+    "metricExempt": "Exempt",
+    "metricNotPublished": "Not published",
+    "exemptReason": {
+      "minister": "The House keeps no record for ministers: they are exempt from the attendance register and answer questions rather than ask them.",
+      "presiding-officer": "Presides over the House rather than participating as a member - no record is kept.",
+      "no-register-record": "The House keeps no signing record for this member (marked \"NR\" in the official register)."
+    },
+    "rsDebatesNotPublished": "The Rajya Sabha does not publish a member-wise debate count.",
+    "stateHouseNoRecords": "This State Legislature does not publish official attendance, question or debate records for its members. Missing data is shown as unavailable - it is never counted as zero.",
     "recordComingSoon": "A detailed record for this leader is being added.",
     "aboutTitle": "About",
     "partyUpdate": "Party update",

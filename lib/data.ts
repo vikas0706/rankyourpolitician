@@ -11,6 +11,7 @@ import type {
   SentimentScore,
   VoteAggregate,
   House,
+  MetricExemptReason,
 } from './types';
 import {
   buildRankings,
@@ -251,6 +252,9 @@ export interface PersonView {
   terms_served?: number;
   facts: Fact[];
   metrics: Partial<Record<PerfMetric, number>>;
+  /** Metrics the house keeps no record of for this member (minister / presiding
+   *  officer / LoP) - rendered as "exempt", never as 0 or "unavailable". */
+  metrics_exempt?: Partial<Record<PerfMetric, MetricExemptReason>>;
   performance: PerformanceScore | null;
   hasRecord: boolean; // do we have the detailed MP fact record?
   sources: [string, string][];
@@ -319,6 +323,7 @@ export async function getPerson(
         terms_served: p.terms_served,
         facts: p.facts,
         metrics: p.metrics,
+        metrics_exempt: p.metrics_exempt,
         performance: idx.performance.get(id) ?? null,
         hasRecord: p.facts.length > 0,
         sources: [...new Map([...p.facts.map((f) => [f.source_url, f.source_name] as [string, string]), ...extraSources])],

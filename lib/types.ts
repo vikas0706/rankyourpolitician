@@ -51,6 +51,21 @@ export interface Fact {
   as_of?: string; // the period/session the value refers to, if stated by source
 }
 
+/**
+ * Why a member has NO value for a metric even though the house tracks it:
+ *  - 'minister'          members of the Council of Ministers are exempt from the
+ *                        attendance register and do not table questions (they
+ *                        answer them). LS marks their days "NR", RS marks "M".
+ *  - 'presiding-officer' the Speaker / Deputy Chairperson presides and neither
+ *                        signs the register nor asks questions or debates.
+ *  - 'no-register-record' the house keeps no signing record for this member
+ *                        (e.g. Leader of the Opposition, who holds Cabinet rank).
+ * A metric that is exempt is ABSENT from `metrics` (never 0) and carries a cited
+ * fact explaining the exemption; this map lets the UI say "exempt" instead of
+ * "unavailable".
+ */
+export type MetricExemptReason = 'minister' | 'presiding-officer' | 'no-register-record';
+
 export interface Politician {
   id: string; // stable slug, e.g. "north-goa-shripad-naik"
   name: string;
@@ -71,6 +86,8 @@ export interface Politician {
   neutral_summary?: string;
   /** Normalised numeric metrics for scoring, derived ONLY from verified facts. */
   metrics: Partial<Record<PerfMetric, number>>;
+  /** Metrics this member is exempt from (see MetricExemptReason). */
+  metrics_exempt?: Partial<Record<PerfMetric, MetricExemptReason>>;
   /** Contextual facts shown but never scored (assets, cases, education...). */
   facts: Fact[];
   terms_served?: number;
