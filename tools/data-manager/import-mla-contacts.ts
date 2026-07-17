@@ -45,6 +45,23 @@ const exactName = (a: string, b: string) => {
 };
 const nameAgrees = (a: string, b: string) => nameOverlap(a, b) >= 0.5 || sameCompactName(a, b);
 
+/**
+ * Assembly directories decorate the constituency name with the AC number and
+ * district in a dozen incompatible layouts - "Bithoor-210", "Sankheda -[139]-
+ * Chhota Udaipur", "6 - Maheshpur (ST) -[6]- Pakur", "Anandapur - ( Keonjhar ,
+ * Odisha )", "Nippani - (01)". The seat is the bare name; strip the rest before
+ * matching. Reservation tags "(SC)/(ST)" are left for `norm` to drop, and an
+ * internal hyphen in a real name ("Chikkodi-Sadalaga") survives because only a
+ * dash that INTRODUCES a number or bracket is treated as a decoration boundary.
+ */
+export function baseSeat(raw: string): string {
+  let s = (raw || '').trim();
+  s = s.replace(/^\d+\s*[-–—]\s*/, ''); // leading AC number ("6 - Maheshpur...")
+  s = s.split(/\s*[-–—]\s*(?=[[(]|\d)/)[0]; // cut at a dash that introduces a number/bracket
+  s = s.split(/[[(]/)[0]; // drop any remaining "(district...)" / "[123]"
+  return s.replace(/\s*[-–—]\s*$/, '').trim();
+}
+
 function main() {
   const args = process.argv.slice(2).filter(Boolean);
   const apply = args.includes('--apply');
@@ -86,7 +103,7 @@ function main() {
     const seatRows = new Map<string, SourceRow[]>();
     let noSeat = 0;
     for (const row of doc.rows) {
-      const seat = norm(row.constituency || '');
+      const seat = norm(baseSeat(row.constituency || ''));
       if (!seat || !row.name) { noSeat++; continue; }
       if (!seatRows.has(seat)) seatRows.set(seat, []);
       seatRows.get(seat)!.push(row);

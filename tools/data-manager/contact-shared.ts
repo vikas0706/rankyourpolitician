@@ -19,6 +19,44 @@ export const EMAIL_RE = /^[a-z0-9][a-z0-9._%+-]*@[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$
 /** Official parliamentary/government addresses lead the list - they outlive the personal inbox. */
 const OFFICIAL_DOMAIN_RE = /@(?:[a-z0-9.-]+\.)?(?:sansad\.in|sansad\.nic\.in|nic\.in|gov\.in)$/;
 
+// Common consumer-mail domains, and near-misses of them that are certainly
+// typos. An address on a one-edit misspelling of a major provider
+// ("...@gmamil.com", "...@gmial.com", "...@yaho.com") is guaranteed
+// undeliverable, so it is dropped, not published - a bouncing address helps no
+// one and reads as if we didn't check. This only fires on near-misses of THESE
+// exact domains; any unrecognised domain is left alone (it may be a real small
+// provider or an official one).
+const KNOWN_MAIL_DOMAINS = new Set([
+  'gmail.com', 'yahoo.com', 'yahoo.in', 'yahoo.co.in', 'hotmail.com', 'outlook.com',
+  'rediffmail.com', 'redifmail.com', 'live.com', 'ymail.com', 'icloud.com', 'protonmail.com',
+]);
+/** Damerau-Levenshtein distance == 1: one insertion, deletion, substitution, or
+ *  adjacent transposition. Transposition matters - "gmial.com" for "gmail.com"
+ *  is the single commonest mistype and plain edit distance scores it 2. */
+function damerau1(a: string, b: string): boolean {
+  if (a === b || Math.abs(a.length - b.length) > 1) return false;
+  const m = a.length, n = b.length;
+  const d: number[][] = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 0; i <= m; i++) d[i][0] = i;
+  for (let j = 0; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1])
+        d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+  }
+  return d[m][n] === 1;
+}
+/** True when the domain is a one-edit misspelling of a known provider (so the
+ *  address cannot be delivered and must be dropped). */
+function isTypoedDomain(domain: string): boolean {
+  if (KNOWN_MAIL_DOMAINS.has(domain)) return false;
+  for (const known of KNOWN_MAIL_DOMAINS) if (damerau1(domain, known)) return true;
+  return false;
+}
+
 /** De-obfuscate ("wahab[dot]pv[at]sansad[dot]nic[dot]in"), split multi-address
  *  cells, validate each, dedupe, official addresses first. */
 export function cleanEmails(raw: (string | null | undefined)[]): string[] {
@@ -33,6 +71,7 @@ export function cleanEmails(raw: (string | null | undefined)[]): string[] {
     for (let tok of decoded.split(/[,;\s]+/)) {
       tok = tok.replace(/^[^a-z0-9]+|[^a-z]+$/g, ''); // stray punctuation around the cell
       if (!EMAIL_RE.test(tok) || seen.has(tok)) continue;
+      if (isTypoedDomain(tok.slice(tok.indexOf('@') + 1))) continue; // undeliverable typo
       seen.add(tok);
       out.push(tok);
     }
