@@ -20,10 +20,30 @@ if (process.env.NODE_ENV === 'production' && SALT === 'dev-only-change-me') {
   );
 }
 
+/** The client IP that seeds the vote-dedupe and rate-limit keys. It must come
+ *  from a header the PLATFORM controls, not the client: on any deployment
+ *  whose edge proxy APPENDS to x-forwarded-for instead of overwriting it
+ *  (nginx's default), the leftmost entries are whatever the client sent, and a
+ *  curl loop forging them would mint a fresh voterKey + rate-limit key per
+ *  request. Trust order:
+ *  1. x-vercel-forwarded-for - written by Vercel itself, same client IP that
+ *     Vercel puts in x-forwarded-for, so production keys are unchanged.
+ *  2. x-real-ip - only ever set by a reverse proxy (nginx `proxy_set_header
+ *     x-real-ip $remote_addr`), never forwarded from the client by default.
+ *  3. x-forwarded-for LAST entry - the hop appended by the proxy directly in
+ *     front of us; everything left of it is unverified. Self-hosters with
+ *     multiple proxy layers should have the innermost proxy set x-real-ip. */
 export function getClientIp(headers: Headers): string {
+  const vff = headers.get('x-vercel-forwarded-for');
+  if (vff) return vff.split(',')[0].trim();
+  const realIp = headers.get('x-real-ip');
+  if (realIp) return realIp.trim();
   const xff = headers.get('x-forwarded-for');
-  if (xff) return xff.split(',')[0].trim();
-  return headers.get('x-real-ip') || '0.0.0.0';
+  if (xff) {
+    const parts = xff.split(',');
+    return parts[parts.length - 1].trim();
+  }
+  return '0.0.0.0';
 }
 
 /** Coarsen to a /24 (IPv4) or /48 (IPv6) so shared NAT doesn't over-collapse. */

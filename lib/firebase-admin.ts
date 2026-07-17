@@ -45,18 +45,26 @@ export function getDb(): Firestore | null {
   if (process.env.NEXT_PHASE === 'phase-production-build' && !process.env.FORCE_FIRESTORE_AT_BUILD) {
     return null;
   }
+  // A resolved handle, or the cached null of credential-less seed mode, is
+  // returned directly. A FAILED init is deliberately NOT cached (see below), so
+  // _db stays undefined and the next call retries.
   if (_db !== undefined) return _db;
   if (!isFirestoreConfigured()) {
+    // No credentials configured at all: the documented local/dev/seed mode.
+    // Cache the null - this instance can never gain credentials at runtime.
     _db = null;
     return _db;
   }
   try {
-    _db = getFirestore(initApp());
-    return _db;
+    return (_db = getFirestore(initApp()));
   } catch (err) {
-    console.error('[firebase-admin] init failed, falling back to seed:', err);
-    _db = null;
-    return _db;
+    // Credentials ARE configured but init threw (a transient error, or a
+    // malformed key mid-deploy). Do NOT cache null here: caching would downgrade
+    // this instance to in-memory voting for its whole lifetime after a single
+    // hiccup - and in-memory votes silently void cross-instance dedupe. Leaving
+    // _db undefined makes the next call retry a real Firestore init instead.
+    console.error('[firebase-admin] Firestore init failed (credentials present); will retry on next call:', err);
+    return null;
   }
 }
 

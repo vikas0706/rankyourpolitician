@@ -3,7 +3,7 @@
 // service-account key that never leaves it. Never imported by the deployed site.
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
-import type { Politician, Constituency, Fact, CriminalRecord } from '../../lib/types';
+import type { Politician, Constituency, Fact, CriminalRecord, Minister, StateGovernment } from '../../lib/types';
 
 export const ROOT = resolve(
   dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')),
@@ -198,6 +198,70 @@ export function validateDataset(): { issues: Issue[]; ok: boolean } {
         message: `${declaring - covered} of ${declaring} members with declared cases have no case-detail record yet (run "npm run dm -- fetch-criminal-cases")`,
       });
     }
+  }
+
+  // ONE HUMAN, ONE RATABLE PAGE.
+  // A minister's `politicianId` links their executive role to their real MP/MLA
+  // profile, so getPerson redirects the alias id to that one canonical page and
+  // the vote is booked there. Two failure modes each mint a SECOND, ratable stub
+  // page for the same person - so an ordinary voter can rate the same leader on
+  // two pages (the "vote twice for one leader" report):
+  //   (a) politicianId is SET but resolves to no politician (a stale/renamed id,
+  //       e.g. after a by-election) - getPerson can't redirect, so it falls
+  //       through and mints the stub. This is an ERROR: it is a broken link.
+  //   (b) politicianId is MISSING but the person plainly has an MP/MLA record -
+  //       a likely missed link. Names collide, so this is a WARNING for a human.
+  const polById = new Map(politicians.map((p) => [p.id, p]));
+  const central = loadJson<Minister>('central_government.json');
+  const stateMinisters = loadJson<StateGovernment>('state_government.json').flatMap((g) => g.ministers || []);
+
+  const dangling = (id: string, name: string, politicianId: string | undefined, scope: string) => {
+    if (politicianId && !polById.has(politicianId)) {
+      issues.push({
+        politicianId: id, name, severity: 'error',
+        message: `${scope} links politicianId "${politicianId}" but no politician has that id - getPerson cannot redirect, so it mints a duplicate ratable stub page`,
+      });
+    }
+  };
+  for (const m of central) dangling(m.id, m.name, m.politicianId, 'central minister');
+  for (const m of stateMinisters) dangling(m.id, m.name, m.politicianId, 'state minister');
+
+  // Conservative: normalised EXACT name match, within the same state only. No
+  // fuzzy matching - a false positive here is cheap (a human confirms the warn),
+  // a false blocking error is not.
+  const normName = (s: string) =>
+    (s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
+  const sittingByCode = new Map<string, Politician[]>(); // name|stateCode
+  const sittingByState = new Map<string, Politician[]>(); // name|stateName (central ministers carry no code)
+  for (const p of politicians) {
+    if (p.active === false) continue;
+    const nn = normName(p.name);
+    for (const [map, key] of [
+      [sittingByCode, `${nn}|${p.stateCode}`],
+      [sittingByState, `${nn}|${normName(p.state)}`],
+    ] as [Map<string, Politician[]>, string][]) {
+      const arr = map.get(key);
+      if (arr) arr.push(p);
+      else map.set(key, [p]);
+    }
+  }
+  for (const m of central) {
+    if (m.politicianId) continue;
+    const match = sittingByState.get(`${normName(m.name)}|${normName(m.state || '')}`);
+    if (match?.length)
+      issues.push({
+        politicianId: m.id, name: m.name, severity: 'warn',
+        message: `central minister has no politicianId but a sitting member with the same name exists in ${m.state} (${match.map((x) => x.id).join(', ')}) - likely a missed link that mints a duplicate ratable page`,
+      });
+  }
+  for (const m of stateMinisters) {
+    if (m.politicianId) continue;
+    const match = sittingByCode.get(`${normName(m.name)}|${m.stateCode || ''}`);
+    if (match?.length)
+      issues.push({
+        politicianId: m.id, name: m.name, severity: 'warn',
+        message: `state minister has no politicianId but a sitting member with the same name exists in ${m.state || m.stateCode} (${match.map((x) => x.id).join(', ')}) - likely a missed link that mints a duplicate ratable page`,
+      });
   }
 
   return { issues, ok: !issues.some((i) => i.severity === 'error') };

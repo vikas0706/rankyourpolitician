@@ -543,7 +543,13 @@ export async function getDataSource(): Promise<'firestore' | 'seed'> {
  *  the voter. */
 export async function getPersonSentiment(id: string): Promise<SentimentScore> {
   const idx = await getIndex();
-  return idx.sentiment.get(id) ?? computeSentimentScore(id, undefined);
+  // idx.sentiment covers ds.politicians only, but minister-only stub pages
+  // (no politicianId link) are ratable too and their votes land under the stub
+  // id. Fall back to the already-loaded aggregate so a stub's profile shows
+  // the same votes trending counts, instead of a permanent 0. Stubs stay out
+  // of getAllRatings/getTopRated on purpose: those are cohort comparisons over
+  // politician records, and a stub has no cohort to be ranked within.
+  return idx.sentiment.get(id) ?? computeSentimentScore(id, idx.voteAggregates.get(id));
 }
 
 /** Live ratings for every leader with at least one vote, as compact rows of

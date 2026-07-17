@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getPerson, getPersonSentiment } from '@/lib/data';
 import { recordVote } from '@/lib/votes';
+import { getDb, isFirestoreConfigured } from '@/lib/firebase-admin';
 import { getClientIp, verifyTurnstile, checkRateLimit, voterKey } from '@/lib/vote-integrity';
 
 export const runtime = 'nodejs';
@@ -45,9 +46,34 @@ export async function POST(req: NextRequest) {
 
   const res = await getPerson(politicianId);
   if (!res || (!res.person && !res.redirectTo)) return NextResponse.json({ error: 'not-found' }, { status: 404 });
-  // Appointed officials are information-only and must never be rated.
-  if (res.person && res.person.kind === 'official') {
+
+  // Resolve the CANONICAL person before recording, exactly as GET does. An alias
+  // id (a central minister linked to their MP, or a state minister linked to
+  // their MLA) redirects to the linked profile; the vote must be booked under
+  // that one real id, never the alias. Recording under the alias would give the
+  // same voter two standing votes for the same human (their alias-doc vote and
+  // their canonical-doc vote), defeating dedupe. The redirect target is resolved
+  // with a second getPerson - it hits the in-process cached index, so it costs
+  // zero extra Firestore reads.
+  const canonicalId = res.redirectTo ?? politicianId;
+  const target = res.redirectTo ? await getPerson(res.redirectTo) : res;
+  if (!target || !target.person) return NextResponse.json({ error: 'not-found' }, { status: 404 });
+  // Appointed officials are information-only and must never be rated. Guard the
+  // RESOLVED target: for an alias id res.person is undefined, so this check has
+  // to run after resolution or it would be skipped entirely.
+  if (target.person.kind === 'official') {
     return NextResponse.json({ error: 'not-ratable' }, { status: 403 });
+  }
+
+  // Fail closed in production. When Firestore is configured but no handle is
+  // available, recordVote would fall back to per-lambda process memory, where
+  // each instance has its own map - so the same voter's next vote can land on a
+  // fresh instance and count as a brand-new voter, and the tally is ephemeral.
+  // Reject instead of silently voiding dedupe. Credential-less mode (no creds
+  // configured) is the documented local/dev/seed path and keeps working. This
+  // route never runs during `next build`, so the build is unaffected.
+  if (process.env.NODE_ENV === 'production' && isFirestoreConfigured() && !getDb()) {
+    return NextResponse.json({ error: 'unavailable' }, { status: 503 });
   }
 
   const ip = getClientIp(req.headers);
@@ -59,7 +85,7 @@ export async function POST(req: NextRequest) {
   if (!allowed) return NextResponse.json({ error: 'rate-limited' }, { status: 429 });
 
   const key = voterKey(ip, fingerprint);
-  const { sentiment, updated } = await recordVote(politicianId, key, rating);
+  const { sentiment, updated } = await recordVote(canonicalId, key, rating);
 
   return NextResponse.json({
     ok: true,

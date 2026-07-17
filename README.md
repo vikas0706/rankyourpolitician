@@ -224,6 +224,13 @@ environment variables. `.env.example` documents every variable.
   (both, in the same deploy - the site key is inlined at build time).
 - **Upstash Redis**: set `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`.
 - Set a strong `VOTE_HASH_SALT` (`openssl rand -hex 32`).
+- **Self-hosting behind your own proxy**: the dedupe/rate-limit keys derive from the client IP,
+  trusted in this order: `x-vercel-forwarded-for`, `x-real-ip`, then the **last**
+  `x-forwarded-for` hop (see `getClientIp` in `lib/vote-integrity.ts`). Have your innermost
+  reverse proxy set `x-real-ip` (nginx: `proxy_set_header X-Real-IP $remote_addr;`) or overwrite
+  `x-forwarded-for` entirely - a proxy that merely appends leaves the leftmost entries
+  client-forgeable, which on the old leftmost-entry parsing meant unlimited votes per curl loop.
+  On Vercel the platform controls these headers; nothing to configure.
 
 Without Turnstile the vote endpoint runs in **dev mode: it accepts every vote with no bot check**
 and responds with `"dev": true`. Without Upstash, rate limiting falls back to per-instance memory,
