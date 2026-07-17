@@ -131,7 +131,7 @@ export function StatTile({
       <span className={clsx('inline-grid h-9 w-9 place-items-center rounded-xl', tint)}>
         <Icon name={icon} size={20} />
       </span>
-      <div className="mt-2.5 text-2xl font-extrabold tabular-nums text-ink">{value}</div>
+      <div className="mt-2.5 break-words text-xl font-extrabold tabular-nums text-ink sm:text-2xl">{value}</div>
       <div className="text-sm font-medium text-ink-soft">{label}</div>
       {hint && <div className="mt-0.5 text-xs text-ink-faint">{hint}</div>}
     </div>

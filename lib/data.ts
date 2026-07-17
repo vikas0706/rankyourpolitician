@@ -34,7 +34,7 @@ import seedDistrictPortals from '@/data/seed/district_portals.json';
 import seedContactChannels from '@/data/seed/contact_channels.json';
 import seedCriminalCases from '@/data/seed/criminal_cases.json';
 import type { CriminalRecord } from './types';
-import { STATE_RANK_LABEL, type ConstitutionalOffice, type ContactChannel, type ContactChannelsFile, type DistrictPortal, type Minister, type OfficeSeat, type OfficeType, type OfficeLevel, type StateGovernment, type StateMinister, type StateMinisterRank } from './types';
+import { STATE_RANK_LABEL, type ConstitutionalOffice, type ContactChannel, type ContactChannelsFile, type DistrictPortal, type Minister, type OfficeSeat, type OfficeType, type OfficeLevel, type PoliticianContact, type StateGovernment, type StateMinister, type StateMinisterRank } from './types';
 
 // Affidavit case detail, keyed by person. Seed-only (updated via
 // `dm fetch-criminal-cases` + redeploy) - a person page embeds just its own
@@ -283,6 +283,8 @@ export interface PersonView {
   neutral_summary?: string;
   terms_served?: number;
   facts: Fact[];
+  /** Official published contact details for the member (elected only). */
+  contact?: PoliticianContact;
   /** Case-by-case affidavit detail behind the criminal_cases_declared fact. */
   criminal_record?: CriminalRecord;
   metrics: Partial<Record<PerfMetric, number>>;
@@ -356,6 +358,7 @@ export async function getPerson(
         neutral_summary: p.neutral_summary,
         terms_served: p.terms_served,
         facts: p.facts,
+        contact: p.contact,
         criminal_record: criminalRecordById().get(id),
         metrics: p.metrics,
         metrics_exempt: p.metrics_exempt,

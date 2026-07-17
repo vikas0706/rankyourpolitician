@@ -35,7 +35,7 @@ export function PartyChip({ party }: { party: string }) {
   // Show a short form when the party name is long, keep full in title.
   const short = party.replace(/\s*\(([^)]+)\)\s*$/, (_, abbr) => ` (${abbr})`);
   return (
-    <span title={party} className="inline-flex items-center rounded-full bg-paper-sink px-2.5 py-0.5 text-xs font-semibold text-ink-soft">
+    <span title={party} className="inline-block min-w-0 max-w-[10rem] truncate rounded-full bg-paper-sink px-2.5 py-0.5 text-xs font-semibold text-ink-soft sm:max-w-none">
       {short}
     </span>
   );

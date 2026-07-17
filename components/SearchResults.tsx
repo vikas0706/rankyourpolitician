@@ -128,9 +128,9 @@ export default function SearchResults() {
           )}
           {hits.districts.length > 0 && (
             <SectionCard title={t('search.groups.districts')} icon="map" eyebrow={t('search.levelDistrict')}>
-              <ul className="grid gap-1 sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2">
                 {hits.districts.map((d) => (
-                  <li key={d.href}>
+                  <li key={d.href} className="min-w-0">
                     <Link href={d.href} className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-brand-soft/60">
                       <span className="font-medium text-ink">{d.district}</span>
                       <span className="text-xs text-ink-faint">{d.state}</span>
@@ -143,9 +143,9 @@ export default function SearchResults() {
           )}
           {hits.areas.length > 0 && (
             <SectionCard title={t('search.groups.constituencies')} icon="pin" eyebrow={t('search.levelArea')}>
-              <ul className="grid gap-1 sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-1 sm:grid-cols-2">
                 {hits.areas.map((a) => (
-                  <li key={a.id}>
+                  <li key={a.id} className="min-w-0">
                     <Link href={`/area/${a.id}`} className="flex items-center gap-2 rounded-lg px-2 py-1.5 hover:bg-brand-soft/60">
                       <span className="font-medium text-ink">{a.name}</span>
                       <span className="text-xs text-ink-faint">
@@ -160,9 +160,9 @@ export default function SearchResults() {
           )}
           {hits.people.length > 0 && (
             <SectionCard title={t('search.groups.politicians')} icon="people" eyebrow={t('search.levelPeople')}>
-              <ul className="grid gap-2 sm:grid-cols-2">
+              <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {hits.people.map((p) => (
-                  <li key={p.id}>
+                  <li key={p.id} className="min-w-0">
                     <Link
                       href={`/person/${p.id}`}
                       className="pressable flex items-center gap-3 rounded-2xl border border-line/70 bg-white/85 p-3 hover:border-brand/40 hover:shadow-soft"

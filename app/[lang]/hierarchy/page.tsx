@@ -199,7 +199,7 @@ export default async function HierarchyPage({ params }: { params: Promise<LangPa
                 href="/india"
                 chips={<Chip tone="neutral">{tr('hierarchyPage.chipNonPartisan')}</Chip>}
               >
-                <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
                   <div className="flex items-center gap-3 rounded-2xl bg-white/90 p-3">
                     <Avatar name={president.name} src={president.photo_url} size={48} />
                     <div className="min-w-0">

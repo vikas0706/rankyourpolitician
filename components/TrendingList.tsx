@@ -64,7 +64,7 @@ export function LeaderRow({
           </p>
         )}
       </div>
-      <span className="shrink-0 text-right">{aside}</span>
+      <span className="max-w-[72px] shrink-0 text-right sm:max-w-none">{aside}</span>
     </Link>
   );
 }

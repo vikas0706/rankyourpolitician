@@ -53,6 +53,35 @@ export function validateDataset(): { issues: Issue[]; ok: boolean } {
       if (!f.source_url) push(p, 'error', `fact "${f.field_type}" has no source_url (no citation, no claim)`);
       if (!f.retrieved_date) push(p, 'warn', `fact "${f.field_type}" has no retrieved_date`);
     }
+    // Contact block: a wrong number/address actively misdirects a citizen, so
+    // every entry must be well-formed and the block must carry its citation.
+    if (p.contact) {
+      const c = p.contact;
+      if (!c.source_url || !c.source_name) push(p, 'error', 'contact has no source citation (no citation, no claim)');
+      if (!c.retrieved_date) push(p, 'warn', 'contact has no retrieved_date');
+      if (!c.emails?.length && !c.phones?.length) push(p, 'error', 'contact block is empty - drop it instead');
+      for (const e of c.emails || []) {
+        if (!/^[a-z0-9][a-z0-9._%+-]*@[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/.test(e))
+          push(p, 'error', `contact email "${e}" is not a valid address`);
+      }
+      for (const ph of c.phones || []) {
+        // OFFICE LANDLINES ONLY (see contact-shared.ts): 0-led STD trunk form,
+        // 10-11 digits, either hyphenated as the source printed it (min "0xx-")
+        // or unhyphenated with a non-mobile-capable prefix (0[1-5]...). A
+        // mobile-shaped number is an ERROR - personal mobiles are never
+        // republished even when a directory prints them.
+        const digits = ph.replace(/-/g, '');
+        const shapeOk = /^[\d-]+$/.test(ph) && (ph.match(/-/g) || []).length <= 1;
+        const hyphenAt = ph.indexOf('-');
+        const landline = /^0\d{9,10}$/.test(digits) && (hyphenAt >= 3 || (hyphenAt === -1 && /^0[1-5]/.test(digits)));
+        if (!shapeOk || !landline) {
+          const mobileShaped = /^(?:91|0)?[6-9]\d{9}$/.test(digits);
+          push(p, 'error', mobileShaped
+            ? `contact phone "${ph}" looks like a personal mobile - office landlines only`
+            : `contact phone "${ph}" is not an STD-prefixed office landline`);
+        }
+      }
+    }
     if (!p.is_minister && Object.keys(p.metrics || {}).length === 0)
       push(p, 'warn', 'no scored metrics - performance percentile will be unavailable');
   }

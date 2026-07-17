@@ -125,6 +125,22 @@ export interface CriminalRecord {
  */
 export type MetricExemptReason = 'minister' | 'presiding-officer' | 'no-register-record';
 
+/**
+ * Published ways for a citizen to reach a sitting member, copied VERBATIM from
+ * the official house/assembly directory that publishes them for public contact
+ * (never scraped from third parties, never guessed). One citation covers the
+ * whole block because it is one directory entry. Emails are ordered official
+ * parliamentary/assembly address first; phones keep the source's order.
+ */
+export interface PoliticianContact {
+  emails?: string[];
+  /** As published, digits with optional STD hyphen (e.g. "011-23034255", "9013180024"). */
+  phones?: string[];
+  source_url: string;
+  source_name: string;
+  retrieved_date: string; // ISO yyyy-mm-dd
+}
+
 export interface Politician {
   id: string; // stable slug, e.g. "north-goa-shripad-naik"
   name: string;
@@ -149,6 +165,8 @@ export interface Politician {
   metrics_exempt?: Partial<Record<PerfMetric, MetricExemptReason>>;
   /** Contextual facts shown but never scored (assets, cases, education...). */
   facts: Fact[];
+  /** Official published contact details (see PoliticianContact). */
+  contact?: PoliticianContact;
   terms_served?: number;
   active: boolean;
   /** Citation for the core identity (name/party/constituency) when the detailed

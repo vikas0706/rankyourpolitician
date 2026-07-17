@@ -143,7 +143,7 @@ export default function Finder() {
               <span className={`inline-grid h-9 w-9 shrink-0 place-items-center rounded-xl ${active ? 'bg-brand text-white' : 'bg-paper-sink text-ink-faint'}`}>
                 <Icon name={PROBLEM_META[p].icon} size={18} />
               </span>
-              <span className="text-sm font-semibold leading-tight">{t(`problems.${p}`)}</span>
+              <span className="min-w-0 break-words text-sm font-semibold leading-tight">{t(`problems.${p}`)}</span>
             </button>
           );
         })}

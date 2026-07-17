@@ -149,6 +149,19 @@ async function main() {
       await import('./verify-attendance');
       break;
     }
+    case 'enrich-contacts': {
+      // Attach each sitting MP's published email/phone from the official
+      // Digital Sansad member directories, cited to their biography page.
+      await import('./enrich-contacts');
+      break;
+    }
+    case 'import-mla-contacts': {
+      // Attach sitting MLAs' published email/phone from workflow-extracted
+      // official assembly directories. Dry-run unless --apply.
+      process.argv[2] = process.argv[3] || '';
+      await import('./import-mla-contacts');
+      break;
+    }
     case 'import-contact-channels': {
       // Verified helplines/grievance portals from the research workflow, gated on
       // an official source, into data/seed/contact_channels.json.
@@ -210,6 +223,7 @@ Commands:
   npm run dm -- publish             Publish to Firestore (needs .env.local creds)
   npm run dm -- revalidate          Re-sweep the deployed page cache (run ~35 min after a publish)
   npm run dm -- refresh-mps         Rebuild the all-India Lok Sabha roster (543 seats) from the ECI-sourced list
+  npm run dm -- enrich-contacts     Attach each MP's published email/phone from the official Digital Sansad directories
   npm run dm -- fetch-criminal-cases  Per-case affidavit detail behind every declared criminal case
   npm run dm -- import <file.json>  Rebuild seed from a sourcing-workflow output
   npm run dm:dashboard              Open the local review dashboard (http://localhost:4321)

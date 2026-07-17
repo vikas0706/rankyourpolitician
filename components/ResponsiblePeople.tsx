@@ -48,7 +48,7 @@ function PersonRow({ p, role, holds }: { p: WhoPerson; role: string; holds?: str
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
           <span className="font-bold text-ink">{p.name}</span>
-          {p.party && <span className="rounded-full bg-paper-sink px-2 py-0.5 text-[11px] font-semibold text-ink-soft">{p.party}</span>}
+          {p.party && <span className="min-w-0 max-w-[10rem] truncate rounded-full bg-paper-sink px-2 py-0.5 text-[11px] font-semibold text-ink-soft sm:max-w-none">{p.party}</span>}
         </span>
         <span className="block truncate text-xs text-ink-faint">
           {role}
@@ -234,7 +234,7 @@ export default function ResponsiblePeople({
             {myMla ? (
               <PersonRow p={myMla} role={`${t('district.chipMla')} · ${myMla.sub || ''}`} />
             ) : (
-              <div className="grid gap-2 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {shownMlas.map((p) => (
                   <PersonRow key={p.id} p={p} role={`${t('district.chipMla')} · ${p.sub || ''}`} />
                 ))}
@@ -352,7 +352,7 @@ export default function ResponsiblePeople({
           </p>
           {!compact && <p className="mt-0.5 text-xs text-ink-soft">{t('who.parallelHelp', { district })}</p>}
           <p className="mt-3 text-[11px] font-bold uppercase tracking-wider text-ink-faint">{t('who.mpsLabel')}</p>
-          <div className="mt-1.5 grid gap-2 sm:grid-cols-2">
+          <div className="mt-1.5 grid grid-cols-1 gap-2 sm:grid-cols-2">
             {people.mps.map((p) => (
               <PersonRow key={p.id} p={p} role={`${t('district.chipMp')} · ${p.sub || ''}`} />
             ))}

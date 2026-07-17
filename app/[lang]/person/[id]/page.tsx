@@ -22,6 +22,7 @@ import { ScoreRing, StatTile } from '@/components/viz';
 import Icon, { type IconName } from '@/components/Icon';
 import LastUpdated from '@/components/LastUpdated';
 import VoteWidget from '@/components/VoteWidget';
+import PhoneLink from '@/components/PhoneLink';
 import AdSlot from '@/components/AdSlot';
 import ShareButton from '@/components/ShareButton';
 import DeclaredCases from '@/components/DeclaredCases';
@@ -167,6 +168,31 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
               ) : null}
             </div>
             <p className="mt-3 text-ink-soft">{person.current_position || tr(`accountability.roles.${roleKey}.oneLine`)}</p>
+            {/* Office contact - the channels the house itself publishes for
+                reaching this member, verbatim and cited (see PoliticianContact).
+                Office channels only: published emails + office landlines. */}
+            {person.contact && (
+              <div className="mt-3">
+                <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+                  {(person.contact.emails || []).map((e) => (
+                    <a key={e} href={`mailto:${e}`} className="inline-flex min-w-0 max-w-full items-center gap-1.5 rounded-full bg-brand-soft px-3 py-1.5 text-sm font-medium text-brand hover:bg-brand hover:text-white">
+                      <Icon name="link" size={14} className="shrink-0" /> <span className="truncate">{e}</span>
+                    </a>
+                  ))}
+                  {(person.contact.phones || []).map((ph) => (
+                    <PhoneLink key={ph} value={ph} sourceUrl={person.contact!.source_url} className="inline-flex items-center gap-1.5 rounded-full bg-paper-soft px-3 py-1.5 text-sm font-medium text-ink-soft hover:bg-brand-soft hover:text-brand">
+                      ☎ {ph}
+                    </PhoneLink>
+                  ))}
+                </div>
+                <p className="mt-1.5 flex flex-wrap items-center justify-center gap-x-2 text-xs text-ink-faint sm:justify-start">
+                  <a href={person.contact.source_url} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-1 text-brand hover:underline">
+                    <Icon name="link" size={12} /> {person.contact.source_name}
+                  </a>
+                  <span>· {tr('common.lastUpdated')} {formatDate(person.contact.retrieved_date, locale)}</span>
+                </p>
+              </div>
+            )}
             {updated && <div className="mt-3 flex justify-center sm:justify-start"><LastUpdated date={updated} /></div>}
             <div className="mt-3 flex justify-center sm:justify-start">
               {/* Share the clean locale-less URL, never `/${locale}/...`. It is this
@@ -654,7 +680,7 @@ function RoleAccountabilityCard({
           </div>
         </div>
         {role.sources.length > 0 && (
-          <p className="mt-3 border-t border-line pt-2 text-xs text-ink-faint">
+          <p className="mt-3 break-words border-t border-line pt-2 text-xs text-ink-faint">
             <span className="font-semibold">{labels.sources}:</span> {role.sources.join(' · ')}
           </p>
         )}

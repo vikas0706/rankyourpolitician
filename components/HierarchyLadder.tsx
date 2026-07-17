@@ -17,7 +17,7 @@ export default function HierarchyLadder({ current }: { current?: 'national' | 's
     <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] sm:items-stretch sm:gap-0">
       {steps.map((s, i) => (
         <div key={s.key} className="contents">
-          <Link href={s.href} className="block">
+          <Link href={s.href} className="block min-w-0">
             <div
               className={`pressable flex h-full items-center gap-3 rounded-2xl p-3.5 glass ${
                 current === s.key ? 'ring-2 ring-brand/40' : ''
