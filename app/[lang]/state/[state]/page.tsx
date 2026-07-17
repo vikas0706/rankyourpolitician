@@ -92,15 +92,22 @@ export default async function StatePage({ params }: { params: Promise<{ lang: st
   // --- Cards + column balancing ----------------------------------------------
   // The government roster and the top-leaders list are the two tall blocks, so
   // government anchors the left column and leaders the right. Government height
-  // swings by ~1,500px across states (a 5-minister cabinet vs a 44-minister one)
-  // and no fixed split can absorb that, so every other card (composition, map,
-  // district list, constituencies) drops onto whichever column is currently
-  // shorter. Weights are rough rendered-height estimates (px at the
-  // two-column width); only their *relative* size decides placement, so
-  // exactness does not matter. The government roster groups ministers into a
-  // grid, so its height grows ~sqrt(ministers), not linearly (fit to real states).
-  const ministerCount = stateGov && stateGov.governmentStatus !== 'presidents_rule' ? stateGov.ministers.length : 0;
-  const wGovernment = stateGov ? (ministerCount ? Math.max(220, Math.round(430 * Math.sqrt(ministerCount) - 130)) : 320) : 0;
+  // swings by ~1,500px across states and no fixed split can absorb that, so
+  // every other card (composition, map, district list, constituencies) drops
+  // onto whichever column is currently shorter. Weights are rough
+  // rendered-height estimates (px at the two-column width); only their
+  // *relative* size decides placement, so exactness does not matter.
+  //
+  // The roster only *shows* the CM, deputies and cabinet - ministers of state
+  // stay behind a collapsed <details> - so its height tracks the cabinet count,
+  // not the roster size: Uttar Pradesh has 44 ministers but 17 in cabinet and
+  // renders no taller than Madhya Pradesh's 18-of-31. Measured across states at
+  // the two-column width: ~95px per cabinet row over a ~720px shell.
+  const cabinetCount =
+    stateGov && stateGov.governmentStatus !== 'presidents_rule'
+      ? stateGov.ministers.filter((m) => m.rank === 'Cabinet').length
+      : 0;
+  const wGovernment = stateGov ? (stateGov.governmentStatus === 'presidents_rule' ? 320 : 720 + 95 * cabinetCount) : 0;
 
   const governmentCard =
     stateGov && (stateGov.ministers.length > 0 || stateGov.governmentStatus === 'presidents_rule') ? (
@@ -180,24 +187,34 @@ export default async function StatePage({ params }: { params: Promise<{ lang: st
     </Reveal>
   );
 
-  // Government anchors the left column, leaders the right; every other card
-  // (composition, map, district list, constituencies) is split between the two
-  // columns by the assignment that makes them closest in height. With only a
+  // The government roster is the only tall block here, so it anchors the left
+  // column; every other card - the leaders card included - is split between the
+  // two columns by the assignment that makes them closest in height. With only a
   // handful of movable cards this is a cheap brute force over every combination,
   // and each column is *rendered* back in reading order so balancing never
   // scrambles the page. (The ad is excluded - it renders full width below.)
+  //
+  // The leaders card is NOT tall: it opens on its Trending tab - 5 rows in geo
+  // scope - and keeps the 20-row performance list in a hidden tab panel, so it
+  // renders ~580px loaded and ~290px when a quiet state has no trending yet, not
+  // the ~2,800px the full list suggests. Weighting it as a tall anchor is what
+  // left the opposite column ~2,000px short. The row count is client-fetched and
+  // unknowable here, so 520 leans to the loaded case without fully skewing a
+  // state whose trending is still empty.
   const movable = [
+    { el: leadersCard, w: 520 },
     ...(compositionCard ? [{ el: compositionCard, w: 210 }] : []),
     ...(mapCard ? [{ el: mapCard, w: 560 }] : []),
-    { el: districtListCard, w: 110 + 8 * view.districtCounts.length },
+    // Chips wrap, so height tracks the district count: ~9.4px each over a 90px
+    // shell (measured 16 -> 239px, 52 -> 536px, 75 -> 796px).
+    { el: districtListCard, w: 90 + Math.round(9.4 * view.districtCounts.length) },
     { el: constituenciesCard, w: 560 },
   ];
-  const leadersWeight = ranking && ranking.entries.length > 0 ? 260 + Math.min(ranking.entries.length, 20) * 128 : 140;
   let bestMask = 0;
   let bestDiff = Infinity;
   for (let mask = 0; mask < 1 << movable.length; mask++) {
     let left = wGovernment;
-    let right = leadersWeight;
+    let right = 0;
     movable.forEach((c, i) => (mask & (1 << i) ? (left += c.w) : (right += c.w)));
     if (Math.abs(left - right) < bestDiff) {
       bestDiff = Math.abs(left - right);
@@ -205,7 +222,7 @@ export default async function StatePage({ params }: { params: Promise<{ lang: st
     }
   }
   const leftCards = [...(governmentCard ? [governmentCard] : []), ...movable.filter((_, i) => bestMask & (1 << i)).map((c) => c.el)];
-  const rightCards = [leadersCard, ...movable.filter((_, i) => !(bestMask & (1 << i))).map((c) => c.el)];
+  const rightCards = movable.filter((_, i) => !(bestMask & (1 << i))).map((c) => c.el);
 
   return (
     <>

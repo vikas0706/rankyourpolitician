@@ -18,6 +18,16 @@ export interface StateGovLabels {
   sources: string;
 }
 
+// Roster grid for a rank group. `auto-fit` collapses empty tracks, so a group
+// with a single member (a lone Deputy CM) fills the row instead of sitting in a
+// half-width cell with dead space beside it. It is also container-driven rather
+// than viewport-driven: this section renders in a ~570px page column on desktop
+// but full width once the page stacks, and a `sm:` breakpoint cannot tell those
+// apart - it used to force two 255px columns into the narrow one, squeezing the
+// portfolio lists into tall thin strips. min(...,100%) keeps it from overflowing
+// containers narrower than the track minimum.
+const ROSTER_GRID = 'grid gap-3 grid-cols-[repeat(auto-fit,minmax(min(400px,100%),1fr))]';
+
 function MinisterRow({ m, featured }: { m: StateMinister; featured?: boolean }) {
   return (
     <Link
@@ -75,7 +85,7 @@ export default function StateGovernmentSection({ gov, labels }: { gov: StateGove
             {dycms.length > 0 && (
               <div>
                 <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-faint">{labels.deputyCm}</p>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className={ROSTER_GRID}>
                   {dycms.map((m) => <MinisterRow key={m.id} m={m} />)}
                 </div>
               </div>
@@ -83,7 +93,7 @@ export default function StateGovernmentSection({ gov, labels }: { gov: StateGove
             {cabinet.length > 0 && (
               <div>
                 <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-faint">{labels.cabinet}</p>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className={ROSTER_GRID}>
                   {cabinet.map((m) => <MinisterRow key={m.id} m={m} />)}
                 </div>
               </div>
@@ -93,7 +103,7 @@ export default function StateGovernmentSection({ gov, labels }: { gov: StateGove
                 <summary className="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-semibold text-brand">
                   {labels.mos} ({mos.length}) <Icon name="chevron" size={16} />
                 </summary>
-                <div className="grid grid-cols-1 gap-3 border-t border-line p-3 sm:grid-cols-2">
+                <div className={`${ROSTER_GRID} border-t border-line p-3`}>
                   {mos.map((m) => <MinisterRow key={m.id} m={m} />)}
                 </div>
               </details>
