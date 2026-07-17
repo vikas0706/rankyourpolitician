@@ -51,6 +51,11 @@ export default function VoteWidget({
   const { t } = useI18n();
   const [sentiment, setSentiment] = useState<Sentiment>(initial);
   const [selected, setSelected] = useState<number | null>(null);
+  // The rating this visitor has already submitted (restored from localStorage on
+  // mount, refreshed after each successful submit). It keeps Submit disabled
+  // until they actually pick a different star, and flips the label to "Update
+  // rating" so re-opening a page you already rated never invites a no-op resend.
+  const [submitted, setSubmitted] = useState<number | null>(null);
   const [status, setStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle');
   const [message, setMessage] = useState('');
   const [token, setToken] = useState('');
@@ -62,7 +67,11 @@ export default function VoteWidget({
     fpRef.current = deviceFingerprint();
     try {
       const prev = localStorage.getItem(`vote:${politicianId}`);
-      if (prev) setSelected(Number(prev));
+      const n = prev ? Number(prev) : NaN;
+      if (Number.isInteger(n) && n >= 1 && n <= 5) {
+        setSelected(n);
+        setSubmitted(n);
+      }
     } catch {}
   }, [politicianId]);
 
@@ -149,6 +158,7 @@ export default function VoteWidget({
         return;
       }
       setSentiment(data.sentiment);
+      setSubmitted(selected);
       setStatus('done');
       setMessage(data.updated ? t('vote.already') : t('vote.thanks'));
       try {
@@ -231,14 +241,20 @@ export default function VoteWidget({
         <button
           type="button"
           onClick={submit}
-          disabled={selected == null || status === 'submitting'}
+          disabled={selected == null || status === 'submitting' || selected === submitted}
           className="rounded-lg bg-rating-ink px-4 py-2 text-sm font-semibold text-white transition hover:bg-rating-ink/90 disabled:opacity-50"
         >
-          {status === 'submitting' ? t('vote.submitting') : t('vote.submit')}
+          {status === 'submitting'
+            ? t('vote.submitting')
+            : submitted != null
+              ? t('vote.update')
+              : t('vote.submit')}
         </button>
-        {message && (
+        {message ? (
           <span className={`text-sm ${status === 'error' ? 'text-red-600' : 'text-good'}`}>{message}</span>
-        )}
+        ) : submitted != null ? (
+          <span className="text-sm text-ink-faint">{t('vote.yourRating', { n: submitted })}</span>
+        ) : null}
       </div>
 
       <p className="mt-2 text-xs text-ink-faint">{t('vote.oncePerPerson')} · {t('vote.notVerifiedNote')}</p>
