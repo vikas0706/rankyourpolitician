@@ -23,6 +23,7 @@ import Icon, { type IconName } from '@/components/Icon';
 import LastUpdated from '@/components/LastUpdated';
 import VoteWidget from '@/components/VoteWidget';
 import AdSlot from '@/components/AdSlot';
+import ShareButton from '@/components/ShareButton';
 
 // Daily self-heal only. Profile facts change via deploy or /api/revalidate, and
 // the one fast-moving input - live vote numbers - is re-fetched client-side by
@@ -151,6 +152,15 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
             </div>
             <p className="mt-3 text-ink-soft">{person.current_position || tr(`accountability.roles.${roleKey}.oneLine`)}</p>
             {updated && <div className="mt-3 flex justify-center sm:justify-start"><LastUpdated date={updated} /></div>}
+            <div className="mt-3 flex justify-center sm:justify-start">
+              <ShareButton
+                title={person.name}
+                text={person.current_position || tr(`accountability.roles.${roleKey}.oneLine`)}
+                url={`/${locale}/person/${person.id}`}
+                label={tr('profile.shareCta')}
+                successLabel={tr('profile.shareSuccess')}
+              />
+            </div>
           </div>
           {spot && (
             <div className="w-36 shrink-0 sm:w-40">
@@ -466,6 +476,15 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
                 <Icon name="pin" size={15} /> {p.district}, {p.state}
               </p>
             )}
+            <div className="mt-3 flex justify-center sm:justify-start">
+              <ShareButton
+                title={p.name}
+                text={tr(`offices.${ot}.handles`)}
+                url={`/${locale}/person/${p.id}`}
+                label={tr('profile.shareCta')}
+                successLabel={tr('profile.shareSuccess')}
+              />
+            </div>
           </div>
         </div>
         <p className="mt-4 flex items-start gap-2 rounded-xl bg-paper-soft p-3 text-sm text-ink-soft">
