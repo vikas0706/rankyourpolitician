@@ -27,7 +27,9 @@ export default function ShareButton({
           url: shareUrl,
         });
       } catch (err) {
-        // user cancelled or share failed
+        if (err instanceof Error && err.name !== 'AbortError') {
+          console.error('Web Share failed:', err);
+        }
       }
     } else {
       try {
@@ -35,7 +37,7 @@ export default function ShareButton({
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } catch (err) {
-        // copy failed
+        console.error('Clipboard copy failed:', err);
       }
     }
   };
