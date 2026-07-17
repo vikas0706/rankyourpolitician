@@ -3,7 +3,18 @@ import { useEffect, useState } from 'react';
 import { useI18n } from '@/lib/i18n/provider';
 import { relativeTime, formatDate } from '@/lib/format';
 
-export default function LastUpdated({ date, className = '' }: { date?: string; className?: string }) {
+export default function LastUpdated({
+  date,
+  className = '',
+  labelKey = 'common.lastUpdated',
+}: {
+  date?: string;
+  className?: string;
+  // What the date refers to. Defaults to the generic "Updated"; profile pages
+  // pass a scoped label (e.g. "Profile updated") so it never reads as a
+  // duplicate of a neighbouring source/contact citation.
+  labelKey?: string;
+}) {
   const { t, locale } = useI18n();
   // Intl.DateTimeFormat output depends on which ICU data the runtime ships:
   // Node renders 'sat' in Ol Chiki while Chrome silently falls back to the
@@ -23,7 +34,7 @@ export default function LastUpdated({ date, className = '' }: { date?: string; c
         <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
         <path d="M12 7v5l3 2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
       </svg>
-      {t('common.lastUpdated')}: {relativeTime(date, t, locale)}
+      {t(labelKey)}: {relativeTime(date, t, locale)}
     </span>
   );
 }

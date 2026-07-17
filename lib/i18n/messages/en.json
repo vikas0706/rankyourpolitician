@@ -585,7 +585,9 @@
     "rightToReplyCta": "Request a correction",
     "seeSources": "See all sources",
     "shareCta": "Share profile",
-    "shareSuccess": "Link copied!"
+    "shareSuccess": "Link copied!",
+    "contactVerified": "Contact verified",
+    "profileUpdated": "Profile updated"
   },
   "fields": {
     "party": "Party",

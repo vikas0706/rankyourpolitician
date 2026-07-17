@@ -189,11 +189,11 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
                   <a href={person.contact.source_url} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-1 text-brand hover:underline">
                     <Icon name="link" size={12} /> {person.contact.source_name}
                   </a>
-                  <span>· {tr('common.lastUpdated')} {formatDate(person.contact.retrieved_date, locale)}</span>
+                  <span>· {tr('profile.contactVerified')} {formatDate(person.contact.retrieved_date, locale)}</span>
                 </p>
               </div>
             )}
-            {updated && <div className="mt-3 flex justify-center sm:justify-start"><LastUpdated date={updated} /></div>}
+            {updated && <div className="mt-3 flex justify-center sm:justify-start"><LastUpdated date={updated} labelKey="profile.profileUpdated" /></div>}
             <div className="mt-3 flex justify-center sm:justify-start">
               {/* Share the clean locale-less URL, never `/${locale}/...`. It is this
                   page's canonical, it lets the recipient's own cookie pick their
