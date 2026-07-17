@@ -1,0 +1,159 @@
+{
+  "pages": [
+    {
+      "stateCode": "AP",
+      "rosterPageTitle": "16th Andhra Pradesh Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "AR",
+      "rosterPageTitle": "11th Arunachal Pradesh Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "AS",
+      "rosterPageTitle": "16th Assam Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "BR",
+      "rosterPageTitle": "18th Bihar Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "CG",
+      "rosterPageTitle": "6th Chhattisgarh Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "DL",
+      "rosterPageTitle": "8th Delhi Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "GA",
+      "rosterPageTitle": "8th Goa Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "GJ",
+      "rosterPageTitle": "15th Gujarat Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "HP",
+      "rosterPageTitle": "14th Himachal Pradesh Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "HR",
+      "rosterPageTitle": "15th Haryana Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "JH",
+      "rosterPageTitle": "6th Jharkhand Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "JK",
+      "rosterPageTitle": "13th Jammu and Kashmir Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "KA",
+      "rosterPageTitle": "16th Karnataka Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "KL",
+      "rosterPageTitle": "16th Kerala Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "MH",
+      "rosterPageTitle": "15th Maharashtra Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "ML",
+      "rosterPageTitle": "11th Meghalaya Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "MN",
+      "rosterPageTitle": "12th Manipur Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "MP",
+      "rosterPageTitle": "16th Madhya Pradesh Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "MZ",
+      "rosterPageTitle": "9th Mizoram Legislative Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "NL",
+      "rosterPageTitle": "14th Nagaland Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "OD",
+      "rosterPageTitle": "17th Odisha Legislative Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "PB",
+      "rosterPageTitle": "16th Punjab Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "PY",
+      "rosterPageTitle": "16th Puducherry Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "RJ",
+      "rosterPageTitle": "16th Rajasthan Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "SK",
+      "rosterPageTitle": "11th Sikkim Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "TG",
+      "rosterPageTitle": "3rd Telangana Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "TN",
+      "rosterPageTitle": "17th Tamil Nadu Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "TR",
+      "rosterPageTitle": "13th Tripura Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "UK",
+      "rosterPageTitle": "5th Uttarakhand Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "UP",
+      "rosterPageTitle": "18th Uttar Pradesh Assembly",
+      "exists": true
+    },
+    {
+      "stateCode": "WB",
+      "rosterPageTitle": "18th West Bengal Assembly",
+      "exists": true
+    }
+  ]
+}
