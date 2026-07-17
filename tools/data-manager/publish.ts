@@ -57,6 +57,46 @@ export function validateDataset(): { issues: Issue[]; ok: boolean } {
       push(p, 'warn', 'no scored metrics - performance percentile will be unavailable');
   }
 
+  // ONE SEAT, ONE SITTING MLA.
+  // Two active members for the same assembly constituency means a by-election
+  // or resignation left a stale record behind (Shiggaon showed both Basavaraj
+  // Bommai and his successor once). The public page would show a departed
+  // member as sitting, so this is an ERROR and blocks publish.
+  const mlaBySeat = new Map<string, Politician[]>();
+  for (const p of politicians) {
+    if (p.constituencyType !== 'AC' || !p.active || !p.constituencyId) continue;
+    if (!mlaBySeat.has(p.constituencyId)) mlaBySeat.set(p.constituencyId, []);
+    mlaBySeat.get(p.constituencyId)!.push(p);
+  }
+  for (const [seat, members] of mlaBySeat) {
+    if (members.length < 2) continue;
+    for (const p of members) {
+      const others = members.filter((m) => m.id !== p.id).map((m) => m.id);
+      push(p, 'error', `duplicate active MLA for ${seat} (also ${others.join(', ')}) - a by-election likely left a stale record`);
+    }
+  }
+
+  // ONE PERSON, ONE ACTIVE MANDATE (lower houses).
+  // The same Wikidata person active as both an MLA and a Lok Sabha MP usually
+  // means they resigned the assembly seat after winning the parliamentary one
+  // and our MLA record went stale. Warn (dual mandates exist briefly and QIDs
+  // can be mis-resolved, so a human decides).
+  const byQid = new Map<string, Politician[]>();
+  for (const p of politicians) {
+    if (!p.active || !p.wikidata_qid) continue;
+    if (!byQid.has(p.wikidata_qid)) byQid.set(p.wikidata_qid, []);
+    byQid.get(p.wikidata_qid)!.push(p);
+  }
+  for (const [qid, group] of byQid) {
+    if (group.length < 2) continue;
+    const houses = new Set(group.map((p) => p.constituencyType));
+    if (houses.has('AC') && houses.has('PC')) {
+      for (const p of group) {
+        push(p, 'warn', `wikidata ${qid} is active in both an assembly and a Lok Sabha seat (${group.map((m) => m.id).join(', ')}) - one record may be stale`);
+      }
+    }
+  }
+
   // ONE PERSON, ONE AFFIDAVIT PAGE.
   // A MyNeta candidate page describes exactly one candidate in one seat, so two
   // members citing the same page means one of them is publishing somebody else's
