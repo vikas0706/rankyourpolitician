@@ -299,7 +299,12 @@ export default async function DistrictPage({
   const whoFixesWeight = 1900 + Math.min(view.mlas.length, 6) * 90 + view.mps.length * 95;
   const movable = [
     { el: repsCard, w: 120 + (view.mps.length ? 45 : 0) + view.mps.length * 84 + (view.mlas.length ? 45 : 0) + view.mlas.length * 84 },
-    ...(leadersCard ? [{ el: leadersCard, w: 260 + Math.min(ranking!.entries.length, 20) * 128 }] : []),
+    // The leaders card opens on its Trending tab (5 rows in geo scope) and keeps
+    // the performance list in a hidden tab panel, so it renders ~580px loaded and
+    // ~290px before a quiet district has any trending - never the ~2,800px the
+    // full list would suggest. Sizing it off `entries` here weighted a hidden
+    // panel and left the other column short.
+    ...(leadersCard ? [{ el: leadersCard, w: 520 }] : []),
     { el: officialsCard, w: 120 + officials.length * 240 },
     ...(mapCard ? [{ el: mapCard, w: 400 }] : []),
     ...(constituenciesCard ? [{ el: constituenciesCard, w: 130 + view.constituencies.length * 18 }] : []),
