@@ -88,29 +88,21 @@ export default async function RootLayout({
             `,
           }}
         />
-        {/* Google AdSense - RAW script tags (not next/script afterInteractive),
-            so they are present in the initial HTML of EVERY page: the AdSense
-            crawler reads raw HTML, and an injected-after-hydration tag is
-            invisible to it (ads then never serve). `async` keeps first paint
-            unblocked; React hoists async scripts and dedupes across navigations.
-            The inline push requests page-level Auto ads from code, so ads can
-            place site-wide even before ad units / console toggles exist. */}
+        {/* Google AdSense loader - RAW script tag (not next/script
+            afterInteractive), so it is present in the initial HTML of EVERY
+            page: the AdSense crawler reads raw HTML, and an injected-after-
+            hydration tag is invisible to it (ads then never serve). `async`
+            keeps first paint unblocked; React hoists async scripts and dedupes
+            across navigations. We deliberately do NOT request page-level Auto
+            ads: ads render only at explicit <AdSlot> units, each of which shows
+            an "ad below" notice. Auto ads must also stay OFF in the AdSense
+            console - that account toggle is separate from this code. */}
         {ADSENSE_CLIENT && (
-          <>
-            <script
-              async
-              crossOrigin="anonymous"
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
-            />
-            <script
-              dangerouslySetInnerHTML={{
-                // Guarded: streamed/dynamic pages can execute layout inline
-                // scripts twice, and AdSense rejects a second
-                // enable_page_level_ads push ("only one allowed per page").
-                __html: `if(!window.__rypAds){window.__rypAds=1;(window.adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"${ADSENSE_CLIENT}",enable_page_level_ads:true});}`,
-              }}
-            />
-          </>
+          <script
+            async
+            crossOrigin="anonymous"
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+          />
         )}
         <div className="aurora" aria-hidden="true" />
         <I18nProvider locale={locale} dict={dict} dir={dir}>
