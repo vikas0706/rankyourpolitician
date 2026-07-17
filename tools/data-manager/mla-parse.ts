@@ -55,7 +55,7 @@ const CONS_CELL_RE = /(?:Assembly|Vidhan[a]? Sabha|Legislative Assembly)\)? cons
 const ALLIANCE_TAIL = /(?:Alliance|Coalition)$/i;
 // Words that mark a wikilink as a political party (for states that link the party
 // as a plain [[Party]] rather than a {{Party name with colour}} template, e.g. UP).
-const PARTY_HINT = /\b(Party|Congress|Sena|Dal|Samajwadi|Bahujan|Janata|Communist|Morcha|Kazhagam|Rashtriya|Trinamool|Biju|Desam|Nationalist|People's|Democratic|Republican|Majlis|Jana Sena|Apna|Lok|Munnetra|Maha Vikas|Front)\b/i;
+const PARTY_HINT = /\b(Party|Congress|Sena|Dal|Samajwadi|Bahujan|Janata|Communist|Morcha|Kazhagam|Rashtriya|Trinamool|Biju|Desam|Nationalist|People's|Democratic|Republican|Majlis|Jana Sena|Apna|Lok|Munnetra|Maha Vikas|Front|Samithi|Samiti)\b/i;
 // A party value that is really a cell attribute, colour, or placeholder.
 const BAD_PARTY = /^(?:rowspan|colspan|bgcolor|style|align|width|class|scope)\b|^(?:vacant|green|red|blue|white|black|grey|gray|orange|yellow|saffron|maroon|purple|pink|brown)$|=/i;
 // A plain-text cell that is a status note, not a member name.

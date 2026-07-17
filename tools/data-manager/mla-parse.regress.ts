@@ -239,5 +239,17 @@ const allianceSeat = parseSeats(wrap(`|-
 |`));
 assert(allianceSeat[0]?.sitting?.party === 'Tamilaga Vettri Kazhagam', `party column beats alliance column (got ${allianceSeat[0]?.sitting?.party})`);
 
+// 19. Plain-text member with a bare party wikilink (3rd TG format): the party
+// link is not the member, the preceding plain-text cell is.
+const tg = parseMembers(wrap(`|-
+|31
+|[[Huzurabad Assembly constituency|Huzurabad]]
+|Padi Kaushik Reddy
+| {{party color cell|Bharat Rashtra Samithi}}
+|[[Bharat Rashtra Samithi]]
+|`));
+assert(tg.length === 1 && tg[0].name === 'Padi Kaushik Reddy', `plain member beats party link (got ${tg[0]?.name})`);
+assert(tg[0]?.party === 'Bharat Rashtra Samithi', `party color cell parsed (got ${tg[0]?.party})`);
+
 if (failed) { console.error(`\n${failed} failure(s)`); process.exit(1); }
 console.log('\nAll MLA parse regressions passed.');
