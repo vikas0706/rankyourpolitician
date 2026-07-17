@@ -6,6 +6,7 @@ import { I18nProvider } from '@/lib/i18n/provider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileTabBar from '@/components/MobileTabBar';
+import { SITE_URL } from '@/lib/site-url';
 
 // Google AdSense publisher id (public - it ships in the browser). Override via
 // NEXT_PUBLIC_ADSENSE_CLIENT if the account changes.
@@ -20,16 +21,9 @@ const manrope = Manrope({
   variable: '--font-manrope',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-
-// Loud build-time guard: metadataBase feeds every page's canonical tag (plus
-// OG + sitemap URLs). A Vercel build without NEXT_PUBLIC_SITE_URL would stamp
-// http://localhost:3000 canonicals across ~10k+ pages - a silent SEO disaster
-// (NEXT_PUBLIC_* vars are inlined at build time; see the CLAUDE.md gotchas).
-if (process.env.VERCEL && !process.env.NEXT_PUBLIC_SITE_URL) {
-  console.warn('⚠ NEXT_PUBLIC_SITE_URL is not set - canonicals/OG/sitemap will point at localhost.');
-}
-
+// SITE_URL feeds metadataBase (every page's canonical tag) plus the OG url below.
+// Its fallback is production-safe on Vercel, so a build that forgets
+// NEXT_PUBLIC_SITE_URL no longer stamps localhost canonicals - see lib/site-url.ts.
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {

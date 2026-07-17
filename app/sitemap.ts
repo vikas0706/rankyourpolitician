@@ -1,9 +1,9 @@
 import type { MetadataRoute } from 'next';
 import { getAllPersonIds, getIndex, getStates, getDistrictsInState } from '@/lib/data';
+import { SITE_URL } from '@/lib/site-url';
 
 // Built once per deploy. Clean (locale-less) URLs are the canonical ones -
 // middleware picks the reader's language, so one URL serves every locale.
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [idx, states, personIds] = await Promise.all([getIndex(), getStates(), getAllPersonIds()]);

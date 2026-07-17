@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { DEFAULT_LOCALE, LOCALE_CODES } from '@/lib/i18n/locales';
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+import { SITE_URL } from '@/lib/site-url';
 
 export default function robots(): MetadataRoute.Robots {
   // /{locale}/... URLs are middleware-rewrite targets, not real destinations:
