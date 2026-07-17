@@ -46,7 +46,7 @@ export default function ShareButton({
     <button
       type="button"
       onClick={handleShare}
-      className="pressable inline-flex items-center gap-1.5 rounded-full border border-line bg-white/90 px-3 py-1.5 text-xs font-semibold text-ink-soft hover:border-brand/40 hover:text-brand dark:bg-zinc-900"
+      className="pressable inline-flex items-center gap-1.5 rounded-full border border-line bg-white/90 px-3 py-1.5 text-xs font-semibold text-ink-soft hover:border-brand/40 hover:text-brand"
     >
       <Icon name={copied ? 'check' : 'share'} size={14} className={copied ? 'text-good dark:text-green-400' : ''} />
       <span>{copied ? successLabel : label}</span>

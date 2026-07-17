@@ -169,10 +169,15 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
             <p className="mt-3 text-ink-soft">{person.current_position || tr(`accountability.roles.${roleKey}.oneLine`)}</p>
             {updated && <div className="mt-3 flex justify-center sm:justify-start"><LastUpdated date={updated} /></div>}
             <div className="mt-3 flex justify-center sm:justify-start">
+              {/* Share the clean locale-less URL, never `/${locale}/...`. It is this
+                  page's canonical, it lets the recipient's own cookie pick their
+                  language (a prefixed link would force the sharer's), and the 22
+                  non-English prefixes are robots-blocked, so a shared prefixed URL
+                  is an unindexable on-demand ISR render. See app/robots.ts. */}
               <ShareButton
                 title={person.name}
                 text={person.current_position || tr(`accountability.roles.${roleKey}.oneLine`)}
-                url={`/${locale}/person/${person.id}`}
+                url={`/person/${person.id}`}
                 label={tr('profile.shareCta')}
                 successLabel={tr('profile.shareSuccess')}
               />
@@ -518,7 +523,7 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
               <ShareButton
                 title={p.name}
                 text={tr(`offices.${ot}.handles`)}
-                url={`/${locale}/person/${p.id}`}
+                url={`/person/${p.id}`}
                 label={tr('profile.shareCta')}
                 successLabel={tr('profile.shareSuccess')}
               />
