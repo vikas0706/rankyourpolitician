@@ -6,7 +6,8 @@
  * shared Wikidata enrichment. Assembly constituencies (ACs) are added to
  * constituencies.json.
  *
- * Usage:  npx tsx tools/data-manager/import-mlas.ts <discovered-pages.json|.output>
+ * Usage:  npm run dm -- refresh-mlas [discovered-pages.json]
+ *         npx tsx tools/data-manager/import-mlas.ts <discovered-pages.json|.output>
  *         MLA_ONE=MH:15th Maharashtra Assembly   npx tsx ... (test one state)
  */
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';

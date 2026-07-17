@@ -58,6 +58,12 @@ async function main() {
       await import('./import-lok-sabha');
       break;
     }
+    case 'refresh-mlas': {
+      // Rebuild all state MLA rosters from Wikipedia assembly member lists.
+      process.argv[2] = process.argv[3] || '';
+      await import('./import-mlas');
+      break;
+    }
     case 'import-rajya-sabha': {
       // Add the ~245 Rajya Sabha members (upper house) from the canonical list.
       await import('./import-rajya-sabha');
