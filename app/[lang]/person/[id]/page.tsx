@@ -24,7 +24,7 @@ import LastUpdated from '@/components/LastUpdated';
 import VoteWidget from '@/components/VoteWidget';
 import PhoneLink from '@/components/PhoneLink';
 import AdSlot from '@/components/AdSlot';
-import ShareButton from '@/components/ShareButton';
+import ShareRow from '@/components/share/ShareRow';
 import DeclaredCases from '@/components/DeclaredCases';
 
 // Weekly self-heal only. Profile facts change via deploy or /api/revalidate, and
@@ -68,8 +68,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   if (res?.redirectTo) return { alternates: { canonical: `/person/${res.redirectTo}` } };
   const p = res?.person;
   if (!p) return { title: 'Not found' };
+  const title = `${p.name}${p.constituency ? ` - ${p.constituency}` : ''}`;
+  // Shareable card (name / photo / seat + a blurred public rating). Static per
+  // person and CDN-cached, so wiring it here adds only a <meta> tag to the page
+  // - no render-time cost. metadataBase (root layout) makes the path absolute,
+  // so WhatsApp/X/Facebook unfurl the card when the profile URL is shared.
+  const shareImage = { url: `/api/share-card/${id}`, width: 1200, height: 630, alt: `${p.name} - RankYourPolitician` };
   return {
-    title: `${p.name}${p.constituency ? ` - ${p.constituency}` : ''}`,
+    title,
     description: p.neutral_summary,
     // The clean locale-less URL is the canonical for every /{locale}/... variant.
     // Locale is cookie-picked (middleware rewrite), so prefixed variants are
@@ -78,6 +84,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     // prefixes are robots-blocked outright, which stops the crawl spend but
     // also hides these tags from crawlers (see app/robots.ts).
     alternates: { canonical: `/person/${id}` },
+    openGraph: {
+      title,
+      description: p.neutral_summary,
+      url: `/person/${id}`,
+      type: 'profile',
+      images: [shareImage],
+    },
+    twitter: { card: 'summary_large_image', title, description: p.neutral_summary, images: [shareImage.url] },
   };
 }
 
@@ -195,18 +209,11 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
             )}
             {updated && <div className="mt-3 flex justify-center sm:justify-start"><LastUpdated date={updated} labelKey="profile.profileUpdated" /></div>}
             <div className="mt-3 flex justify-center sm:justify-start">
-              {/* Share the clean locale-less URL, never `/${locale}/...`. It is this
-                  page's canonical, it lets the recipient's own cookie pick their
-                  language (a prefixed link would force the sharer's), and the 22
-                  non-English prefixes are robots-blocked, so a shared prefixed URL
-                  is an unindexable on-demand ISR render. See app/robots.ts. */}
-              <ShareButton
-                title={person.name}
-                text={person.current_position || tr(`accountability.roles.${roleKey}.oneLine`)}
-                url={`/person/${person.id}`}
-                label={tr('profile.shareCta')}
-                successLabel={tr('profile.shareSuccess')}
-              />
+              {/* Share buttons deep-link with the clean locale-less profile URL
+                  (never `/${locale}/...`): it is this page's canonical, it lets
+                  the recipient's own cookie pick their language, and the 22
+                  non-English prefixes are robots-blocked. See app/robots.ts. */}
+              <ShareRow id={person.id} name={person.name} kind="elected" />
             </div>
           </div>
           {spot && (
@@ -275,7 +282,7 @@ export default async function PersonPage({ params }: { params: Promise<{ lang: s
           {/* Rating summary + vote form live in the client widget: the server
               renders the (possibly week-old) numbers into the static HTML, and
               the widget re-fetches the live score on mount. */}
-          <VoteWidget politicianId={person.id} initial={{ mean: sentiment.raw_mean, votes: sentiment.n_votes, distribution: sentiment.distribution, confidence: sentiment.confidence }} />
+          <VoteWidget politicianId={person.id} personName={person.name} initial={{ mean: sentiment.raw_mean, votes: sentiment.n_votes, distribution: sentiment.distribution, confidence: sentiment.confidence }} />
         </div>
       </div>
 
@@ -546,13 +553,7 @@ function OfficialProfile({ p, tr, locale }: { p: PersonView; tr: (k: string, v?:
               </p>
             )}
             <div className="mt-3 flex justify-center sm:justify-start">
-              <ShareButton
-                title={p.name}
-                text={tr(`offices.${ot}.handles`)}
-                url={`/person/${p.id}`}
-                label={tr('profile.shareCta')}
-                successLabel={tr('profile.shareSuccess')}
-              />
+              <ShareRow id={p.id} name={p.name} kind="official" />
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import Script from 'next/script';
 import { useI18n } from '@/lib/i18n/provider';
 import { Stars } from '@/components/viz';
+import ShareRow from '@/components/share/ShareRow';
 
 const SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
@@ -43,9 +44,11 @@ function deviceFingerprint(): string {
 
 export default function VoteWidget({
   politicianId,
+  personName,
   initial,
 }: {
   politicianId: string;
+  personName: string;
   initial: Sentiment;
 }) {
   const { t } = useI18n();
@@ -258,6 +261,14 @@ export default function VoteWidget({
       </div>
 
       <p className="mt-2 text-xs text-ink-faint">{t('vote.oncePerPerson')} · {t('vote.notVerifiedNote')}</p>
+
+      {/* Post-rating share - just the logos, once this visitor has rated (a
+          fresh submit this session, or a rating restored from a past visit). */}
+      {submitted != null && (
+        <div className="mt-4">
+          <ShareRow id={politicianId} name={personName} kind="elected" />
+        </div>
+      )}
 
       {/* Distribution */}
       <div className="mt-4 border-t border-line pt-4">
