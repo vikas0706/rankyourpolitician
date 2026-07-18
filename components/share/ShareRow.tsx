@@ -76,11 +76,24 @@ export default function ShareRow({ id, name, kind = 'elected' }: { id: string; n
       /* clipboard blocked - the logo buttons still work */
     }
   }
-  // Instagram has no web intent: share the image via the native sheet where
-  // possible (mobile), else save it so it can be posted.
-  async function instagram() {
+  // On a device that can share files (mobile Web Share Level 2), attach the
+  // actual card IMAGE via the native sheet - the intent URLs below can only send
+  // text + a link (the picture would appear, if at all, only as the platform's
+  // own link preview). On desktop (no file share) fall back to the platform's
+  // web intent; Instagram has no web intent, so download the image to post.
+  async function shareTo(intentUrl: string | null) {
+    // Mobile: attach the card image via the native sheet.
+    if (canShareFiles()) {
+      const file = await ensureFile();
+      if (file && (await nativeShare({ title: name, text, url, file }))) return;
+    }
+    // Desktop platform link (the image shows as the platform's own unfurl preview).
+    if (intentUrl) {
+      open(intentUrl);
+      return;
+    }
+    // Instagram with no file-share (desktop): download the image so it can be posted.
     const file = await ensureFile();
-    if (file && canShareFiles() && (await nativeShare({ title: name, text, url, file }))) return;
     if (file) downloadFile(file);
     else open(url);
   }
@@ -88,10 +101,10 @@ export default function ShareRow({ id, name, kind = 'elected' }: { id: string; n
   return (
     <div className="flex flex-wrap items-center gap-2">
       <span className="mr-0.5 text-xs font-semibold text-ink-faint">{t('profile.shareLabel')}</span>
-      <LogoBtn label={t('profile.shareWhatsapp')} glyph="whatsapp" bg="#25d366" onClick={() => open(whatsappUrl(text, url))} />
-      <LogoBtn label={t('profile.shareX')} glyph="x" bg="#111111" onClick={() => open(xUrl(text, url))} />
-      <LogoBtn label={t('profile.shareFacebook')} glyph="facebook" bg="#1877f2" onClick={() => open(facebookUrl(url))} />
-      <LogoBtn label={t('profile.shareInstagram')} glyph="instagram" bg="linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888)" onClick={instagram} />
+      <LogoBtn label={t('profile.shareWhatsapp')} glyph="whatsapp" bg="#25d366" onClick={() => shareTo(whatsappUrl(text, url))} />
+      <LogoBtn label={t('profile.shareX')} glyph="x" bg="#111111" onClick={() => shareTo(xUrl(text, url))} />
+      <LogoBtn label={t('profile.shareFacebook')} glyph="facebook" bg="#1877f2" onClick={() => shareTo(facebookUrl(url))} />
+      <LogoBtn label={t('profile.shareInstagram')} glyph="instagram" bg="linear-gradient(45deg,#f09433,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888)" onClick={() => shareTo(null)} />
       <button
         type="button"
         onClick={copy}
