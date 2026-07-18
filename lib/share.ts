@@ -63,7 +63,11 @@ export async function nativeShare(opts: { title: string; text: string; url: stri
   if (!nav || typeof nav.share !== 'function') return false;
   try {
     if (opts.file && typeof nav.canShare === 'function' && nav.canShare({ files: [opts.file] })) {
-      await nav.share({ title: opts.title, text: opts.text, url: opts.url, files: [opts.file] });
+      // When an image FILE is attached, many targets (WhatsApp, Instagram) drop
+      // the separate `url` field and keep only the caption - so fold the link
+      // into the text, otherwise the recipient gets the picture but no way back
+      // to the site. Pass url too for targets that do use it.
+      await nav.share({ title: opts.title, text: `${opts.text} ${opts.url}`, url: opts.url, files: [opts.file] });
     } else {
       await nav.share({ title: opts.title, text: opts.text, url: opts.url });
     }
