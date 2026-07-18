@@ -160,6 +160,18 @@ export default async function HomePage({ params }: { params: Promise<LangParams>
       </section>
 
       <div className="mx-auto max-w-content px-4 py-6">
+        {/* The site's guiding idea - a quiet civic creed, set apart as a breath
+            between the hero and the tools below. */}
+        <Reveal as="section" className="mb-8">
+          <div className="relative overflow-hidden rounded-3xl border border-line/70 bg-gradient-to-br from-brand-soft/60 via-white/50 to-perf-soft/50 px-6 py-8 text-center shadow-soft sm:py-10">
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink-faint">{tr('home.creedEyebrow')}</p>
+            <p className="mx-auto mt-2 max-w-2xl font-display text-2xl font-extrabold leading-snug tracking-tight text-ink sm:text-[2rem]">
+              {tr('home.creed')}
+            </p>
+            <span className="tricolor-line mx-auto mt-4 w-14" aria-hidden="true" />
+          </div>
+        </Reveal>
+
         {/* Org chart of India - how power flows */}
         <Reveal as="section" className="mb-8">
           <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
