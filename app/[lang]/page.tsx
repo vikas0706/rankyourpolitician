@@ -74,6 +74,7 @@ export default async function HomePage({ params }: { params: Promise<LangParams>
   const exploreLinks: { href: string; icon: IconName; label: string }[] = [
     { href: '/india', icon: 'parliament', label: tr('nav.central') },
     { href: '/rights', icon: 'scales', label: tr('nav.rights') },
+    { href: '/why-care', icon: 'sparkle', label: tr('nav.whyCare') },
     { href: '/hierarchy', icon: 'network', label: tr('nav.hierarchy') },
     { href: '/rankings', icon: 'star', label: tr('ranking.fullTitle') },
     { href: '/accountability', icon: 'people', label: tr('nav.accountability') },
@@ -121,6 +122,19 @@ export default async function HomePage({ params }: { params: Promise<LangParams>
                     switches. Lives in the hero so nobody has to spot the small
                     header globe to learn the site speaks their language. */}
                 <LanguageHint className="mt-4 justify-center lg:justify-start" />
+              </div>
+
+              {/* Gentle onboarding entry for the sceptical first-time visitor -
+                  a small pill under the search, never blocking the primary action. */}
+              <div className="mt-5 flex justify-center animate-fade-up lg:justify-start" style={{ animationDelay: '200ms' }}>
+                <Link
+                  href="/why-care"
+                  className="pressable group inline-flex items-center gap-2 rounded-full border border-brand/25 bg-white/80 px-4 py-2 text-sm font-semibold text-brand shadow-soft backdrop-blur hover:bg-brand-soft"
+                >
+                  <Icon name="sparkle" size={16} />
+                  {tr('nav.whyCare')}
+                  <Icon name="arrow" size={15} className="transition group-hover:translate-x-0.5" />
+                </Link>
               </div>
 
               {/* Live counters */}

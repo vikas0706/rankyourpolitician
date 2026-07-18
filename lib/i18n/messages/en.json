@@ -11,6 +11,7 @@
     "hierarchy": "Org chart of India",
     "accountability": "Who does what?",
     "rights": "Know your rights",
+    "whyCare": "Why should I care?",
     "methodology": "How it works",
     "about": "About",
     "language": "Language",
@@ -753,6 +754,93 @@
       "whoDoes": "Who does what?",
       "getHelp": "Find who's responsible",
       "sourceNote": "Source: the Constitution of India. This page is for civic awareness and is not legal advice - for any specific situation, consult a lawyer or the official text."
+    }
+  },
+  "whyCare": {
+    "metaTitle": "Why should I care about politics?",
+    "metaDescription": "You didn't choose to follow politics, but it already shapes your money, your street, your school and your safety. Why a few minutes of attention is worth it, what a good representative actually looks like, and how to start.",
+    "eyebrow": "Civic sense, in plain terms",
+    "nonpartisanTag": "Non-partisan",
+    "title": "Why should I care?",
+    "subtitle": "You didn't choose to follow politics. But politics already follows you - your money, your street, your child's school. Here is why a few minutes of attention is worth it, and what a good representative actually looks like.",
+    "note": "This is about paying attention, not picking a side. No parties, no verdicts - just how it touches you.",
+    "tocTitle": "On this page",
+    "toc": {
+      "everyday": "It touches your day",
+      "ignore": "The cost of looking away",
+      "power": "More than one vote",
+      "good": "What good looks like",
+      "start": "Start in five minutes"
+    },
+    "everyday": {
+      "eyebrow": "It's already your life",
+      "title": "Government isn't far away - it is your daily life",
+      "intro": "Every one of these is decided by someone you can name, elect and hold to account.",
+      "items": [
+        { "title": "Your money", "desc": "Income tax, the GST on everything you buy, the price of petrol and a gas cylinder - all set by people in office." },
+        { "title": "Your street", "desc": "Roads, potholes, street lights, drains and clean water are somebody's job, and somebody's budget." },
+        { "title": "Your family's future", "desc": "Which government school and hospital you get - and whether they actually work - is a political choice." },
+        { "title": "Your safety", "desc": "Police, courts and how quickly an FIR gets filed depend on how the system is run and funded." },
+        { "title": "Your work", "desc": "Jobs, small-business rules, crop prices and welfare schemes are all decided, not handed down by fate." },
+        { "title": "Your voice", "desc": "Whether your area gets heard in the state capital or in Delhi depends on the person you send there." }
+      ]
+    },
+    "ignore": {
+      "eyebrow": "The cost of looking away",
+      "title": "What happens when nobody is watching",
+      "intro": "Not caring is itself a choice - and it has a price. Usually someone else pays it, and often that someone is you.",
+      "items": [
+        { "title": "The pressure disappears", "desc": "A representative who is never asked has little reason to show up, spend the local fund, or reply. Attention is what keeps them working." },
+        { "title": "Problems stay problems", "desc": "The pothole, the missing teacher, the dry tap - unless someone points to the right office and pushes, nothing moves on its own." },
+        { "title": "The organised get served first", "desc": "The loudest and best-connected are heard first. Everyone who looked away waits at the back of the queue." },
+        { "title": "You pay either way", "desc": "The taxes still leave your pocket and the decisions still get made. Looking away isn't free - it just costs you the say in them." }
+      ]
+    },
+    "power": {
+      "eyebrow": "You have more than one vote",
+      "title": "Your vote is the start, not the end",
+      "intro": "Elections are one day in five years. Between them, you still have real levers - and most people never use them.",
+      "items": [
+        { "title": "Vote - and vote local", "desc": "Your MLA and ward councillor shape your street more than any national vote. The smaller the election, the bigger your share of it." },
+        { "title": "Ask, on the record", "desc": "You can file a Right to Information request and make any public office answer in writing. It is your legal right, not a favour." },
+        { "title": "Knock on the right door", "desc": "Half the battle is reaching the office that actually owns the problem - not the one that is easiest to find." },
+        { "title": "Check the record", "desc": "Attendance, questions asked, funds spent: judge your representative by what they did, not by what they promised." },
+        { "title": "Rate and pass it on", "desc": "One honest rating and one forwarded profile turn private frustration into public, visible pressure." }
+      ]
+    },
+    "good": {
+      "eyebrow": "Know what good looks like",
+      "title": "What does a good representative look like?",
+      "intro": "Not their party, and not their promises - what they actually do. These are things you can check, whoever they are.",
+      "items": [
+        { "title": "They show up", "desc": "Attendance in the house is the most basic duty of the job. Present beats absent." },
+        { "title": "They ask questions", "desc": "Raising your area's problems and questioning the government is the work itself, not a favour to you." },
+        { "title": "They spend the local fund", "desc": "The MP and MLA development funds are meant for your area - used well, not left to lapse." },
+        { "title": "They are reachable", "desc": "A real office, a working number, and someone who actually responds when you reach out." },
+        { "title": "They serve everyone", "desc": "Not only the people who voted for them, and not only their own community." },
+        { "title": "They are honest on paper", "desc": "Assets and any court cases declared truthfully in their sworn affidavit, on the public record." },
+        { "title": "They obey the same law", "desc": "The rules that bind you bind the people who make them, too." }
+      ],
+      "note": "This site measures only the parts that are officially recorded - attendance, questions, funds - and keeps that factual score separate from public opinion. See exactly how."
+    },
+    "start": {
+      "eyebrow": "Five minutes is enough",
+      "title": "Start today, in five minutes",
+      "intro": "You don't need to become an activist. Small, regular attention is what accountability is made of.",
+      "items": [
+        { "title": "Know your representatives", "desc": "Search your area and meet the people who actually represent you - MP, MLA and local body." },
+        { "title": "Check one record", "desc": "Open a profile and read the facts: attendance, questions, funds used, and any declared cases." },
+        { "title": "Rate them honestly", "desc": "One rating, no login, ten seconds. It is opinion - shown separately from the official record." },
+        { "title": "Report one problem", "desc": "Pick an issue you face and see the exact office to approach, and how to escalate if it is ignored." },
+        { "title": "Tell one person", "desc": "Forward a profile to a neighbour. Attention spreads, and so does pressure." }
+      ]
+    },
+    "closing": {
+      "title": "Start with your own area",
+      "desc": "The whole point of this site is to make those five minutes easy. Find who represents you, see their real record, and hold them to it.",
+      "findCta": "Find who represents you",
+      "rightsCta": "Know your rights",
+      "note": "Non-partisan and free. No login, no tracking, no verdicts - just the facts and the tools to act on them."
     }
   },
   "profile": {

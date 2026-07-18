@@ -17,6 +17,10 @@ const NAV: { href: string; key: string; icon: IconName; show: string }[] = [
   { href: '/hierarchy', key: 'nav.hierarchy', icon: 'network', show: 'hidden xl:flex' },
   { href: '/who', key: 'nav.accountability', icon: 'megaphone', show: 'hidden xl:flex' },
   { href: '/about', key: 'nav.about', icon: 'info', show: 'hidden xl:flex' },
+  // Onboarding page: surfaced via the home hero + footer on wide screens, and the
+  // mobile overflow menu on phones. `show: hidden` keeps it out of the crowded
+  // inline desktop bar while still listing it in the mobile menu below.
+  { href: '/why-care', key: 'nav.whyCare', icon: 'sparkle', show: 'hidden' },
 ];
 
 function ThemeToggle() {

@@ -138,6 +138,7 @@ app/
     person/[id]/              unified profile (MP/MLA and/or minister, or appointed official)
     rankings/  search/  who/  full rankings, search, "who fixes what"
     rights/                   "Know your rights" - the Constitution of India, in plain language
+    why-care/                 "Why should I care?" - civic-sense onboarding (non-partisan)
     accountability/ methodology/ about/ privacy/ terms/ grievance/
   api/vote/                   vote endpoint (POST: Turnstile + rate-limit + Firestore
                               transaction; GET: live sentiment for the widget, CDN-cached)
