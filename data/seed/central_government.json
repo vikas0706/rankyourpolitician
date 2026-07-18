@@ -213,7 +213,10 @@
     "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
     "source_name": "Wikipedia - Third Modi ministry",
     "retrieved_date": "2026-07-14",
-    "politicianId": "gaya-jitan-ram-manjhi"
+    "politicianId": "gaya-jitan-ram-manjhi",
+    "photo_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Bihar%20CM%20meets%20PM%20Modi.jpg?width=400",
+    "photo_license": "GODL-India · Wikimedia Commons",
+    "wikidata_qid": "Q16910976"
   },
   {
     "id": "rajiv-ranjan-singh-lalan-singh",
@@ -873,7 +876,10 @@
     "state": "Rajasthan",
     "source_url": "https://en.wikipedia.org/wiki/Third_Modi_ministry",
     "source_name": "Wikipedia - Third Modi ministry",
-    "retrieved_date": "2026-07-14"
+    "retrieved_date": "2026-07-14",
+    "photo_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Shri%20Ravneet%20Singh.jpg?width=400",
+    "photo_license": "GODL-India · Wikimedia Commons",
+    "wikidata_qid": "Q7296806"
   },
   {
     "id": "pemmasani-chandra-sekhar",

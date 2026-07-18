@@ -8,7 +8,10 @@
     "note": "Head of State. Appoints the Prime Minister, gives assent to laws and is Supreme Commander of the armed forces - acting on the aid and advice of the Council of Ministers (Article 74). The office is non-partisan.",
     "source_url": "https://en.wikipedia.org/wiki/President_of_India",
     "source_name": "Wikipedia - President of India",
-    "retrieved_date": "2026-07-15"
+    "retrieved_date": "2026-07-15",
+    "photo_url": "https://commons.wikimedia.org/wiki/Special:FilePath/President%20of%20India%20Droupadi%20Murmu%20official%20portrait%20(cropped).jpg?width=400",
+    "photo_license": "GODL-India · Wikimedia Commons",
+    "wikidata_qid": "Q19901232"
   },
   {
     "id": "vice-president-of-india",
@@ -19,7 +22,10 @@
     "note": "Ex-officio Chairman of the Rajya Sabha (Article 64) - presides over the upper house of Parliament. Elected in the 2025 vice-presidential election.",
     "source_url": "https://en.wikipedia.org/wiki/Vice_President_of_India",
     "source_name": "Wikipedia - Vice President of India",
-    "retrieved_date": "2026-07-15"
+    "retrieved_date": "2026-07-15",
+    "photo_url": "https://commons.wikimedia.org/wiki/Special:FilePath/Shri%20C%20P%20Radhakrishnan%2C%20Honourable%20Vice%20President%20of%20India.jpg?width=400",
+    "photo_license": "GODL-India · Wikimedia Commons",
+    "wikidata_qid": "Q15472832"
   },
   {
     "id": "speaker-lok-sabha",

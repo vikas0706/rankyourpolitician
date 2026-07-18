@@ -398,6 +398,8 @@ export interface ConstitutionalOffice {
   state?: string;
   politicianId?: string; // link to a full profile if one exists in our dataset
   photo_url?: string;
+  photo_license?: string; // Commons license, for attribution (offices with no linked profile)
+  wikidata_qid?: string; // resolved for photo sourcing (President/VP are not in politicians.json)
   since?: string; // ISO date office was assumed
   note?: string;
   source_url: string;
@@ -426,6 +428,7 @@ export interface Minister {
   state?: string;
   wikidata_qid?: string;
   photo_url?: string;
+  photo_license?: string; // Commons license, for attribution (minister-only records with no linked profile)
   politicianId?: string; // link to a full profile if one exists in our dataset
   source_url: string;
   source_name: string;

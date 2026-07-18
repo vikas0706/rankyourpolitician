@@ -197,6 +197,13 @@ async function main() {
       await import('./enrich-photos');
       break;
     }
+    case 'enrich-office-photos': {
+      // Photos for constitutional offices (President, VP, Speaker, LoPs) and
+      // minister-only records that enrich-photos never reaches. Cited to
+      // Wikidata P18 + Commons licence, fill-only. DRY=1 for a report.
+      await import('./enrich-office-photos');
+      break;
+    }
     case 'import-state-gov': {
       // Build state_government.json from the ryp-state-governments workflow output.
       process.argv[2] = process.argv[3] || '';
