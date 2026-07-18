@@ -813,7 +813,7 @@
         { "title": "Ask, on the record", "desc": "You can file a Right to Information request and make any public office answer in writing. It is your legal right, not a favour." },
         { "title": "Knock on the right door", "desc": "Half the battle is reaching the office that actually owns the problem - not the one that is easiest to find." },
         { "title": "Check the record", "desc": "Attendance, questions asked, funds spent: judge your representative by what they did, not by what they promised." },
-        { "title": "Rate and pass it on", "desc": "One honest rating and one forwarded profile turn private frustration into public, visible pressure." }
+        { "title": "Speak up, together", "desc": "One voice is easy to ignore; a whole street or group raising the same issue is not. Sign, gather, show up - numbers move offices." }
       ]
     },
     "good": {
@@ -829,26 +829,24 @@
         { "title": "They are honest on paper", "desc": "Assets and any court cases declared truthfully in their sworn affidavit, on the public record." },
         { "title": "They obey the same law", "desc": "The rules that bind you bind the people who make them, too." }
       ],
-      "note": "This site measures only the parts that are officially recorded - attendance, questions, funds - and keeps that factual score separate from public opinion. See exactly how."
+      "note": "You can check most of this yourself - a representative's attendance and spending sit on the public record. Judge them by what they do, not by what they promise."
     },
     "start": {
-      "eyebrow": "Five minutes is enough",
-      "title": "Start today, in five minutes",
-      "intro": "You don't need to become an activist. Small, regular attention is what accountability is made of.",
+      "eyebrow": "It doesn't take much",
+      "title": "Small habits of an alert citizen",
+      "intro": "You don't need to become an activist. A democracy stays honest when ordinary people pay a little attention, regularly.",
       "items": [
-        { "title": "Know your representatives", "desc": "Search your area and meet the people who actually represent you - MP, MLA and local body." },
-        { "title": "Check one record", "desc": "Open a profile and read the facts: attendance, questions, funds used, and any declared cases." },
-        { "title": "Rate them honestly", "desc": "One rating, no login, ten seconds. It is opinion - shown separately from the official record." },
-        { "title": "Report one problem", "desc": "Pick an issue you face and see the exact office to approach, and how to escalate if it is ignored." },
-        { "title": "Tell one person", "desc": "Forward a profile to a neighbour. Attention spreads, and so does pressure." }
+        { "title": "Know who represents you", "desc": "Learn the names of your MP, your MLA and your local councillor. You cannot hold someone to account if you don't know who they are." },
+        { "title": "Follow what they actually do", "desc": "Their attendance, the questions they raise and the money they spend are on the public record. Look past the speeches." },
+        { "title": "Vote every time - especially locally", "desc": "The smaller the election, the more your single vote weighs. Never skip a local body or panchayat vote." },
+        { "title": "Raise problems the right way", "desc": "Take an issue to the office that owns it, in writing, and escalate calmly if it is ignored. Persistence is a citizen's real power." },
+        { "title": "Don't stay silent", "desc": "Talk about local issues with family and neighbours. Awareness spreads from person to person, and a community that pays attention is hard to ignore." }
       ]
     },
     "closing": {
-      "title": "Start with your own area",
-      "desc": "The whole point of this site is to make those five minutes easy. Find who represents you, see their real record, and hold them to it.",
-      "findCta": "Find who represents you",
-      "rightsCta": "Know your rights",
-      "note": "Non-partisan and free. No login, no tracking, no verdicts - just the facts and the tools to act on them."
+      "title": "A democracy is only as awake as its people",
+      "desc": "Democracy does not run on election day alone. It runs on ordinary people paying attention between elections - asking, checking, and refusing to look away. That work is not for experts or activists. It is yours, and it belongs to everyone.",
+      "note": "Non-partisan by nature. This is about your part as a citizen - not about any party, any leader or any side."
     }
   },
   "profile": {
