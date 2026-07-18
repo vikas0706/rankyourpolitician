@@ -147,7 +147,7 @@
     "sp_district": {
       "label": "Superintendent of Police (SP)",
       "handles": "All policing, safety and FIRs in the district.",
-      "escalate": "Police Station (SHO) → DSP/Circle Officer → SP → DGP. A magistrate can order an FIR under BNSS 175(3)."
+      "escalate": "Police station (the SHO, the officer in charge) → DSP / Circle Officer → Superintendent of Police (SP) → state police chief (DGP). If the station won't file your FIR, a magistrate (judge) can order it - the power is in BNSS Section 175(3)."
     },
     "mun_commissioner": {
       "label": "Municipal Commissioner",
@@ -160,29 +160,29 @@
       "escalate": "Start here, then escalate to the Municipal Commissioner."
     },
     "cdo_ceozp": {
-      "label": "CEO Zila Parishad / CDO",
+      "label": "Rural development head (CEO, Zila Parishad / CDO)",
       "handles": "Rural development works and government-scheme delivery.",
-      "escalate": "Block (BDO) → CEO Zila Parishad → District Collector."
+      "escalate": "Block Development Officer (BDO) → CEO of the Zila Parishad (the district rural-development council) → District Collector."
     },
     "cmo_health": {
       "label": "Chief Medical Officer (CMO)",
-      "handles": "Government hospitals, PHCs, immunisation and ambulances.",
-      "escalate": "PHC Medical Officer → Block MO → CMO → Director, Health Services."
+      "handles": "Government hospitals, local health centres (PHCs), vaccinations and ambulances.",
+      "escalate": "Local health-centre doctor (PHC Medical Officer) → Block Medical Officer → Chief Medical Officer (CMO) → Director, Health Services."
     },
     "deo_education": {
       "label": "District Education Officer",
-      "handles": "Government schools, teachers, RTE and mid-day meals.",
+      "handles": "Government schools, teachers, the Right to Education (RTE) and mid-day meals.",
       "escalate": "Head Teacher → Block Education Officer → DEO → Director, School Education."
     },
     "ee_pwd": {
-      "label": "Executive Engineer, PWD",
+      "label": "Executive Engineer, Public Works Dept (PWD)",
       "handles": "State and district roads and public buildings.",
       "escalate": "Junior Engineer → Assistant Engineer → Executive Engineer → Chief Engineer."
     },
     "ee_phed": {
       "label": "Executive Engineer, Water (PHED)",
       "handles": "Rural piped water supply (Jal Jeevan Mission).",
-      "escalate": "JE → AE → Executive Engineer → Chief Engineer."
+      "escalate": "Junior Engineer → Assistant Engineer → Executive Engineer → Chief Engineer."
     },
     "dso_pds": {
       "label": "District Supply Officer",
@@ -191,13 +191,13 @@
     },
     "bdo": {
       "label": "Block Development Officer (BDO)",
-      "handles": "Rural works, MGNREGA and rural housing at the block level.",
+      "handles": "Rural works, the rural job-guarantee scheme (MGNREGA) and rural housing, at the block level.",
       "escalate": "Gram Panchayat → BDO → CEO Zila Parishad → Collector."
     },
     "tehsildar_sdm": {
-      "label": "Tehsildar / SDM",
-      "handles": "Land records, mutation and certificates at the tehsil / sub-division.",
-      "escalate": "Patwari → Tehsildar → SDM → Collector."
+      "label": "Tehsildar / SDM (Sub-Divisional Magistrate)",
+      "handles": "Land records, updating who owns a property after a sale or inheritance (mutation), and certificates - at the tehsil / sub-division office.",
+      "escalate": "Village land-record officer (Patwari) → Tehsildar → SDM → Collector."
     },
     "panchayat_secretary": {
       "label": "Gram Panchayat Secretary",
@@ -207,7 +207,7 @@
     "discom": {
       "label": "Electricity Board (DISCOM)",
       "handles": "Power connections, billing and outages.",
-      "escalate": "Use the DISCOM helpline/app: JE → Assistant/Executive Engineer of your division."
+      "escalate": "Use the DISCOM helpline or app: Junior Engineer (JE) → Assistant / Executive Engineer of your division."
     },
     "nhai": {
       "label": "NHAI / National Highways",
@@ -669,7 +669,7 @@
       },
       "practicalTitle": "Other places that can help",
       "practical": [
-        "Free legal aid - your right if you cannot afford a lawyer (Article 39A; NALSA and district legal-services authorities)",
+        "Free legal aid - your right if you cannot afford a lawyer (Article 39A; the National Legal Services Authority, NALSA, and district legal-services authorities)",
         "Human Rights Commissions - national and in each state",
         "Commissions for Women, SC / ST, Minorities and Child Rights",
         "The Right to Information (RTI) Act, 2005, to ask the government for answers",
@@ -859,8 +859,8 @@
     "topPercent": "Top {n}%",
     "amongCohort": "among {cohort}",
     "performanceInsufficient": "Not enough official data yet to score performance.",
-    "ministerExempt": "Ministers are exempt from the attendance register and answer questions rather than ask them, so there isn't enough scored data for a percentile yet.",
-    "presidingExempt": "As presiding officer of the House, they neither sign the register, table questions nor join debates as a member, so a performance percentile isn't shown.",
+    "ministerExempt": "Ministers are exempt from the attendance register and answer questions rather than ask them, so there isn't enough scored data for a performance ranking yet.",
+    "presidingExempt": "As presiding officer of the House, they neither sign the register, table questions nor join debates as a member, so a performance ranking isn't shown.",
     "metricExempt": "Exempt",
     "metricNotPublished": "Not published",
     "exemptReason": {

@@ -700,8 +700,15 @@ export const ESCALATION_CHAINS: Record<ChainKey, EscalationChainDef> = {
       }
     ],
     "citizenStartIndex": 0,
-    "variesNote": "DISCOM engineering titles vary by state/utility: the section contact may be a Junior Engineer, Lineman or Assistant Engineer; the divisional head may be XEN/Executive/Divisional Engineer and the circle head SE/Superintending Engineer. Private DISCOMs (BSES/Tata Power in Delhi, Adani in Mumbai) use corporate titles (Zonal/Cluster/Circle Manager) instead of the government engineer cadre, but the statutory CGRF → Ombudsman → SERC ladder under the Electricity Act 2003 is uniform nationwide. CGRF timelines and the number of CGRFs per licence area differ by state regulation.</variesNote>\n<parameter name=\"sources\">[\"Electricity Act 2003, Section 42(5)-(7) (CGRF, Ombudsman)\",\"https://complainthub.org/cgrf-form-for-grievances/\",\"https://mperc.in/page/about-electricity-ombudsman-2\",\"https://www.derc.gov.in/sites/default/files/derc-cgrf-regulations.pdf\",\"https://forumofregulators.gov.in/Data/Reports/FoR%20Consumer%20Protection%20Study%20Report.pdf\",\"https://bhattandjoshiassociates.com/electricity-act2003-critical-analysis/\"]",
-    "sources": []
+    "variesNote": "DISCOM engineering titles vary by state/utility: the section contact may be a Junior Engineer, Lineman or Assistant Engineer; the divisional head may be XEN/Executive/Divisional Engineer and the circle head SE/Superintending Engineer. Private DISCOMs (BSES/Tata Power in Delhi, Adani in Mumbai) use corporate titles (Zonal/Cluster/Circle Manager) instead of the government engineer cadre, but the statutory CGRF → Ombudsman → SERC ladder under the Electricity Act 2003 is uniform nationwide. CGRF timelines and the number of CGRFs per licence area differ by state regulation.",
+    "sources": [
+      "Electricity Act 2003, Section 42(5)-(7) (CGRF, Ombudsman)",
+      "https://complainthub.org/cgrf-form-for-grievances/",
+      "https://mperc.in/page/about-electricity-ombudsman-2",
+      "https://www.derc.gov.in/sites/default/files/derc-cgrf-regulations.pdf",
+      "https://forumofregulators.gov.in/Data/Reports/FoR%20Consumer%20Protection%20Study%20Report.pdf",
+      "https://bhattandjoshiassociates.com/electricity-act2003-critical-analysis/"
+    ]
   },
   "pds": {
     "label": "Ration / PDS",
