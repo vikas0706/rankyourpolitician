@@ -121,8 +121,11 @@ export default async function IndiaPage({ params }: { params: Promise<LangParams
 }
 
 function ConstitutionalCard({ o, tr }: { o: ConstitutionalOffice; tr: (k: string, v?: Record<string, string | number>) => string }) {
+  // The whole card is a single stretched link to the office holder's profile
+  // (the name's ::after overlay covers the card); the source link sits above it
+  // (relative z-10). A right-hand arrow + "View profile" make the click obvious.
   return (
-    <div className="relative flex h-full gap-3 rounded-2xl border border-line bg-white p-4 shadow-soft transition hover:border-brand/40 hover:shadow-lift">
+    <div className="group relative flex h-full items-start gap-3 rounded-2xl border border-line bg-white p-4 shadow-soft transition hover:border-brand/40 hover:shadow-lift">
       <Avatar name={o.name} src={o.photo_url} size={48} />
       <div className="min-w-0 flex-1">
         <p className="text-[11px] font-bold uppercase tracking-wide text-brand">{o.title}</p>
@@ -130,20 +133,24 @@ function ConstitutionalCard({ o, tr }: { o: ConstitutionalOffice; tr: (k: string
           {/* Every office is now clickable: linked MPs (Speaker, Leaders of the
               Opposition) go to their full MP profile; the Head-of-State offices
               (President, VP) go to their own info-only office profile. */}
-          <Link href={`/person/${o.politicianId || o.id}`} className="font-bold text-ink after:absolute after:inset-0">
+          <Link href={`/person/${o.politicianId || o.id}`} className="font-bold text-ink after:absolute after:inset-0 group-hover:text-brand-ink">
             {o.name}
           </Link>
           {o.party && <PartyChip party={o.party} />}
         </div>
         {o.note && <p className="mt-1.5 text-xs leading-relaxed text-ink-soft">{o.note}</p>}
-        <div className="mt-2 flex flex-wrap items-center gap-x-2 text-xs text-ink-faint">
+        <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-ink-faint">
           {o.since && <span>{tr('profile.since')} {o.since}</span>}
           <a href={o.source_url} target="_blank" rel="noopener noreferrer nofollow" className="relative z-10 inline-flex items-center gap-1 text-brand hover:underline">
             <Icon name="link" size={12} /> {o.source_name}
           </a>
-          <span className="ml-auto inline-flex items-center gap-0.5 font-semibold text-brand">{tr('common.viewProfile')} <Icon name="arrow" size={12} /></span>
+          <span className="inline-flex items-center gap-0.5 font-semibold text-brand">
+            {tr('common.viewProfile')} <Icon name="arrow" size={12} />
+          </span>
         </div>
       </div>
+      {/* The site's standard "this card opens something" cue (see hierarchy Node). */}
+      <Icon name="arrow" size={18} className="mt-0.5 shrink-0 self-center text-ink-faint transition group-hover:translate-x-0.5 group-hover:text-brand" aria-hidden="true" />
     </div>
   );
 }
