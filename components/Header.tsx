@@ -21,6 +21,8 @@ const NAV: { href: string; key: string; icon: IconName; show: string }[] = [
   // mobile overflow menu on phones. `show: hidden` keeps it out of the crowded
   // inline desktop bar while still listing it in the mobile menu below.
   { href: '/why-care', key: 'nav.whyCare', icon: 'sparkle', show: 'hidden' },
+  // A note to those in office - reachable via the footer and the mobile menu.
+  { href: '/for-leaders', key: 'nav.forLeaders', icon: 'compass', show: 'hidden' },
 ];
 
 function ThemeToggle() {

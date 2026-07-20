@@ -28,6 +28,7 @@ export default function Footer() {
           <nav className="grid grid-cols-2 gap-x-10 gap-y-2.5 text-sm" aria-label="Footer">
             <Link href="/hierarchy" className="text-ink-soft hover:text-brand">{t('nav.hierarchy')}</Link>
             <Link href="/why-care" className="text-ink-soft hover:text-brand">{t('nav.whyCare')}</Link>
+            <Link href="/for-leaders" className="text-ink-soft hover:text-brand">{t('nav.forLeaders')}</Link>
             <Link href="/rights" className="text-ink-soft hover:text-brand">{t('footer.rights')}</Link>
             <Link href="/accountability" className="text-ink-soft hover:text-brand">{t('nav.accountability')}</Link>
             <Link href="/methodology" className="text-ink-soft hover:text-brand">{t('nav.methodology')}</Link>

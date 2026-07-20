@@ -12,6 +12,7 @@
     "accountability": "Who does what?",
     "rights": "Know your rights",
     "whyCare": "Why should I care?",
+    "forLeaders": "For leaders",
     "methodology": "How it works",
     "about": "About",
     "language": "Language",
@@ -763,6 +764,67 @@
       "getHelp": "Find who's responsible",
       "sourceNote": "Source: the Constitution of India. This page is for civic awareness and is not legal advice - for any specific situation, consult a lawyer or the official text."
     }
+  },
+  "forLeaders": {
+    "metaTitle": "How to be a good leader",
+    "metaDescription": "A simple guide for anyone who leads, or wants to. Seven timeless lessons on good leadership, each from a real, named source - the Bhagavad Gita, Chanakya's Arthashastra, the Thirukkural, Emperor Ashoka and Mahatma Gandhi.",
+    "eyebrow": "For anyone who leads",
+    "nonpartisanTag": "Non-partisan",
+    "title": "How to be a good leader",
+    "subtitle": "This page is for you, whether you already lead or you want to one day. Long ago, India's wisest teachers wrote down how a good leader should be. Their words are gathered here in simple form, and every one is from a real, famous source.",
+    "addressTitle": "Leader, this is for you",
+    "address": "Leading is not about being big or powerful. It is about doing good for the people who trusted you with their vote. Read these lessons slowly. They were true a thousand years ago, and they are still true today.",
+    "principlesTitle": "Seven lessons on leading well",
+    "lessonWord": "Lesson",
+    "principles": [
+      {
+        "heading": "People copy their leaders",
+        "quote": "Whatever a great person does, common people follow. Whatever standard they set, the world pursues.",
+        "source": "Bhagavad Gita, Chapter 3, Verse 21",
+        "explain": "People watch their leaders and do the same. If you are honest and calm, people learn to be honest and calm. If you cut corners, they learn to cut corners too. So live the way you want your people to live."
+      },
+      {
+        "heading": "Your people's good is your good",
+        "quote": "In the happiness of his people lies the ruler's happiness; in their welfare, his welfare. He should treat as good not what pleases him, but what pleases his people.",
+        "source": "Chanakya (Kautilya), Arthashastra, Book 1, Chapter 19",
+        "explain": "A leader is not happy when only he is happy. A leader is happy when the people are happy. Before every decision, ask one simple thing: does this make ordinary people's lives better? If it only helps you, drop it."
+      },
+      {
+        "heading": "Be fair to everyone",
+        "quote": "It is not the spear but the just sceptre that gives a ruler victory, and only if it never bends.",
+        "source": "Thirukkural, Verse 546",
+        "explain": "A leader wins by being fair, not by being harsh or strong. Treat everyone the same, rich or poor, those who voted for you and those who did not. One unfair act can break the trust you built over many years."
+      },
+      {
+        "heading": "Work for the people, not for reward",
+        "quote": "You have a right to your work, but never to its rewards. Do not act only for the results, and do not sit idle either.",
+        "source": "Bhagavad Gita, Chapter 2, Verse 47",
+        "explain": "Do your duty because it is right, not for money, fame or the next post. Do the work fully and honestly, and let the results come on their own."
+      },
+      {
+        "heading": "First control yourself",
+        "quote": "Control of the senses comes from giving up greed, anger, pride and other weaknesses. Rulers who did not do this were destroyed along with their kingdoms.",
+        "source": "Chanakya (Kautilya), Arthashastra, Book 1, Chapter 6",
+        "explain": "Before you can lead others, you must lead yourself. A leader who cannot control his anger, greed or pride will not last. Stay humble and calm, especially when you have power."
+      },
+      {
+        "heading": "Think of the poorest person first",
+        "quote": "Recall the face of the poorest and weakest person you have seen, and ask if the step you plan will be of any use to him. Will he gain anything by it? Then your doubt will melt away.",
+        "source": "Mahatma Gandhi, The Talisman",
+        "explain": "When a choice is hard, do not weigh it by the richest or loudest person in the room. Think of the poorest person you know, and ask: will this help that person? If yes, you are on the right path."
+      },
+      {
+        "heading": "Treat every person as your own family",
+        "quote": "All people are my children. What I want for my own children, their welfare and happiness, I want for all people too.",
+        "source": "Emperor Ashoka, Kalinga Edict",
+        "explain": "A leader belongs to everyone, not only to his own group, religion or supporters. Care for people of every faith, language and region as if they were your own family."
+      }
+    ],
+    "closingTitle": "The chair is for a short time. Your good work stays.",
+    "closingBody": "One day your term ends and someone else takes the chair. What stays behind is the good you did and the lives you changed. Lead so that, even after you leave, people say: they were good for us.",
+    "originalLabel": "In the original",
+    "sourceLabel": "Read the source",
+    "sourcesNote": "Every quote here is from a real, named and published source, and links to it. Where the words come from a holy book, we have kept the meaning true to the well-known translations."
   },
   "whyCare": {
     "metaTitle": "Why should I care about politics?",
