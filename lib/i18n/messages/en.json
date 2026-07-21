@@ -517,6 +517,7 @@
     "toc": {
       "preamble": "The promise",
       "article32": "Article 32",
+      "architect": "The architect",
       "fundamental": "Your fundamental rights",
       "keyArticles": "Life, liberty & education",
       "remedies": "Enforcing your rights",
@@ -561,6 +562,23 @@
       "submitNote": "Most people file through a lawyer, and free legal aid (Article 39A) can do it for you at no cost - ask your nearest Legal Services Authority. Always check the official Supreme Court website before you file.",
       "sourceQuoteLabel": "Read the debate",
       "sourceLabel": "Read Article 32 in the Constitution"
+    },
+    "ambedkar": {
+      "eyebrow": "The architect of the Constitution",
+      "title": "Dr. B. R. Ambedkar",
+      "lifespan": "Bhimrao Ramji Ambedkar, 1891 - 1956",
+      "intro": "The Constitution you have just read was shaped above all by one person - Dr. Bhimrao Ramji Ambedkar, known to millions as Babasaheb. As Chairman of the Drafting Committee of the Constituent Assembly, he led the writing of the Constitution of India and is honoured as its chief architect.",
+      "facts": [
+        { "label": "His role", "value": "Chairman of the Drafting Committee - the chief architect of the Constitution of India." },
+        { "label": "In government", "value": "Independent India's first Minister of Law and Justice." },
+        { "label": "The scholar", "value": "A jurist and economist who earned degrees at Columbia University and the London School of Economics." },
+        { "label": "The reformer", "value": "A lifelong campaigner against untouchability and caste, and a champion of equal rights for every citizen." },
+        { "label": "Honoured", "value": "Awarded the Bharat Ratna, India's highest civilian honour, in 1990." }
+      ],
+      "quote": "However good a Constitution may be, it is sure to turn out bad because those who are called to work it happen to be a bad lot. However bad a Constitution may be, it may turn out to be good if those who are called to work it happen to be a good lot.",
+      "quoteBy": "Dr. B. R. Ambedkar, Constituent Assembly, 25 November 1949",
+      "quoteNote": "The Constitution's success rests on the people who run it - which is exactly why holding leaders to account matters.",
+      "sourceLabel": "More about Dr. Ambedkar"
     },
     "preamble": {
       "eyebrow": "The Preamble",

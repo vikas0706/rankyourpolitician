@@ -57,6 +57,9 @@ const SCI_REGISTRY_EMAIL = 'supremecourt@nic.in';
 const SCI_REGISTRY_PHONE = '011-23116400';
 const SCI_ADDRESS = 'The Chief Justice of India, Supreme Court of India, Tilak Marg, New Delhi 110001';
 
+// Dr. Ambedkar, chief architect of the Constitution (bio facts cited to Wikipedia).
+const AMBEDKAR_SRC = 'https://en.wikipedia.org/wiki/B._R._Ambedkar';
+
 // Article 32 "how to use it" - the practical guidance blocks, by key.
 const ART32_GUIDE: { key: 'what' | 'when' | 'how'; icon: IconName }[] = [
   { key: 'what', icon: 'sparkle' },
@@ -68,6 +71,7 @@ const ART32_GUIDE: { key: 'what' | 'when' | 'how'; icon: IconName }[] = [
 const TOC: { key: string; id: string }[] = [
   { key: 'preamble', id: 'preamble' },
   { key: 'article32', id: 'article32' },
+  { key: 'architect', id: 'architect' },
   { key: 'fundamental', id: 'rights' },
   { key: 'keyArticles', id: 'life' },
   { key: 'remedies', id: 'remedies' },
@@ -79,6 +83,11 @@ const TOC: { key: string; id: string }[] = [
 export default async function RightsPage({ params }: { params: Promise<LangParams> }) {
   const { dict } = await getI18n((await params).lang);
   const tr = (k: string, v?: Record<string, string | number>) => t(dict, k, v);
+  // The Ambedkar facts are a localised array of {label, value}.
+  const ambedkarFacts = (() => {
+    const v = ['rights', 'ambedkar', 'facts'].reduce<any>((o, k) => (o == null ? undefined : o[k]), dict);
+    return Array.isArray(v) ? (v as { label: string; value: string }[]) : [];
+  })();
 
   return (
     <>
@@ -243,6 +252,52 @@ export default async function RightsPage({ params }: { params: Promise<LangParam
 
               <a href={ART32_TEXT_SRC} target="_blank" rel="noopener noreferrer nofollow" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline">
                 <Icon name="external" size={14} /> {tr('rights.article32.sourceLabel')}
+              </a>
+            </div>
+          </section>
+        </Reveal>
+
+        {/* 1c - The architect. The Article 32 quote above is his; here is who he
+            was, and his reminder that a Constitution is only as good as the
+            people who work it - the reason accountability matters. */}
+        <Reveal className="mt-12">
+          <section id="architect" aria-labelledby="architect-h" className="scroll-mt-24">
+            <div className="glass rounded-3xl p-5 sm:p-7">
+              <div className="flex items-start gap-4">
+                <span className="inline-grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-brand-soft text-brand">
+                  <Icon name="law" size={30} />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-bold uppercase tracking-wider text-ink-faint">{tr('rights.ambedkar.eyebrow')}</p>
+                  <h2 id="architect-h" className="mt-0.5 font-display text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+                    {tr('rights.ambedkar.title')}
+                  </h2>
+                  <p className="mt-0.5 text-sm text-ink-faint">{tr('rights.ambedkar.lifespan')}</p>
+                </div>
+              </div>
+
+              <p className="mt-4 leading-relaxed text-ink-soft">{tr('rights.ambedkar.intro')}</p>
+
+              <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+                {ambedkarFacts.map((f, i) => (
+                  <div key={i} className="rounded-2xl bg-paper-soft p-4">
+                    <dt className="text-[11px] font-bold uppercase tracking-wide text-brand">{f.label}</dt>
+                    <dd className="mt-1 text-sm leading-relaxed text-ink-soft">{f.value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <blockquote className="mt-4 rounded-2xl border-l-4 border-brand/40 bg-brand-soft/40 p-4">
+                <p className="text-base font-medium italic leading-relaxed text-ink sm:text-lg">{tr('rights.ambedkar.quote')}</p>
+                <cite className="mt-2.5 block text-sm font-semibold not-italic text-brand-ink">- {tr('rights.ambedkar.quoteBy')}</cite>
+                <p className="mt-2 flex items-start gap-2 text-sm text-ink-soft">
+                  <Icon name="sparkle" size={15} className="mt-0.5 shrink-0 text-brand" />
+                  <span>{tr('rights.ambedkar.quoteNote')}</span>
+                </p>
+              </blockquote>
+
+              <a href={AMBEDKAR_SRC} target="_blank" rel="noopener noreferrer nofollow" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline">
+                <Icon name="external" size={14} /> {tr('rights.ambedkar.sourceLabel')}
               </a>
             </div>
           </section>
