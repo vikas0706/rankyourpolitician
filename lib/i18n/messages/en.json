@@ -516,12 +516,42 @@
     "tocTitle": "On this page",
     "toc": {
       "preamble": "The promise",
+      "article32": "Article 32",
       "fundamental": "Your fundamental rights",
       "keyArticles": "Life, liberty & education",
       "remedies": "Enforcing your rights",
       "duties": "Your duties",
       "directive": "Goals for the state",
       "structure": "The whole Constitution"
+    },
+    "article32": {
+      "eyebrow": "The heart and soul of the Constitution",
+      "title": "Article 32: your direct line to the highest court",
+      "intro": "Every right on this page is only as strong as your power to enforce it. Article 32 is that power. If the government breaks one of your Fundamental Rights, Article 32 lets you go straight to the Supreme Court of India to set it right. The right to do this is itself a Fundamental Right, so it can never be taken away.",
+      "quote": "If I was asked to name any particular article in this Constitution as the most important - an article without which this Constitution would be a nullity - I could not refer to any other article except this one. It is the very soul of the Constitution and the very heart of it.",
+      "quoteBy": "Dr. B. R. Ambedkar, Constituent Assembly of India, 9 December 1948",
+      "whatTitle": "What it gives you",
+      "what": [
+        "The right to go straight to the Supreme Court when the State breaks a Fundamental Right. You do not have to start in a lower court first.",
+        "The court can issue an order called a writ to force the government to act, or to stop it acting wrongly (the five writs are explained further down this page).",
+        "This right cannot be refused. It can only be paused during a formal national Emergency."
+      ],
+      "whenTitle": "When to use it",
+      "when": [
+        "When a Fundamental Right is broken - for example an unlawful arrest, censorship of your speech, or unfair treatment by a government body.",
+        "Against the State or a public authority, not for a private quarrel between two people. Private matters go to the ordinary courts.",
+        "You can also go to your State High Court under Article 226. A High Court is usually nearer, and it can protect even more than Fundamental Rights alone."
+      ],
+      "howTitle": "How to use it, step by step",
+      "how": [
+        "Be clear which Fundamental Right was broken, and which government body broke it.",
+        "File a writ petition in the Supreme Court under Article 32, or in a High Court under Article 226. A lawyer can help you write it.",
+        "If you cannot afford a lawyer, free legal aid is your right (Article 39A). Ask the nearest Legal Services Authority - it costs nothing.",
+        "Anyone can file a Public Interest Litigation (PIL) for people who cannot reach the court themselves. Courts have even accepted a simple letter as a petition."
+      ],
+      "note": "Article 32 is itself a Fundamental Right, which is why it guards all the others. This is plain-language awareness, not legal advice. For a real case, speak to a lawyer or your free Legal Services Authority.",
+      "sourceQuoteLabel": "Read the debate",
+      "sourceLabel": "Read Article 32 in the Constitution"
     },
     "preamble": {
       "eyebrow": "The Preamble",

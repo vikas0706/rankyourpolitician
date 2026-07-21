@@ -42,9 +42,22 @@ const VALUES = ['justice', 'liberty', 'equality', 'fraternity'] as const;
 const WRITS = ['habeas', 'mandamus', 'prohibition', 'certiorari', 'quo'] as const;
 const FACTS = ['adopted', 'inforce', 'original', 'schedules'] as const;
 
+// External citations for the Article 32 section (verified against the source).
+const ART32_QUOTE_SRC =
+  'https://theprint.in/theprint-essential/what-is-article-32-which-ambedkar-said-was-heart-and-soul-of-constitution/546050/';
+const ART32_TEXT_SRC = 'https://en.wikipedia.org/wiki/Fundamental_rights_in_India';
+
+// Article 32 "how to use it" - the practical guidance blocks, by key.
+const ART32_GUIDE: { key: 'what' | 'when' | 'how'; icon: IconName }[] = [
+  { key: 'what', icon: 'sparkle' },
+  { key: 'when', icon: 'clock' },
+  { key: 'how', icon: 'check' },
+];
+
 // Table-of-contents entries → in-page anchor ids.
 const TOC: { key: string; id: string }[] = [
   { key: 'preamble', id: 'preamble' },
+  { key: 'article32', id: 'article32' },
   { key: 'fundamental', id: 'rights' },
   { key: 'keyArticles', id: 'life' },
   { key: 'remedies', id: 'remedies' },
@@ -116,6 +129,68 @@ export default async function RightsPage({ params }: { params: Promise<LangParam
                   </div>
                 ))}
               </div>
+            </div>
+          </section>
+        </Reveal>
+
+        {/* 1b - Article 32: the heart and soul. It comes right after the promise,
+            because it is what makes every right below it real and enforceable. */}
+        <Reveal className="mt-8">
+          <section id="article32" aria-labelledby="article32-h" className="scroll-mt-24">
+            <div className="relative overflow-hidden rounded-3xl border-2 border-brand/30 bg-white p-6 shadow-lift sm:p-7">
+              <span className="tricolor-line mb-3 block w-12" aria-hidden="true" />
+              <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-brand">
+                <Icon name="scales" size={15} /> {tr('rights.article32.eyebrow')}
+              </p>
+              <h2 id="article32-h" className="mt-1 font-display text-2xl font-extrabold tracking-tight text-ink sm:text-3xl">
+                {tr('rights.article32.title')}
+              </h2>
+              <p className="mt-2 max-w-2xl text-ink-soft">{tr('rights.article32.intro')}</p>
+
+              {/* Ambedkar's words - the reason this article is called the heart and soul. */}
+              <blockquote className="mt-5 rounded-2xl border-l-4 border-brand/40 bg-brand-soft/40 p-4">
+                <p className="text-base font-medium italic leading-relaxed text-ink sm:text-lg">{tr('rights.article32.quote')}</p>
+                <footer className="mt-2.5 flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <cite className="text-sm font-semibold not-italic text-brand-ink">- {tr('rights.article32.quoteBy')}</cite>
+                  <a href={ART32_QUOTE_SRC} target="_blank" rel="noopener noreferrer nofollow" className="inline-flex items-center gap-1 text-xs text-brand hover:underline">
+                    <Icon name="link" size={12} /> {tr('rights.article32.sourceQuoteLabel')}
+                  </a>
+                </footer>
+              </blockquote>
+
+              {/* What it gives you / When to use it / How to use it. */}
+              <div className="mt-5 grid gap-4 lg:grid-cols-3">
+                {ART32_GUIDE.map(({ key, icon }) => (
+                  <div key={key} className="rounded-2xl bg-paper-soft p-4">
+                    <p className="flex items-center gap-1.5 text-sm font-bold text-ink">
+                      <Icon name={icon} size={16} className="text-brand" /> {tr(`rights.article32.${key}Title`)}
+                    </p>
+                    <ul className="mt-2.5 space-y-2.5">
+                      {tArr(dict, `rights.article32.${key}`).map((it, i) => (
+                        <li key={i} className="flex gap-2 text-sm leading-relaxed text-ink-soft">
+                          {key === 'how' ? (
+                            <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-brand-soft text-[11px] font-bold text-brand">
+                              {i + 1}
+                            </span>
+                          ) : (
+                            <Icon name="arrow" size={14} className="mt-0.5 shrink-0 text-brand" />
+                          )}
+                          <span>{it}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-4 flex items-start gap-2.5 rounded-2xl bg-paper-sink p-4 text-sm text-ink-soft">
+                <Icon name="info" size={17} className="mt-0.5 shrink-0 text-brand" />
+                <p>{tr('rights.article32.note')}</p>
+              </div>
+
+              <a href={ART32_TEXT_SRC} target="_blank" rel="noopener noreferrer nofollow" className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:underline">
+                <Icon name="external" size={14} /> {tr('rights.article32.sourceLabel')}
+              </a>
             </div>
           </section>
         </Reveal>
